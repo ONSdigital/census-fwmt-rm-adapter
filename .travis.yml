@@ -1,14 +1,15 @@
 language: java
-jdk: oraclejdk8
+jdk: oraclejdk11
 services:
 - docker
 before_install:
-- docker run  -d --name rabbit -p 5672:5672 rabbitmq:3.6
+- docker run -d --name rabbit -p 5672:5672 rabbitmq:3.6
 install: true
 script:
-- "if [[ $TRAVIS_COMMIT_MESSAGE != 'JENKINS SNAPSHOT UPDATE' ]];
-  then ./gradlew build --info;
-  fi"
+- |
+  if [[ $TRAVIS_COMMIT_MESSAGE != 'JENKINS SNAPSHOT UPDATE' ]]; then
+    ./gradlew build --info;
+  fi
 env:
   global:
   - SPRING_PROFILES_ACTIVE=default,integration-tests
@@ -32,9 +33,15 @@ cache:
   - "$HOME/.gradle/wrapper/"
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-- if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_PULL_REQUEST" = "false" ]] && [[ $TRAVIS_COMMIT_MESSAGE != "JENKINS SNAPSHOT UPDATE" ]];
-  then echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin;
-  docker build -t sdcplatform/fwmtrmadapter -t sdcplatform/fwmtrmadapter:rm-adapter-$TRAVIS_BUILD_NUMBER --build-arg jar=build/libs/fwmt-rm-adapter-*.jar .;
-  docker push sdcplatform/fwmtrmadapter;
-  ./gradlew artifactPublish;
+- |
+  set -e
+  if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_PULL_REQUEST" = "false" ]] && [[ $TRAVIS_COMMIT_MESSAGE != "JENKINS SNAPSHOT UPDATE" ]]; then
+    echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+    docker build -t sdcplatform/fwmt-census-rm-adapter -t sdcplatform/fwmt-census-rm-adapter:census-job-service-$TRAVIS_BUILD_NUMBER --build-arg jar=build/libs/fwmt-census-rm-adapter-*.jar .
+    docker push sdcplatform/fwmt-census-rm-adapter
+  fi
+- |
+  set -e
+  if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_PULL_REQUEST" = "false" ]] && [[ $TRAVIS_COMMIT_MESSAGE != "JENKINS SNAPSHOT UPDATE" ]]; then
+    ./gradlew artifactPublish
   fi

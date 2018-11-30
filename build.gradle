@@ -190,7 +190,7 @@ dependencies {
 
     compile files((String) genJaxb.classesDir).builtBy(genJaxb)
 
-    compile group: 'uk.gov.ons.fwmt', name: 'fwmt-gateway-common', version: '3.0.0-SNAPSHOT'
+    compile group: 'uk.gov.ons.fwmt', name: 'fwmt-gateway-common', version: '0.0.15-RELEASE'
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion

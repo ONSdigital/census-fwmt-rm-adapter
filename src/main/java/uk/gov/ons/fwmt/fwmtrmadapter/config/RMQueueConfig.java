@@ -62,7 +62,7 @@ public class RMQueueConfig {
 
   // Dead Letter Queue
   @Bean
-  public Queue adapterDeadLetterQueue() {
+  public Queue rmDeadLetterQueue() {
     Queue queue = QueueBuilder.durable(ACTION_FIELD_DLQ).build();
     queue.setAdminsThatShouldDeclare(rmAmqpAdmin());
     return queue;
@@ -71,7 +71,7 @@ public class RMQueueConfig {
   // Bindings
   @Bean
   public Binding rmToAdapterBinding() {
-    Binding binding = BindingBuilder.bind(adapterDeadLetterQueue()).to(actionDlqExchange())
+    Binding binding = BindingBuilder.bind(rmDeadLetterQueue()).to(rmActionDlqExchange())
         .with(ACTION_FIELD_BINDING);
     binding.setAdminsThatShouldDeclare(rmAmqpAdmin());
     return binding;
@@ -85,7 +85,7 @@ public class RMQueueConfig {
 
   // Exchange
   @Bean
-  public DirectExchange actionDlqExchange() {
+  public DirectExchange rmActionDlqExchange() {
     DirectExchange exchange = new DirectExchange(ACTION_DEADLETTER_EXCHANGE);
     exchange.setAdminsThatShouldDeclare(rmAmqpAdmin());
     return exchange;

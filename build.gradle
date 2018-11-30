@@ -206,6 +206,7 @@ dependencies {
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
 
+    testCompile group: 'uk.gov.ons.fwmt', name: 'fwmt-gateway-common', version: '3.0.0-RELEASE'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
 
     integrationTestCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'

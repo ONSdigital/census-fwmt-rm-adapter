@@ -80,7 +80,7 @@ public class FWMTQueueConfig {
 
   // Dead Letter Queues
   @Bean
-  public Queue adapterDeadLetterQueue() {
+  public Queue rmAdapterJobDeadLetterQueue() {
     Queue queue = QueueBuilder.durable(QueueNames.ADAPTER_JOB_SVC_DLQ).build();
     queue.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return queue;

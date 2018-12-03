@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:latest.release'
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.7.2'
     }
 }
 
@@ -25,10 +25,12 @@ plugins {
     id 'org.ajoberstar.grgit' version '3.0.0'
 }
 
-mainClassName = 'uk.gov.ons.fwmt.fwmtrmadapter.FwmtRmAdapterApplication'
+description = "fwmt-census-tm-mocks"
 
-group = 'uk.gov.ons.fwmt'
 version = '3.0.0-SNAPSHOT'
+
+mainClassName = 'uk.gov.ons.fwmt.census.rmadapter.Application'
+
 sourceCompatibility = 11
 targetCompatibility = 11
 
@@ -62,7 +64,6 @@ task genJaxb {
             mkdir(dir: classesDir)
 
             xjc(destdir: sourcesDir) {
-                //arg(value: '-xsd')
                 produces(dir: sourcesDir, includes: '**/*.java')
                 schema(dir: schema, includes: '**/*.xsd')
             }
@@ -84,26 +85,42 @@ task genJaxb {
     }
 }
 
-sourceSets {
-    integrationTest {
-        java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-            srcDir file('src/integration-test/java')
-        }
-        resources.srcDir file('src/integration-test/resources')
+dependencies {
+    compile("uk.gov.ons.fwmt:fwmt-gateway-common:0.0.15-RELEASE")
+
+
+	jaxb("javax.xml.bind:jaxb-api:2.3.0")
+	jaxb("com.sun.xml.bind:jaxb-core:2.3.0.1")
+	jaxb("com.sun.xml.bind:jaxb-impl:2.3.1")
+	jaxb("com.sun.xml.bind:jaxb-xjc:2.3.1")
+	jaxb("javax.activation:activation:1.1.1")
+	compile("javax.xml.bind:jaxb-api:2.3.0")
+    compile(files((String) genJaxb.classesDir).builtBy(genJaxb))
+
+
+    compile("org.springframework.boot:spring-boot-starter")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-amqp")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework:spring-aop")
+    compile("org.springframework.retry:spring-retry") 
+
+    compile("com.fasterxml.jackson.core:jackson-databind")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile("com.rabbitmq:amqp-client")
+
+    compile("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module: "android-json")
     }
+    integrationTestCompile("org.assertj:assertj-core")
+
+    integrationTestRuntime("uk.gov.ons.fwmt:fwmt-service-mocks:3.0.0-SNAPSHOT")
 }
 
-bootJar {
-    baseName = 'fwmt-census-rm-adapter'
-    group = 'uk.gov.ons.fwmt'
-    version = version
-    manifest {
-        attributes(['Git-Commit': grgit.head().getAbbreviatedId(8),
-                    'Git-Branch': grgit.branch.getCurrent().getName()], 'common')
-    }
-}
+group = 'uk.gov.ons.fwmt'
 
 jacoco {
     toolVersion = "0.8.2"
@@ -122,9 +139,20 @@ jacocoTestReport {
         html.enabled false
     }
 }
+
 test.finalizedBy(project.tasks.jacocoTestReport)
 
-check.dependsOn jacocoTestReport
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
 
 task integrationTest(type: Test) {
     jacoco {
@@ -135,10 +163,21 @@ task integrationTest(type: Test) {
     classpath = sourceSets.integrationTest.runtimeClasspath
     outputs.upToDateWhen { false }
 }
+
+bootJar {
+    baseName = 'fwmt-census-rm-adapter'
+    group = 'uk.gov.ons.fwmt'
+    version = version
+    manifest {
+        attributes(['Git-Commit': grgit.head().getAbbreviatedId(8),
+                    'Git-Branch': grgit.branch.getCurrent().getName()], 'common')
+    }
+}
+
+check.dependsOn jacocoTestReport
 check.dependsOn integrationTest
 check.dependsOn jacocoTestReport
 integrationTest.mustRunAfter test
-
 /*
 processResources {
     filter ReplaceTokens, tokens: [
@@ -177,38 +216,4 @@ publishing {
 
 artifactoryPublish {
     publications 'maven'
-}
-
-dependencies {
-    jaxb group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
-    jaxb group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0.1'
-    jaxb group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.1'
-    jaxb group: 'com.sun.xml.bind', name: 'jaxb-xjc', version: '2.3.1'
-    jaxb group: 'javax.activation', name: 'activation', version: '1.1.1'
-
-    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
-
-    compile files((String) genJaxb.classesDir).builtBy(genJaxb)
-
-    compile group: 'uk.gov.ons.fwmt', name: 'fwmt-gateway-common', version: '0.0.15-RELEASE'
-
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: springBootVersion
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
-    compile group: 'org.springframework', name: 'spring-aop', version: '5.1.2.RELEASE'
-    compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.2.RELEASE'
-
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.7'
-    compile group: 'org.json', name: 'json', version: '20180813'
-
-    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
-
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
-
-    integrationTestCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
-
-    integrationTestRuntime group: 'uk.gov.ons.fwmt', name: 'fwmt-service-mocks', version: '3.0.0-SNAPSHOT'
 }

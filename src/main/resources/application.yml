@@ -12,10 +12,6 @@ server:
 spring:
   application:
     name: fwmt-job-uk.gov.ons.fwmt.fwmtrmadapter
-  servlet:
-    multipart:
-      max-file-size: 12800MB
-      max-request-size: 12800MB
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -59,3 +55,4 @@ rabbitmq:
   initialinterval: 5000
   multiplier: 3.0
   maxInterval: 45000
+

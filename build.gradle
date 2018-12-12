@@ -31,6 +31,8 @@ version = '3.0.0-SNAPSHOT'
 
 mainClassName = 'uk.gov.ons.fwmt.census.rmadapter.Application'
 
+group = 'uk.gov.ons.fwmt'
+
 sourceCompatibility = 11
 targetCompatibility = 11
 
@@ -88,12 +90,16 @@ task genJaxb {
 dependencies {
     compile("uk.gov.ons.fwmt:fwmt-gateway-common:0.0.15-RELEASE")
 
-
 	jaxb("javax.xml.bind:jaxb-api:2.3.0")
 	jaxb("com.sun.xml.bind:jaxb-core:2.3.0.1")
 	jaxb("com.sun.xml.bind:jaxb-impl:2.3.1")
 	jaxb("com.sun.xml.bind:jaxb-xjc:2.3.1")
 	jaxb("javax.activation:activation:1.1.1")
+	jaxb("javax.xml.bind:jaxb-api:2.3.0")
+	compile("com.sun.xml.bind:jaxb-core:2.3.0.1")
+	compile("com.sun.xml.bind:jaxb-impl:2.3.1")
+	compile("com.sun.xml.bind:jaxb-xjc:2.3.1")
+	compile("javax.activation:activation:1.1.1")
 	compile("javax.xml.bind:jaxb-api:2.3.0")
     compile(files((String) genJaxb.classesDir).builtBy(genJaxb))
 
@@ -120,7 +126,7 @@ dependencies {
     integrationTestRuntime("uk.gov.ons.fwmt:fwmt-service-mocks:3.0.0-SNAPSHOT")
 }
 
-group = 'uk.gov.ons.fwmt'
+
 
 jacoco {
     toolVersion = "0.8.2"

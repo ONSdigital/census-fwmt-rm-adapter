@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceReceiverImpl;
 import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.DummyTMResponse;
@@ -36,21 +37,21 @@ public class JobServiceReceiverImplTest {
   public void receiveMessage() throws IOException, CTPException {
     //Given
     String testReturnXML = "returnXML";
-    FwmtOHSJobStatusNotification fwmtOHSJobStatusNotification = new FwmtOHSJobStatusNotification();
-    when(objectMapper.readValue(eq(testReturnXML), eq(FwmtOHSJobStatusNotification.class))).thenReturn(fwmtOHSJobStatusNotification);
+    CensusCaseOutcomeDTO censusCaseOutcomeDTO = new CensusCaseOutcomeDTO();
+    when(objectMapper.readValue(eq(testReturnXML), eq(CensusCaseOutcomeDTO.class))).thenReturn(censusCaseOutcomeDTO);
 
     //When
     jobServiceReceiver.receiveMessage(testReturnXML);
 
     //Then
-    verify(rmAdapterService).returnJobRequest(fwmtOHSJobStatusNotification);
+    verify(rmAdapterService).returnJobRequest(censusCaseOutcomeDTO);
   }
 
   @Test(expected = CTPException.class)
   public void receiveMessageBadJson() throws IOException, CTPException {
     //Given
     String testReturnXML = "returnXML";
-    when(objectMapper.readValue(eq(testReturnXML), eq(FwmtOHSJobStatusNotification.class))).thenThrow(new IOException());
+    when(objectMapper.readValue(eq(testReturnXML), eq(CensusCaseOutcomeDTO.class))).thenThrow(new IOException());
 
     //When
     jobServiceReceiver.receiveMessage(testReturnXML);

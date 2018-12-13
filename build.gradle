@@ -123,7 +123,7 @@ dependencies {
     }
     integrationTestCompile("org.assertj:assertj-core")
 
-    integrationTestRuntime("uk.gov.ons.fwmt:fwmt-service-mocks:3.0.0-SNAPSHOT")
+    integrationTestRuntime("uk.gov.ons.fwmt:fwmt-service-mocks:1.0.1-SNAPSHOT")
 }
 
 

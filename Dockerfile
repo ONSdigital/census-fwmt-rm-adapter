@@ -1,7 +1,7 @@
-FROM openjdk:8
-MAINTAINER Kieran Wardle <kieran.wardle@ons.gov.uk>
+FROM openjdk:11-jdk-slim
+MAINTAINER Jacob Harrison <jacob.harrisone@ons.gov.uk>
 ARG jar
 VOLUME /tmp
-COPY $jar rmadapter.jar
+COPY $jar rmcensusadapter.jar
 ENV JAVA_OPTS=""
-ENTRYPOINT [ "sh", "-c", "java -jar /rmadapter.jar" ]
+ENTRYPOINT [ "sh", "-c", "java -jar /rmcensusadapter.jar" ]

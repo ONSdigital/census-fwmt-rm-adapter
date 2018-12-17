@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.data.DummyRMReturn;
 import uk.gov.ons.fwmt.census.rmadapter.helper.ActionInstructionBuilder;
 import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceProducerImpl;
@@ -93,16 +94,17 @@ public class RMAdapterServiceImplTest {
   @Test
   public void returnJobRequest() throws CTPException {
     //Given
-    FwmtOHSJobStatusNotification response = new FwmtOHSJobStatusNotification();
-    response.setJobIdentity("dummy");
+    CensusCaseOutcomeDTO response = new CensusCaseOutcomeDTO();
+    response.setCaseId("dummy");
+//    response.setJobIdentity("dummy");
 
     //When
     rmAdapterService.returnJobRequest(response);
 
     //Then
-    Mockito.verify(rmProducer).sendJobRequestResponse((FwmtOHSJobStatusNotification) argCaptor.capture());
-    FwmtOHSJobStatusNotification result = (FwmtOHSJobStatusNotification) argCaptor.getValue();
-    assertEquals(response.getJobIdentity(), result.getJobIdentity());
+    Mockito.verify(rmProducer).sendJobRequestResponse((CensusCaseOutcomeDTO) argCaptor.capture());
+    CensusCaseOutcomeDTO result = (CensusCaseOutcomeDTO) argCaptor.getValue();
+    assertEquals(response.getCaseId(), result.getCaseId());
   }
 
 

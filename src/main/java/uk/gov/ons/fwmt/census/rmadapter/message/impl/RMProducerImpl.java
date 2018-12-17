@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
+import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.config.QueueNames;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
@@ -30,16 +31,16 @@ public class RMProducerImpl implements RMProducer {
   private Exchange exchange;
 
   @Retryable
-  public void sendJobRequestResponse(FwmtOHSJobStatusNotification fwmtOHSJobStatusNotification) throws CTPException {
+  public void sendJobRequestResponse(CensusCaseOutcomeDTO censusCaseOutcome) throws CTPException {
     JAXBContext jaxbContext;
     try {
-      jaxbContext = JAXBContext.newInstance(FwmtOHSJobStatusNotification.class);
+      jaxbContext = JAXBContext.newInstance(CensusCaseOutcomeDTO.class);
       Marshaller marshaller = jaxbContext.createMarshaller();
 
       StringWriter sw = new StringWriter();
 
-      QName qName = new QName("http://ons.gov.uk/fwmt/FwmtOHSJobStatusNotification", "FwmtOHSJobStatusNotification");
-      JAXBElement<FwmtOHSJobStatusNotification> root = new JAXBElement<FwmtOHSJobStatusNotification>(qName, FwmtOHSJobStatusNotification.class, fwmtOHSJobStatusNotification);
+      QName qName = new QName("http://ons.gov.uk/fwmt/CensusCaseOutcomeDTO", "CensusCaseOutcomeDTO");
+      JAXBElement<CensusCaseOutcomeDTO> root = new JAXBElement<CensusCaseOutcomeDTO>(qName, CensusCaseOutcomeDTO.class, censusCaseOutcome);
       marshaller.marshal(root, sw);
       String rmJobRequestResponse = sw.toString();
 

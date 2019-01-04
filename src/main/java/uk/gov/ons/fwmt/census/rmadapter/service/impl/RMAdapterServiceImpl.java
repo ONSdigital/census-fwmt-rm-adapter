@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceProducer;
 import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
 import uk.gov.ons.fwmt.census.rmadapter.service.MessageConverter;
@@ -36,7 +37,7 @@ public class RMAdapterServiceImpl implements RMAdapterService {
     }
   }
 
-  public void returnJobRequest(FwmtOHSJobStatusNotification response) throws CTPException {
+  public void returnJobRequest(CensusCaseOutcomeDTO response) throws CTPException {
     rmProducer.sendJobRequestResponse(response);
   }
 

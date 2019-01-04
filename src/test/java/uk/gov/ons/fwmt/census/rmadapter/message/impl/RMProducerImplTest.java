@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
+import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.data.DummyRMReturn;
 import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMProducerImpl;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.config.QueueNames;
@@ -46,16 +47,16 @@ public class RMProducerImplTest {
   @Test
   public void sendJobRequestResponse() throws CTPException {
 
-    FwmtOHSJobStatusNotification rmReturn = new FwmtOHSJobStatusNotification();
-    rmReturn.setJobIdentity("testIdentity");
-    rmReturn.setUsername("testUser");
-    rmReturn.setPropertyDetails(new PropertyDetails());
-    rmReturn.setNonContactDetail(new NonContactDetail());
-    rmReturn.getPropertyDetails().setDescription("description");
-    rmReturn.getNonContactDetail().setContactCardLeft("Yes");
-    String expectedResult = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:FwmtOHSJobStatusNotification xmlns:ns2=\"http://ons.gov.uk/fwmt/FwmtOHSJobStatusNotification\"><jobIdentity>testIdentity</jobIdentity><nonContactDetail><contactCardLeft>Yes</contactCardLeft></nonContactDetail><propertyDetails><description>description</description></propertyDetails><username>testUser</username></ns2:FwmtOHSJobStatusNotification>";
+    CensusCaseOutcomeDTO censusCaseOutcome = new CensusCaseOutcomeDTO();
+    censusCaseOutcome.setCaseId("testId");
+    censusCaseOutcome.setCaseReference("testRef");
+    censusCaseOutcome.setOutcome("test");
+    censusCaseOutcome.setOutcomeCategory("test");
+    censusCaseOutcome.setOutcomeNote("test");
+
+    String expectedResult = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:CensusCaseOutcomeDTO xmlns:ns2=\"http://ons.gov.uk/fwmt/CensusCaseOutcomeDTO\"><caseId>testId</caseId><caseReference>testRef</caseReference><outcome>test</outcome><outcomeCategory>test</outcomeCategory><outcomeNote>test</outcomeNote></ns2:CensusCaseOutcomeDTO>";
     when(exchange.getName()).thenReturn(QueueNames.RM_JOB_SVC_EXCHANGE);
-    rmProducer.sendJobRequestResponse(rmReturn);
+    rmProducer.sendJobRequestResponse(censusCaseOutcome);
 
     verify(rabbitTemplate).convertAndSend(eq(QueueNames.RM_JOB_SVC_EXCHANGE),eq(QueueNames.RM_RESPONSE_ROUTING_KEY), argumentCaptor.capture());
     String result = String.valueOf(argumentCaptor.getValue());

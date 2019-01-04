@@ -18,3 +18,5 @@ Requires RabbitMQ to start:
 To run:
 
 	./gradlew bootRun
+
+	Trigger build

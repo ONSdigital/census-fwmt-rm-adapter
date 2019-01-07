@@ -6,7 +6,7 @@ applications:
   memory: 1024M
   path: 'build/libs/&{NAME}-&{VERSION}.jar'
   services:
-  - 'fwmt-rabbit'
+  - 'fwmt-rabbitmq'
   - 'rm-rabbitmq'
   env:
     logging_level_uk.gov.ons.fwmt: FWMT_LOG_LEVEL

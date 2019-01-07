@@ -27,7 +27,7 @@ plugins {
 
 description = "fwmt-census-tm-mocks"
 
-version = '3.0.2-SNAPSHOT'
+version = '3.0.3-SNAPSHOT'
 
 mainClassName = 'uk.gov.ons.fwmt.census.rmadapter.Application'
 

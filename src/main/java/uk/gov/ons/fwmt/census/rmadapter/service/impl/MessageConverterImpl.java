@@ -32,6 +32,8 @@ public class MessageConverterImpl implements MessageConverter {
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
+    address.setOrganisationName(actionAddress.getOrganisationName());
+    address.setCategory(actionAddress.getCategory());
 
     fwmtCreateJobRequest.setJobIdentity(actionRequest.getCaseRef());
     fwmtCreateJobRequest.setSurveyType(actionRequest.getSurveyRef());

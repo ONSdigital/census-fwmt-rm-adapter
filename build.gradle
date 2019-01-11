@@ -25,7 +25,7 @@ plugins {
     id 'org.ajoberstar.grgit' version '3.0.0'
 }
 
-description = "fwmt-census-tm-mocks"
+description = 'fwmt-census-tm-mocks'
 
 version = '3.0.0-SNAPSHOT'
 

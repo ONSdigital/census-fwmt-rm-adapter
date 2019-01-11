@@ -18,5 +18,7 @@ Requires RabbitMQ to start:
 To run:
 
 	./gradlew bootRun
-	
+
+# rm-canonical mapping
+
 ![](/canonical-rm-mapping.png "canonical - rm - mapping")	

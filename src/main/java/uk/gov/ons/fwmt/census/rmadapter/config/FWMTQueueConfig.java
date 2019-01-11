@@ -1,7 +1,5 @@
 package uk.gov.ons.fwmt.census.rmadapter.config;
 
-import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryBuilder.createConnectionFactory;
-
 import org.aopalliance.aop.Advice;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -20,10 +18,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.retry.RetryOperations;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
-
 import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceReceiverImpl;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.config.QueueNames;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.retry.CustomMessageRecover;
+
+import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryUtils.createConnectionFactory;
 
 @Configuration
 public class FWMTQueueConfig {

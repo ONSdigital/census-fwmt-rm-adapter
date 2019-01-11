@@ -1,7 +1,5 @@
 package uk.gov.ons.fwmt.census.rmadapter.config;
 
-import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryBuilder.createConnectionFactory;
-
 import org.aopalliance.aop.Advice;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -18,8 +16,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
-
 import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMReceiverImpl;
+
+import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryUtils.createConnectionFactory;
 
 @Configuration
 public class RMQueueConfig {

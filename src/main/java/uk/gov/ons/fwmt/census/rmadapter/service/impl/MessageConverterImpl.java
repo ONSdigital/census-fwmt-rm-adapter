@@ -6,6 +6,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.fwmt.census.rmadapter.service.MessageConverter;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.Address;
+import uk.gov.ons.fwmt.fwmtgatewaycommon.data.Contact;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCancelJobRequest;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCreateJobRequest;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTUpdateJobRequest;
@@ -32,16 +33,20 @@ public class MessageConverterImpl implements MessageConverter {
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
+    address.setOrganisationName(actionAddress.getOrganisationName());
+    
+    // TODO not yet implemented in Canonical
+    //address.setCategory(actionAddress.getCategory());
 
-    fwmtCreateJobRequest.setJobIdentity(actionRequest.getCaseRef());
-    fwmtCreateJobRequest.setSurveyType(actionRequest.getSurveyRef());
+    fwmtCreateJobRequest.setJobIdentity(actionRequest.getCaseRef()); 
+    fwmtCreateJobRequest.setSurveyType(actionRequest.getSurveyRef()); 
     //TODO set as per data mapping
     //fwmtCreateJobRequest.setMandatoryResourceAuthNo(actionRequest();
     //fwmtCreateJobRequest.setPreallocatedJob();
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     try {
-      fwmtCreateJobRequest.setDueDate(LocalDate.parse(actionRequest.getReturnByDate(), formatter));
+      fwmtCreateJobRequest.setDueDate(LocalDate.parse(actionRequest.getReturnByDate(), formatter)); 
     } catch (RuntimeException e) {
       throw new CTPException(CTPException.Fault.SYSTEM_ERROR, e,
           "Failed to convert return by date, expected format dd/MM/yyyy: ",
@@ -50,9 +55,19 @@ public class MessageConverterImpl implements MessageConverter {
 
     fwmtCreateJobRequest.setAddress(address);
     fwmtCreateJobRequest.setActionType("Create");
-
+    
+    Contact contact = new Contact();
+    contact.setEmail(actionRequest.getContact().getEmailAddress());
+    contact.setForename(actionRequest.getContact().getForename());
+    contact.setPhoneNumber(actionRequest.getContact().getPhoneNumber());
+    contact.setSurname(actionRequest.getContact().getSurname());
+    
+    fwmtCreateJobRequest.setContact(contact);
+    
     Map<String, String> additionalPropertiesMap = new HashMap<>();
     additionalPropertiesMap.put("caseId", actionRequest.getCaseId());
+    additionalPropertiesMap.put("establishmentType", actionRequest.getAddress().getEstabType());
+    additionalPropertiesMap.put("region", actionRequest.getRegion());
     fwmtCreateJobRequest.setAdditionalProperties(additionalPropertiesMap);
 
     return fwmtCreateJobRequest;

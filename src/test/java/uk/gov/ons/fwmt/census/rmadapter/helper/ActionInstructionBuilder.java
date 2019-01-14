@@ -2,6 +2,7 @@ package uk.gov.ons.fwmt.census.rmadapter.helper;
 
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
@@ -19,6 +20,9 @@ public class ActionInstructionBuilder {
     actionRequest.setSurveyRef("testSurveyRef");
     actionRequest.setReturnByDate("11/11/2000");
 
+    ActionContact contact = new ActionContact();
+    
+    
     actionAddress.setLatitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLongitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLine1("addressLine1");
@@ -28,6 +32,7 @@ public class ActionInstructionBuilder {
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
+    actionRequest.setContact(contact);
 
     return actionInstruction;
   }

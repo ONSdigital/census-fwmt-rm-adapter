@@ -10,7 +10,6 @@ import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
 import uk.gov.ons.fwmt.census.rmadapter.service.MessageConverter;
 import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
-import uk.gov.ons.fwmt.fwmtohsjobstatusnotification.FwmtOHSJobStatusNotification;
 
 @Slf4j
 @Component
@@ -28,11 +27,9 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   public void sendJobRequest(ActionInstruction actionInstruction) throws CTPException {
     if (actionInstruction.getActionRequest() != null) {
       jobServiceProducer.sendMessage(messageConverter.createJob(actionInstruction));
-    }
-    else if (actionInstruction.getActionUpdate() != null) {
+    } else if (actionInstruction.getActionUpdate() != null) {
       jobServiceProducer.sendMessage(messageConverter.updateJob(actionInstruction));
-    }
-    else if (actionInstruction.getActionCancel() != null) {
+    } else if (actionInstruction.getActionCancel() != null) {
       jobServiceProducer.sendMessage(messageConverter.cancelJob(actionInstruction));
     }
   }

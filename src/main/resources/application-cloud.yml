@@ -10,11 +10,11 @@ rabbitmq:
     port: ${cloud.services.rm-rabbitmq.connection.port}
     virtualHost: ${cloud.services.rm-rabbitmq.connection.virtualhost}
   fwmt:
-    username: ${cloud.services.fwmt-rabbit.connection.username}
-    password: ${cloud.services.fwmt-rabbit.connection.password}
-    hostname: ${cloud.services.fwmt-rabbit.connection.host}
-    port: ${cloud.services.fwmt-rabbit.connection.port}
-    virtualHost: ${cloud.services.fwmt-rabbit.connection.virtualhost}
+    username: ${cloud.services.fwmt-rabbitmq.connection.username}
+    password: ${cloud.services.fwmt-rabbitmq.connection.password}
+    hostname: ${cloud.services.fwmt-rabbitmq.connection.host}
+    port: ${cloud.services.fwmt-rabbitmq.connection.port}
+    virtualHost: ${cloud.services.fwmt-rabbitmq.connection.virtualhost}
   initialinterval: 5000
   multiplier: 3.0
   maxInterval: 45000

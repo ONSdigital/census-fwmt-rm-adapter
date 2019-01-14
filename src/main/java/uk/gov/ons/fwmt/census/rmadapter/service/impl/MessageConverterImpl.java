@@ -34,7 +34,9 @@ public class MessageConverterImpl implements MessageConverter {
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
     address.setOrganisationName(actionAddress.getOrganisationName());
-    address.setCategory(actionAddress.getCategory());
+    
+    // TODO not yet implemented in Canonical
+    //address.setCategory(actionAddress.getCategory());
 
     fwmtCreateJobRequest.setJobIdentity(actionRequest.getCaseRef()); 
     fwmtCreateJobRequest.setSurveyType(actionRequest.getSurveyRef()); 

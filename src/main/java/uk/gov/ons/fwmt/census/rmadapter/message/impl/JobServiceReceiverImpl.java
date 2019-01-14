@@ -4,19 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.message.JobSvcReceiver;
 import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
-import uk.gov.ons.fwmt.fwmtohsjobstatusnotification.FwmtOHSJobStatusNotification;
 
 import java.io.IOException;
 
 @Slf4j
 @Component
 public class JobServiceReceiverImpl implements JobSvcReceiver {
-
 
   @Autowired
   private RMAdapterService rmAdapterService;

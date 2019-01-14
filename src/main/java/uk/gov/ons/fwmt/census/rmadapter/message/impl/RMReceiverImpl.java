@@ -27,7 +27,8 @@ public class RMReceiverImpl implements RMReceiver {
       JAXBContext jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
       ByteArrayInputStream input = new ByteArrayInputStream(createJobRequestXML.getBytes());
-      JAXBElement<ActionInstruction> rmActionInstruction = unmarshaller.unmarshal(new StreamSource(input), ActionInstruction.class);
+      JAXBElement<ActionInstruction> rmActionInstruction = unmarshaller
+          .unmarshal(new StreamSource(input), ActionInstruction.class);
       rmAdapterService.sendJobRequest(rmActionInstruction.getValue());
       log.info("Received Job request from RM");
     } catch (JAXBException e) {

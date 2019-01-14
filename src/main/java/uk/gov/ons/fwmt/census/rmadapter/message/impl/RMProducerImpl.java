@@ -6,12 +6,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
-
 import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.config.QueueNames;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
-import uk.gov.ons.fwmt.fwmtohsjobstatusnotification.FwmtOHSJobStatusNotification;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -40,7 +38,8 @@ public class RMProducerImpl implements RMProducer {
       StringWriter sw = new StringWriter();
 
       QName qName = new QName("http://ons.gov.uk/fwmt/CensusCaseOutcomeDTO", "CensusCaseOutcomeDTO");
-      JAXBElement<CensusCaseOutcomeDTO> root = new JAXBElement<CensusCaseOutcomeDTO>(qName, CensusCaseOutcomeDTO.class, censusCaseOutcome);
+      JAXBElement<CensusCaseOutcomeDTO> root = new JAXBElement<CensusCaseOutcomeDTO>(qName, CensusCaseOutcomeDTO.class,
+          censusCaseOutcome);
       marshaller.marshal(root, sw);
       String rmJobRequestResponse = sw.toString();
 

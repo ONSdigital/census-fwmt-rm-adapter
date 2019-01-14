@@ -2,9 +2,9 @@ package uk.gov.ons.fwmt.census.rmadapter.config;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 
-public final class ConnectionFactoryBuilder {
+public final class ConnectionFactoryUtils {
 
-  static CachingConnectionFactory createConnectionFactory(int port, String hostname, String virtualHost,
+  public static CachingConnectionFactory createConnectionFactory(int port, String hostname, String virtualHost,
       String password, String username) {
     CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(hostname, port);
 

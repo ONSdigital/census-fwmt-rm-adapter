@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
-
 import uk.gov.ons.fwmt.census.rmadapter.retrysupport.DefaultListenerSupport;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.retry.CTPRetryPolicy;
 

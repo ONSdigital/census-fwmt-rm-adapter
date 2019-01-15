@@ -1,6 +1,5 @@
 FROM openjdk:11-jdk-slim
 ARG jar
-VOLUME /tmp
-COPY $jar rmcensusadapter.jar
+COPY $jar /opt/rmcensusadapter.jar
 ENV JAVA_OPTS=""
-ENTRYPOINT [ "sh", "-c", "java -jar /rmcensusadapter.jar" ]
+ENTRYPOINT [ "java", "-jar", "/opt/rmcensusadapter.jar" ]

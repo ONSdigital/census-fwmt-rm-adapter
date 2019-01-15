@@ -17,6 +17,6 @@ To run:
 
 	./gradlew bootRun
 
-# rm-canonical mapping
+## rm-canonical mapping
 
 ![](/canonical-rm-mapping.png "canonical - rm - mapping")	

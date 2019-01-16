@@ -19,13 +19,23 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.retry.RetryOperations;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceReceiverImpl;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.config.QueueNames;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.retry.CustomMessageRecover;
 
 import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryUtils.createConnectionFactory;
 
 @Configuration
 public class FWMTQueueConfig {
+
+  private static final String JOBSVC_TO_ADAPTER_QUEUE = "gateway.feedback";
+  private static final String ADAPTER_TO_JOBSVC_QUEUE = "gateway.actions";
+  private static final String ADAPTER_TO_RM_QUEUE = "rm.feedback";
+  private static final String JOBSVC_TO_ADAPTER_DLQ = JOBSVC_TO_ADAPTER_QUEUE + ".DLQ";
+  private static final String ADAPTER_TO_JOBSVC_DLQ = ADAPTER_TO_JOBSVC_QUEUE + ".DLQ";
+  private static final String ADAPTER_TO_RM_DLQ = ADAPTER_TO_RM_QUEUE + ".DLQ";
+  private static final String RM_JOB_SVC_EXCHANGE = "gateway.feedback.exchange";
+  private static final String JOB_SVC_RESPONSE_ROUTING_KEY = "jobsvc.job.response";
+  private static final String JOB_SVC_REQUEST_ROUTING_KEY = "jobsvc.job.request";
+  private static final String RM_RESPONSE_ROUTING_KEY = "rm.job.response";
 
   private String username;
   private String password;
@@ -49,9 +59,9 @@ public class FWMTQueueConfig {
   // Queue
   @Bean
   public Queue adapterToJobSvcQueue() {
-    Queue queue = QueueBuilder.durable(QueueNames.ADAPTER_TO_JOBSVC_QUEUE)
+    Queue queue = QueueBuilder.durable(ADAPTER_TO_JOBSVC_QUEUE)
         .withArgument("x-dead-letter-exchange", "")
-        .withArgument("x-dead-letter-routing-key", QueueNames.ADAPTER_JOB_SVC_DLQ)
+        .withArgument("x-dead-letter-routing-key", ADAPTER_TO_JOBSVC_DLQ)
         .build();
     queue.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return queue;
@@ -59,9 +69,9 @@ public class FWMTQueueConfig {
 
   @Bean
   public Queue jobSvcToAdapterQueue() {
-    Queue queue = QueueBuilder.durable(QueueNames.JOBSVC_TO_ADAPTER_QUEUE)
+    Queue queue = QueueBuilder.durable(JOBSVC_TO_ADAPTER_QUEUE)
         .withArgument("x-dead-letter-exchange", "")
-        .withArgument("x-dead-letter-routing-key", QueueNames.JOB_SVC_ADAPTER_DLQ)
+        .withArgument("x-dead-letter-routing-key", JOBSVC_TO_ADAPTER_DLQ)
         .build();
     queue.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return queue;
@@ -69,9 +79,9 @@ public class FWMTQueueConfig {
 
   @Bean
   public Queue adapterToRmQueue() {
-    Queue queue = QueueBuilder.durable(QueueNames.ADAPTER_TO_RM_QUEUE)
+    Queue queue = QueueBuilder.durable(ADAPTER_TO_RM_QUEUE)
         .withArgument("x-dead-letter-exchange", "")
-        .withArgument("x-dead-letter-routing-key", QueueNames.ADAPTER_RM_DLQ)
+        .withArgument("x-dead-letter-routing-key", ADAPTER_TO_RM_DLQ)
         .build();
     queue.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return queue;
@@ -80,28 +90,21 @@ public class FWMTQueueConfig {
   // Dead Letter Queues
   @Bean
   public Queue rmAdapterJobDeadLetterQueue() {
-    Queue queue = QueueBuilder.durable(QueueNames.ADAPTER_JOB_SVC_DLQ).build();
+    Queue queue = QueueBuilder.durable(ADAPTER_TO_JOBSVC_DLQ).build();
     queue.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return queue;
   }
 
   @Bean
   public Queue jobSvsDeadLetterQueue() {
-    Queue queue = QueueBuilder.durable(QueueNames.JOB_SVC_ADAPTER_DLQ).build();
-    queue.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
-    return queue;
-  }
-
-  @Bean
-  public Queue rmAdapterDeadLetterQueue() {
-    Queue queue = QueueBuilder.durable(QueueNames.RM_ADAPTER_DLQ).build();
+    Queue queue = QueueBuilder.durable(JOBSVC_TO_ADAPTER_DLQ).build();
     queue.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return queue;
   }
 
   @Bean
   public Queue adapterRmDeadLetterQueue() {
-    Queue queue = QueueBuilder.durable(QueueNames.ADAPTER_RM_DLQ).build();
+    Queue queue = QueueBuilder.durable(ADAPTER_TO_RM_DLQ).build();
     queue.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return queue;
   }
@@ -110,7 +113,7 @@ public class FWMTQueueConfig {
   @Bean
   @Primary
   public DirectExchange fwmtExchange() {
-    DirectExchange directExchange = new DirectExchange(QueueNames.RM_JOB_SVC_EXCHANGE);
+    DirectExchange directExchange = new DirectExchange(RM_JOB_SVC_EXCHANGE);
     directExchange.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return directExchange;
   }
@@ -120,7 +123,7 @@ public class FWMTQueueConfig {
   public Binding adapterToJobSvcBinding(@Qualifier("adapterToJobSvcQueue") Queue queue,
       @Qualifier("fwmtExchange") DirectExchange directExchange) {
     Binding binding = BindingBuilder.bind(queue).to(directExchange)
-        .with(QueueNames.JOB_SVC_REQUEST_ROUTING_KEY);
+        .with(JOB_SVC_REQUEST_ROUTING_KEY);
     binding.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return binding;
   }
@@ -129,7 +132,7 @@ public class FWMTQueueConfig {
   public Binding jobSvcToAdapterBinding(@Qualifier("jobSvcToAdapterQueue") Queue queue,
       @Qualifier("fwmtExchange") DirectExchange directExchange) {
     Binding binding = BindingBuilder.bind(queue).to(directExchange)
-        .with(QueueNames.JOB_SVC_RESPONSE_ROUTING_KEY);
+        .with(JOB_SVC_RESPONSE_ROUTING_KEY);
     binding.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return binding;
   }
@@ -138,7 +141,7 @@ public class FWMTQueueConfig {
   public Binding adapterToRmBinding(@Qualifier("adapterToRmQueue") Queue queue,
       @Qualifier("fwmtExchange") DirectExchange directExchange) {
     Binding binding = BindingBuilder.bind(queue).to(directExchange)
-        .with(QueueNames.RM_RESPONSE_ROUTING_KEY);
+        .with(RM_RESPONSE_ROUTING_KEY);
     binding.setAdminsThatShouldDeclare(fwmtAmqpAdmin());
     return binding;
   }
@@ -171,7 +174,7 @@ public class FWMTQueueConfig {
 
     container.setAdviceChain(adviceChain);
     container.setConnectionFactory(connectionFactory);
-    container.setQueueNames(QueueNames.JOBSVC_TO_ADAPTER_QUEUE);
+    container.setQueueNames(JOBSVC_TO_ADAPTER_QUEUE);
     container.setMessageListener(messageListenerAdapter);
     return container;
   }

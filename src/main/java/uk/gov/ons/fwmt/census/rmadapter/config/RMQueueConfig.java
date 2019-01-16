@@ -24,11 +24,10 @@ import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryUtils.cre
 public class RMQueueConfig {
 
   // Queue Names
-  // TODO add to common
   private static final String ACTION_FIELD_DLQ = "Action.FieldDLQ";
   private static final String ACTION_FIELD_QUEUE = "Action.Field";
   private static final String ACTION_FIELD_BINDING = "Action.Field.binding";
-  public static final String ACTION_DEADLETTER_EXCHANGE = "action-deadletter-exchange";
+  private static final String ACTION_DEADLETTER_EXCHANGE = "action-deadletter-exchange";
 
   private String username;
   private String password;

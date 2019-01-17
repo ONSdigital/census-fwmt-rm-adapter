@@ -16,13 +16,8 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
 
-management:
-  endpoint:
-    health:
-      enabled: true
-      show-details: always
-    info:
-      enabled: true
+# Place /info and /health in the root
+management.endpoints.web.base-path: ''
 
 logging:
   level:

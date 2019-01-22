@@ -21,8 +21,6 @@ env:
 branches:
   only:
   - master
-notifications:
-  slack: 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/

@@ -1,22 +1,24 @@
 package uk.gov.ons.fwmt.census.rmadapter.message.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Exchange;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.retry.annotation.Retryable;
-import org.springframework.stereotype.Component;
-import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
-import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.config.QueueNames;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
+import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
-import java.io.StringWriter;
+
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
+import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
+import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
+import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
 @Component
 @Slf4j
@@ -43,7 +45,7 @@ public class RMProducerImpl implements RMProducer {
       marshaller.marshal(root, sw);
       String rmJobRequestResponse = sw.toString();
 
-      rabbitTemplate.convertAndSend(exchange.getName(), QueueNames.RM_RESPONSE_ROUTING_KEY, rmJobRequestResponse);
+      rabbitTemplate.convertAndSend(exchange.getName(), QueueConfig.RM_RESPONSE_ROUTING_KEY, rmJobRequestResponse);
       log.info("Sent job response to RM");
     } catch (JAXBException e) {
       throw new CTPException(CTPException.Fault.SYSTEM_ERROR, "Failed to convert and send to RM.", e);

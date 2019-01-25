@@ -1,7 +1,12 @@
 package uk.gov.ons.fwmt.census.rmadapter.message.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -12,18 +17,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
 import uk.gov.ons.fwmt.census.rmadapter.helper.FWMTMessageBuilder;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceProducerImpl;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.config.QueueNames;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCreateJobRequest;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobServiceProducerImplTest {
@@ -55,7 +55,7 @@ public class JobServiceProducerImplTest {
 
     //Then
     verify(rabbitTemplate)
-        .convertAndSend(eq("fwmtExchange"), eq(QueueNames.JOB_SVC_REQUEST_ROUTING_KEY), argumentCaptor.capture());
+        .convertAndSend(eq("fwmtExchange"), eq(QueueConfig.JOBSVC_REQUEST_ROUTING_KEY), argumentCaptor.capture());
     String result = String.valueOf(argumentCaptor.getValue());
 
     assertEquals(expectedJSON, result);

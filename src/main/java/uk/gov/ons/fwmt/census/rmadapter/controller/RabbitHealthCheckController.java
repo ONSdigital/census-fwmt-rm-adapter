@@ -22,28 +22,19 @@ import java.util.stream.Collectors;
 public class RabbitHealthCheckController {
 
   @Autowired
-  @Qualifier("rmConnectionFactory")
-  private ConnectionFactory rmFactory;
+  @Qualifier("connectionFactory")
+  private ConnectionFactory connectionFactory;
 
-  @Autowired
-  @Qualifier("fwmtConnectionFactory")
-  private ConnectionFactory fwmtConnectionFactory;
-
-  private RabbitAdmin rmRabbitAdmin;
-  private RabbitAdmin fwmtRabbitAdmin;
+  private RabbitAdmin rabbitAdmin;
 
   private String checkQueue(String queueName) {
-    RabbitAdmin rabbitAdmin = ("Action.Field".equals(queueName) || "Action.FieldDLQ".equals(queueName)) ?
-        rmRabbitAdmin :
-        fwmtRabbitAdmin;
     Properties props = rabbitAdmin.getQueueProperties(queueName);
     return (props != null) ? props.getProperty("QUEUE_NAME") : null;
   }
 
   @RequestMapping(value = "/rabbitHealth", method = RequestMethod.GET, produces = "application/json")
   public List<String> canAccessQueue() {
-    rmRabbitAdmin = new RabbitAdmin(rmFactory);
-    fwmtRabbitAdmin = new RabbitAdmin(fwmtConnectionFactory);
+    rabbitAdmin = new RabbitAdmin(connectionFactory);
     List<String> queues = Arrays.asList(
         "gateway.feedback",
         "gateway.feedback.DLQ",

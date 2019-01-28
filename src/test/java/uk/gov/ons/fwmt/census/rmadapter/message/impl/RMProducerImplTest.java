@@ -1,6 +1,5 @@
 package uk.gov.ons.fwmt.census.rmadapter.message.impl;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,8 +8,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -33,9 +30,6 @@ public class RMProducerImplTest {
   @Mock
   private Exchange exchange;
 
-  @Captor
-  private ArgumentCaptor argumentCaptor;
-
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
 
@@ -53,9 +47,6 @@ public class RMProducerImplTest {
     when(exchange.getName()).thenReturn(QueueConfig.GATEWAY_ACTIONS);
     rmProducer.sendJobRequestResponse(censusCaseOutcome);
 
-    verify(rabbitTemplate).convertAndSend(eq(QueueConfig.GATEWAY_FEEDBACK_EXCHANGE),eq(QueueConfig.RM_RESPONSE_ROUTING_KEY), argumentCaptor.capture());
-    String result = String.valueOf(argumentCaptor.getValue());
-
-    assertEquals(expectedResult, result);
+    verify(rabbitTemplate).convertAndSend(eq(QueueConfig.GATEWAY_ACTIONS), eq(QueueConfig.RM_RESPONSE_ROUTING_KEY), eq(expectedResult));
   }
 }

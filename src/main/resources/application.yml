@@ -1,11 +1,3 @@
-info:
-  name: 'project.artifactId'
-  version: 'project.version'
-  origin: 'scm.url'
-  commit: 'buildNumber'
-  branch: 'scmBranch'
-  built: 'timestamp'
-  
 server:
   port: 9094
 

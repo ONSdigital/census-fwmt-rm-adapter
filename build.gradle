@@ -45,6 +45,10 @@ repositories {
     mavenCentral()
 }
 
+springBoot {
+    buildInfo()
+}
+
 configurations {
     jaxb
     integrationTestCompile.extendsFrom testCompile
@@ -130,13 +134,6 @@ dependencies {
 
 jacoco {
     toolVersion = "0.8.2"
-}
-
-test {
-    jacoco {
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-        classDumpDir = file("$buildDir/jacoco/classpathdumps")
-    }
 }
 
 jacocoTestReport {

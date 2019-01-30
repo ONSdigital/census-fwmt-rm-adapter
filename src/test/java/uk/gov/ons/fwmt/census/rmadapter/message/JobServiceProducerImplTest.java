@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.message.impl;
+package uk.gov.ons.fwmt.census.rmadapter.message;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
 import uk.gov.ons.fwmt.census.rmadapter.helper.FWMTMessageBuilder;
+import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceProducer;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCreateJobRequest;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 

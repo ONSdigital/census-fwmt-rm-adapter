@@ -9,12 +9,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobBuilder;
 import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.data.DummyRMReturn;
 import uk.gov.ons.fwmt.census.rmadapter.helper.ActionInstructionBuilder;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceProducer;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMProducer;
-import uk.gov.ons.fwmt.census.rmadapter.service.impl.MessageConverterImpl;
+import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceProducer;
+import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
 import uk.gov.ons.fwmt.census.rmadapter.service.impl.RMAdapterServiceImpl;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.DummyTMResponse;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCancelJobRequest;
@@ -37,7 +37,7 @@ public class RMAdapterServiceImplTest {
   private JobServiceProducer jobServiceProducer;
 
   @Mock
-  private MessageConverterImpl messageConverter;
+  private CanonicalJobBuilder messageConverter;
 
   @Mock
   private RMProducer rmProducer;
@@ -51,7 +51,7 @@ public class RMAdapterServiceImplTest {
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilder();
     FWMTCreateJobRequest fwmtCreateJobRequest = new FWMTCreateJobRequest();
-    when(messageConverter.createJob(actionInstruction)).thenReturn(fwmtCreateJobRequest);
+    when(messageConverter.newCreateJob(actionInstruction)).thenReturn(fwmtCreateJobRequest);
 
     //When
     rmAdapterService.sendJobRequest(actionInstruction);
@@ -82,7 +82,7 @@ public class RMAdapterServiceImplTest {
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.cancelActionInstructionBuilder();
     FWMTCancelJobRequest fwmtCancelJobRequest = new FWMTCancelJobRequest();
-    when(messageConverter.cancelJob(actionInstruction)).thenReturn(fwmtCancelJobRequest);
+    when(messageConverter.newCancelJob(actionInstruction)).thenReturn(fwmtCancelJobRequest);
 
     //When
     rmAdapterService.sendJobRequest(actionInstruction);

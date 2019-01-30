@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.message.impl;
+package uk.gov.ons.fwmt.census.rmadapter.message;
 
 import java.io.ByteArrayInputStream;
 

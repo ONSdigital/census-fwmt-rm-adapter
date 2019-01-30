@@ -5,8 +5,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobBuilder;
 import uk.gov.ons.fwmt.census.rmadapter.helper.ActionInstructionBuilder;
-import uk.gov.ons.fwmt.census.rmadapter.service.impl.MessageConverterImpl;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCancelJobRequest;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCreateJobRequest;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTUpdateJobRequest;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(MockitoJUnitRunner.class)
 public class MessageConverterImplTest {
 
-  @InjectMocks MessageConverterImpl messageConverter;
+  @InjectMocks CanonicalJobBuilder messageConverter;
 
   @Test
   public void createJob() throws CTPException {
@@ -30,7 +30,7 @@ public class MessageConverterImplTest {
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilder();
 
     //When
-    FWMTCreateJobRequest result = messageConverter.createJob(actionInstruction);
+    FWMTCreateJobRequest result = messageConverter.newCreateJob(actionInstruction);
 
     //Then
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -57,7 +57,7 @@ public class MessageConverterImplTest {
     ActionInstruction actionInstruction = actionInstructionBuilder.cancelActionInstructionBuilder();
 
     //When
-    FWMTCancelJobRequest result = messageConverter.cancelJob(actionInstruction);
+    FWMTCancelJobRequest result = messageConverter.newCancelJob(actionInstruction);
 
     //Then
     assertEquals("testCaseRef", result.getJobIdentity());

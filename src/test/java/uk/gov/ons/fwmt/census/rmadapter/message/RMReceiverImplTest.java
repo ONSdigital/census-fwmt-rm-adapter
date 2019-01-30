@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.message.impl;
+package uk.gov.ons.fwmt.census.rmadapter.message;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +10,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMReceiver;
+import uk.gov.ons.fwmt.census.rmadapter.message.RMReceiver;
 import uk.gov.ons.fwmt.census.rmadapter.service.impl.RMAdapterServiceImpl;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 

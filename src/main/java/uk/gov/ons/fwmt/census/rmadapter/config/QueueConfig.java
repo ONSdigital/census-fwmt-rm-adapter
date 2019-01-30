@@ -18,8 +18,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.retry.RetryOperations;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceReceiver;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMReceiver;
+
+import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceReceiver;
+import uk.gov.ons.fwmt.census.rmadapter.message.RMReceiver;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.retry.CustomMessageRecover;
 
 import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryUtils.createConnectionFactory;

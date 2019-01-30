@@ -1,10 +1,13 @@
-package uk.gov.ons.fwmt.census.rmadapter.service.impl;
+package uk.gov.ons.fwmt.census.rmadapter.canonical;
 
-import org.springframework.stereotype.Component;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
-import uk.gov.ons.fwmt.census.rmadapter.service.MessageConverter;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.Address;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.Contact;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCancelJobRequest;
@@ -12,16 +15,9 @@ import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCreateJobRequest;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTUpdateJobRequest;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
+public final class CanonicalJobBuilder {
 
-@Component
-public class MessageConverterImpl implements MessageConverter {
-
-  @Override
-  public FWMTCreateJobRequest createJob(ActionInstruction actionInstruction) throws CTPException {
+  public static FWMTCreateJobRequest newCreateJob(ActionInstruction actionInstruction) throws CTPException {
     FWMTCreateJobRequest fwmtCreateJobRequest = new FWMTCreateJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
@@ -73,8 +69,7 @@ public class MessageConverterImpl implements MessageConverter {
     return fwmtCreateJobRequest;
   }
 
-  @Override
-  public FWMTCancelJobRequest cancelJob(ActionInstruction actionInstruction) {
+  public static FWMTCancelJobRequest newCancelJob(ActionInstruction actionInstruction) {
     FWMTCancelJobRequest fwmtCancelJobRequest = new FWMTCancelJobRequest();
     fwmtCancelJobRequest.setActionType("Cancel");
     fwmtCancelJobRequest.setJobIdentity(actionInstruction.getActionCancel().getCaseRef());
@@ -83,12 +78,10 @@ public class MessageConverterImpl implements MessageConverter {
     return fwmtCancelJobRequest;
   }
 
-  @Override
-  public FWMTUpdateJobRequest updateJob(ActionInstruction actionInstruction) {
+  public static FWMTUpdateJobRequest newUpdateJob(ActionInstruction actionInstruction) {
     FWMTUpdateJobRequest fwmtUpdateJobRequest = new FWMTUpdateJobRequest();
     fwmtUpdateJobRequest.setActionType("update");
 
     return fwmtUpdateJobRequest;
   }
-
 }

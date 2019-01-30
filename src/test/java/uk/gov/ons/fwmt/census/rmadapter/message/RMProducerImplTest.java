@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.message.impl;
+package uk.gov.ons.fwmt.census.rmadapter.message;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -16,6 +16,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
 import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
+import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
 @RunWith(MockitoJUnitRunner.class)

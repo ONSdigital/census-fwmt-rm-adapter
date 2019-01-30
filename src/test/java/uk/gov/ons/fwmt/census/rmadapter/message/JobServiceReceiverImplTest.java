@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.message.impl;
+package uk.gov.ons.fwmt.census.rmadapter.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceReceiver;
+import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceReceiver;
 import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.DummyTMResponse;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;

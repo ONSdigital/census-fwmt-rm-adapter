@@ -10,7 +10,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMReceiverImpl;
+import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMReceiver;
 import uk.gov.ons.fwmt.census.rmadapter.service.impl.RMAdapterServiceImpl;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 public class RMReceiverImplTest {
 
   @InjectMocks
-  private RMReceiverImpl rmReceiver;
+  private RMReceiver rmReceiver;
 
   @Mock
   private RMAdapterServiceImpl rmAdapterService;

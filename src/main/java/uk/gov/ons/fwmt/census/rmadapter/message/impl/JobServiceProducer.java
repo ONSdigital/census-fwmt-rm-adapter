@@ -11,12 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
-import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceProducer;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
 @Slf4j
 @Component
-public class JobServiceProducerImpl implements JobServiceProducer {
+public class JobServiceProducer {
 
   @Autowired
   private RabbitTemplate rabbitTemplate;

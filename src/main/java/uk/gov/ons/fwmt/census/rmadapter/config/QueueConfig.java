@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.retry.RetryOperations;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceReceiverImpl;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMReceiverImpl;
+import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceReceiver;
+import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMReceiver;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.retry.CustomMessageRecover;
 
 import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryUtils.createConnectionFactory;
@@ -187,12 +187,12 @@ public class QueueConfig {
   
   // Listener
   @Bean
-  public MessageListenerAdapter jobSvcListenerAdapter(JobServiceReceiverImpl receiver) {
+  public MessageListenerAdapter jobSvcListenerAdapter(JobServiceReceiver receiver) {
     return new MessageListenerAdapter(receiver, "receiveMessage");
   }
 
   @Bean
-  public MessageListenerAdapter rmListenerAdapter(RMReceiverImpl receiver) {
+  public MessageListenerAdapter rmListenerAdapter(RMReceiver receiver) {
     return new MessageListenerAdapter(receiver, "receiveMessage");
   }
 

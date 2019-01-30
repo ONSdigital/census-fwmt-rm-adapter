@@ -22,7 +22,7 @@ import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 public class RMProducerImplTest {
 
   @InjectMocks
-  private RMProducerImpl rmProducer;
+  private RMProducer rmProducer;
 
   @Mock
   private RabbitTemplate rabbitTemplate;

@@ -1,34 +1,38 @@
 package uk.gov.ons.fwmt.census.rmadapter.message.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.fwmt.census.rmadapter.message.RMReceiver;
-import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
+import java.io.ByteArrayInputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayInputStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
+import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
 @Component
 @Slf4j
-public class RMReceiverImpl implements RMReceiver {
+public class RMReceiver {
 
   @Autowired
   private RMAdapterService rmAdapterService;
 
   public void receiveMessage(String createJobRequestXML) throws CTPException {
     try {
+      //TODO Move this Queue Config
+      //===================================================
       JAXBContext jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
       ByteArrayInputStream input = new ByteArrayInputStream(createJobRequestXML.getBytes());
       JAXBElement<ActionInstruction> rmActionInstruction = unmarshaller
           .unmarshal(new StreamSource(input), ActionInstruction.class);
+      //===================================================
       rmAdapterService.sendJobRequest(rmActionInstruction.getValue());
       log.info("Received Job request from RM");
     } catch (JAXBException e) {

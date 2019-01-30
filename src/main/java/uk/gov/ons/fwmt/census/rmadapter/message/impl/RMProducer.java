@@ -17,12 +17,11 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
 import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
-import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
 @Component
 @Slf4j
-public class RMProducerImpl implements RMProducer {
+public class RMProducer {
 
   @Autowired
   private RabbitTemplate rabbitTemplate;

@@ -12,8 +12,8 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.data.DummyRMReturn;
 import uk.gov.ons.fwmt.census.rmadapter.helper.ActionInstructionBuilder;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceProducerImpl;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMProducerImpl;
+import uk.gov.ons.fwmt.census.rmadapter.message.impl.JobServiceProducer;
+import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMProducer;
 import uk.gov.ons.fwmt.census.rmadapter.service.impl.MessageConverterImpl;
 import uk.gov.ons.fwmt.census.rmadapter.service.impl.RMAdapterServiceImpl;
 import uk.gov.ons.fwmt.fwmtgatewaycommon.data.DummyTMResponse;
@@ -34,13 +34,13 @@ public class RMAdapterServiceImplTest {
   private RMAdapterServiceImpl rmAdapterService;
 
   @Mock
-  private JobServiceProducerImpl jobServiceProducer;
+  private JobServiceProducer jobServiceProducer;
 
   @Mock
   private MessageConverterImpl messageConverter;
 
   @Mock
-  private RMProducerImpl rmProducer;
+  private RMProducer rmProducer;
 
   @Captor
   private ArgumentCaptor argCaptor;

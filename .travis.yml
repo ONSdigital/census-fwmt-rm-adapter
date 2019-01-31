@@ -13,11 +13,6 @@ script:
 env:
   global:
   - SPRING_PROFILES_ACTIVE=default,integration-tests
-  - secure: xLPotsCW4yydiOy3xwOs8rPgxAc2B90WSBqGW/FV4voKC2GuWjGOM+AzyASR8eOUhZZvhoIxpntSLLMxFXw4S5cvFn3YH38CNlu6IkYPhE1AuG0pmT2JyixbMJuo89je5+gOREJ0nv2r1DqMLF5ulMutbtgo+53S2TTdy5NhisLxhrgzsTF62kbb6Y5/m/oPeU7AHR/V4uU5o+y//ai1W0HHzGkq1cCHNJUSBJPIyxx0P0VWYcuK9OwFTrvHFDOZJCwy40pq+0unck/Sq7E6i0QuZCQsv0xlIHavKAKyUswxWAB3P3dEbmKECi4IRE7g2LLg1/ViCkM9/p7GsdCHKYl2ewQ5+vnDAsYWtKsl9lAMZEKlKn6EM62VHxMVgmEKktqhZzDKG9/lW2JfnyhPRYhFH05gdTnMDlgFi9YjxSncd8TmfG45FUIWU/JdTMRD7BCFDh/HTU7y3Tpn9YxegRQ2RaszptngRaM2xsy/hk2VjIUBMOCrW1nYURfuqYZEf06ARI4MiKhfIeJ6k1Rpwpco0mlwawGwwIkFtrS6wHjpUBaVOyM8B7IIecc9Ys+Wg1hgdc1ddUIc37CoUYoaqxEUbRCF34m2Z9AbKIlMLmgtcAaDG90VJIyYFGv6GIgIU3HSPgHdcD6BpzwOhoqPyvawA8L8DbQS+w1qfDH7tsg=
-  - secure: VARX4dmCD7Lz0feSA4qe+5ECTcIdKOaYKZaffLWhnhAseizF0zYyErd/q5aHMcV09Mdwwif/ljCKVuRoM6gEEqmKZ9Ddi0dae8hO8sS6OevpjGKQ77U6XdQkI/wKsQg46WTlBCROsVIftyOtUtxcs8vpsGjWiPgG/ASUqts2NtlXKLy+c0bWN6oKKLYx8eDQOtI7qRFAEGqJWg6oZQI4bcQ2SWZ67BMtE/xiU1SKwrcxVavry6qYq0U+CjAFG79zLcnbv1EKAGPiyBPc6wUuGeXVt4BISUL/+2P84DZksubAo+SqvKRrT0V05PUEkaylypbgKSNXzkB5EhQCOMpm2T/a5zqxYruCFmugLkkPzAYX5FvKdOGVU8MHtjztFBF/zKgcDxz+yw0uIbk7f/9mEPegGjbLesccayq6abIkFcA4OemKxEfITkfwj5ZJkHRN8QCIY2hrIayaxRpgJ9XsCsNVdBS0njbvuM1fw1obNEbkl9fIXsX6t0NdXTt8npCPnGc+XesPl82hkU6GQIea4HhiVpEy4aNGtB7f39lobXCdAyFit78veWY9jJEGPoLDm9yUNRb1WWLMrd5Jtmq9YH0Pyjr3ws8dEuG359C98Jdc3Qxq01kHVQBeLa25Kg8Diw+D+iZUEa+OcmUOqlVSvRNlnFB4Kp9FeSd9w3zmniw=
-  - secure: nwpEGOvd2YguKJOXe1vrWu7kqGCBFazNwgkWmSQp213cICn6RU7PBI+18d8V2KGrNlB5f1LOQX0L6Ri3hpYpqm1Y8WkMa9j9vqEVmB41PbyJpRI2JsneYMdSBb/pfnHTZbK/VvCpq1w9qnOsFs/q6PG8wtMzpmmLEtWCffHAC3zB7jVgWxE/vl70BUUVvWuO6gZ47UKUWE2gGCtqVkWBswLkBf67NJmpqWCMA6E/ilsBKMbhkMUAM4giw8wEvgshdrV67IeMqJKDFyhvYlf2k/eP0NnCr7i1G+H4HGUyVGnv3voM02KWUJNzsKyrJ9EgU0Yw6gT8ruLEB8hON9WnMR53ORhkFSaxS5xjvIzo6DwPhXZr42gnfut/UT6tIBkq/ctqskR+mhV6nDsq/9epXlWKRQXrvRPUs80ssvKUpjnlUm0UXtuus2Et4//YT87QGyPK69VgCNTDTjeCMaluq/6J7DwYu2WdWhjSrpY5mDSXOj3iqBXiYpZHs/L8y4p0HptjraZZOZ6/QwTdqZNxOMTNe4b2/JxJIGy4h3ApNcVzdKfzTIykZkpp9zxHdn71zGUAUG0HsUIV64hivFHNCmNUSxA3FvsZQSYv2GjPJ6sOMx615crrPWz62pr9f9/FZ+OT4lWeEjGLpiUFk41mhofVXCxiVRhRpDg7ldvKZ3Y=
-  - secure: iSPisb5i7UDhRlIuPWac/1uH63HV8xeSbtMlfKd4ZD4ObYqkiLvwLGXCi3U98SrGg8zojx8+c0eVw4k7T9/n5vDH/GZjKgbVuL1V/XQ5K5w0B3qcMxM1bWX9yYn2xTIukCSPfiXOgHd/V/RVFEjsrPa4QMdme7dIehUxBtn3jho2e5T9G2J1vW2smNVL0EzfZjS7DLp/w7g7pQIu5Egnw/xoa5cGsfamt/EM2q6CjGvU5M3Zu3iCVGJgtGUYMQaX/3Rjl9tViDnw2eWz7ZnKT+TPP7jowRET32I6KNWcez+LTqB/5QY3JAvUfr9aZYGyyAjspA8wvlTwB6RGywjANmMngAzK8uUsCW9bp91ULjhpvWmTcQYLD6Xd1jxopSE2QW2lSYO6+nI6F77rZ7tYcSlvetdlbmobfEIsYK5mTQnfpkRVfmABUcZ7Yj08/X3iDeG1mveBbgDTnf3qDl79bXf+b3luxHYqf8+Nv09PIcklAyC3Ldrab4D0TsU45S+w9zEavBIxCmJLyMD/ZqSsfDKX+kIoNVGaYGVWj07njez0d9tZAPIMdY7crD4dalYFvk5/v1s726TkMMiGWLdXGdZ57kvkLGQlq5ScoQiENvXNImRy+HPZsYn2wIOwxo8kLMBCHlAqKi9kWRc+w1UZV71Y87Im2wYjhP+QQqYrMSE=
-  - secure: yA1ls8hytVeDoQSoe26dupXCP5T1VxkRtJADzyVr0thGXxJKPqDM8HOyBpORNFny3WbBTq7EKwXIresiRXElCRrczRLxar4jGZRBk54MXWLHiam6xztxwm2+0U63nDbNIIxeKKZNYmhMBHS7a4xh2oWQMTwRj1oVPUsEGYBsYhpqaPGqi/gNf7NstcSS5eipG1V5Uyo0AYRHQGjSkoABqbyZucJDDX3xjtK7PjyfNypnDClMGvGPjotIy1hJCZdicVMttx19Uv+xMQypmSSPOKwoKUDg+VBA2MaZ5k+Zq80e8Baa1OjuKb/9xY/vkotk8pN3BPuo+c0ReArCteUE5iqC9GTcQTSfuqPRTrqa5T82w75UK9W0lM+ifEvG8eSUJqAUlM3CNUFktrQtsM/aNxgC5TTfg06h1rddxh1CEfvDEPhpum+M3AM6pXvH2QDhQ5FGTFeNfQ+SZCW+iUDiisevtEuwx2ORBLPwEYvOLPQSd06VUzNz8mDmcapnrJGRDRD9z9sVNlrcbr1613+nQh091PSXzbECnAqVUsc31MXB5+VmStJlCWdIRPoOQYo8dCbL90T2bHMR2y5t5h9QVzhWXdsgMreiHZ6oZeDdkjvwJ8e8OM6IK83m67kprO41xBcBCydhepp755FNgOJEAbmyTU2G4nJSFDax8rohthA=
 branches:
   only:
   - master
@@ -33,9 +28,9 @@ after_success:
 - |
   set -e
   if [[ "$TRAVIS_BRANCH" = "master" ]] && [[ "$TRAVIS_PULL_REQUEST" = "false" ]] && [[ $TRAVIS_COMMIT_MESSAGE != "JENKINS SNAPSHOT UPDATE" ]]; then
-    echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
-    docker build -t sdcplatform/fwmt-census-rm-adapter -t sdcplatform/fwmt-census-rm-adapter:census-job-service-$TRAVIS_BUILD_NUMBER --build-arg jar=build/libs/fwmt-census-rm-adapter-*.jar .
-    docker push sdcplatform/fwmt-census-rm-adapter
+    echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY"--username "$DOCKER_USERNAME" --password-stdin
+    docker build -t "$DOCKER_LOCATION"/fwmt-census-rm-adapter -t "$DOCKER_LOCATION"/fwmt-census-rm-adapter:fwmt-census-rm-adapter-$TRAVIS_BUILD_NUMBER --build-arg jar=build/libs/fwmt-census-rm-adapter-*.jar .
+    docker push "$DOCKER_LOCATION"/fwmt-census-rm-adapter
   fi
 - |
   set -e

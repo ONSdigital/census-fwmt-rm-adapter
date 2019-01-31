@@ -20,11 +20,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
+import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
-import uk.gov.ons.fwmt.census.rmadapter.helper.FWMTMessageBuilder;
-import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceProducer;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCreateJobRequest;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
+import uk.gov.ons.fwmt.census.rmadapter.helper.FieldWorkerRequestMessageBuilder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobServiceProducerImplTest {
@@ -44,15 +43,15 @@ public class JobServiceProducerImplTest {
   private ObjectMapper objectMapper;
 
   @Test
-  public void sendMessage() throws JsonProcessingException, CTPException {
+  public void sendMessage() throws JsonProcessingException, GatewayException {
     //Given
-    FWMTMessageBuilder fwmtMessageBuilder = new FWMTMessageBuilder();
-    FWMTCreateJobRequest fwmtCreateJobRequest = fwmtMessageBuilder.buildFWMTCreateJobRequest();
+    FieldWorkerRequestMessageBuilder messageBuilder = new FieldWorkerRequestMessageBuilder();
+    CreateFieldWorkerJobRequest createJobRequest = messageBuilder.buildCreateFieldWorkerJobRequest();
     when(exchange.getName()).thenReturn("fwmtExchange");
-    when(objectMapper.writeValueAsString(eq(fwmtCreateJobRequest))).thenReturn(expectedJSON);
+    when(objectMapper.writeValueAsString(eq(createJobRequest))).thenReturn(expectedJSON);
 
     //When
-    jobServiceProducer.sendMessage(fwmtCreateJobRequest);
+    jobServiceProducer.sendMessage(createJobRequest);
 
     //Then
     verify(rabbitTemplate)
@@ -63,31 +62,31 @@ public class JobServiceProducerImplTest {
   }
 
   @Test
-  public void convertToJSON() throws JsonProcessingException, CTPException {
+  public void convertToJSON() throws JsonProcessingException, GatewayException {
     //Given
-    FWMTMessageBuilder fwmtMessageBuilder = new FWMTMessageBuilder();
-    FWMTCreateJobRequest fwmtCreateJobRequest = fwmtMessageBuilder.buildFWMTCreateJobRequest();
-    when(objectMapper.writeValueAsString(eq(fwmtCreateJobRequest))).thenReturn(anyString());
+    FieldWorkerRequestMessageBuilder messageBuilder = new FieldWorkerRequestMessageBuilder();
+    CreateFieldWorkerJobRequest createJobRequest = messageBuilder.buildCreateFieldWorkerJobRequest();
+    when(objectMapper.writeValueAsString(eq(createJobRequest))).thenReturn(anyString());
 
-    System.out.println(fwmtCreateJobRequest.toString());
+    System.out.println(createJobRequest.toString());
 
     //When
     String JSONResponce;
-    JSONResponce = jobServiceProducer.convertToJSON(fwmtCreateJobRequest);
+    JSONResponce = jobServiceProducer.convertToJSON(createJobRequest);
 
     //Then
     assertNotNull(JSONResponce);
   }
 
-  @Test(expected = CTPException.class)
-  public void sendBadMessage() throws JsonProcessingException, CTPException {
+  @Test(expected = GatewayException.class)
+  public void sendBadMessage() throws JsonProcessingException, GatewayException {
     //Given
-    FWMTMessageBuilder fwmtMessageBuilder = new FWMTMessageBuilder();
-    FWMTCreateJobRequest fwmtCreateJobRequest = fwmtMessageBuilder.buildFWMTCreateJobRequest();
-    when(objectMapper.writeValueAsString(eq(fwmtCreateJobRequest))).thenThrow(new JsonProcessingException("Error"){});
+    FieldWorkerRequestMessageBuilder messageBuilder = new FieldWorkerRequestMessageBuilder();
+    CreateFieldWorkerJobRequest createJobRequest = messageBuilder.buildCreateFieldWorkerJobRequest();
+    when(objectMapper.writeValueAsString(eq(createJobRequest))).thenThrow(new JsonProcessingException("Error"){});
 
     //When
-    jobServiceProducer.sendMessage(fwmtCreateJobRequest);
+    jobServiceProducer.sendMessage(createJobRequest);
 
   }
 }

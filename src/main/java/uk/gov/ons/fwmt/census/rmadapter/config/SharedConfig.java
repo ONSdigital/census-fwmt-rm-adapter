@@ -6,8 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
+
+import uk.gov.ons.fwmt.census.common.retry.GatewayRetryPolicy;
 import uk.gov.ons.fwmt.census.rmadapter.retrysupport.DefaultListenerSupport;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.retry.CTPRetryPolicy;
 
 @Configuration
 public class SharedConfig {
@@ -35,8 +36,8 @@ public class SharedConfig {
     backOffPolicy.setMaxInterval(maxInterval);
     retryTemplate.setBackOffPolicy(backOffPolicy);
 
-    CTPRetryPolicy ctpRetryPolicy = new CTPRetryPolicy();
-    retryTemplate.setRetryPolicy(ctpRetryPolicy);
+    GatewayRetryPolicy gatewayRetryPolicy = new GatewayRetryPolicy();
+    retryTemplate.setRetryPolicy(gatewayRetryPolicy);
 
     retryTemplate.registerListener(new DefaultListenerSupport());
 

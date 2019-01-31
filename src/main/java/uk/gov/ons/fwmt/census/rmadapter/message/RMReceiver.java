@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
 @Component
 @Slf4j
@@ -23,7 +23,7 @@ public class RMReceiver {
   @Autowired
   private RMAdapterService rmAdapterService;
 
-  public void receiveMessage(String createJobRequestXML) throws CTPException {
+  public void receiveMessage(String createJobRequestXML) throws GatewayException {
     try {
       //TODO Move this Queue Config
       //===================================================
@@ -36,7 +36,7 @@ public class RMReceiver {
       rmAdapterService.sendJobRequest(rmActionInstruction.getValue());
       log.info("Received Job request from RM");
     } catch (JAXBException e) {
-      throw new CTPException(CTPException.Fault.SYSTEM_ERROR, "Failed to unmarshal XML message.", e);
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Failed to unmarshal XML message.", e);
     }
   }
 }

@@ -1,5 +1,7 @@
 package uk.gov.ons.fwmt.census.rmadapter.config;
 
+import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryUtils.createConnectionFactory;
+
 import org.aopalliance.aop.Advice;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -19,11 +21,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.retry.RetryOperations;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 
-import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceReceiver;
+import uk.gov.ons.fwmt.census.common.retry.GatewayMessageRecover;
 import uk.gov.ons.fwmt.census.rmadapter.message.RMReceiver;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.retry.CustomMessageRecover;
-
-import static uk.gov.ons.fwmt.census.rmadapter.config.ConnectionFactoryUtils.createConnectionFactory;
 
 @Configuration
 public class QueueConfig {
@@ -186,12 +185,6 @@ public class QueueConfig {
     return binding;
   }
   
-  // Listener
-  @Bean
-  public MessageListenerAdapter jobSvcListenerAdapter(JobServiceReceiver receiver) {
-    return new MessageListenerAdapter(receiver, "receiveMessage");
-  }
-
   @Bean
   public MessageListenerAdapter rmListenerAdapter(RMReceiver receiver) {
     return new MessageListenerAdapter(receiver, "receiveMessage");
@@ -203,7 +196,7 @@ public class QueueConfig {
   public RetryOperationsInterceptor interceptor(
       @Qualifier("retryTemplate") RetryOperations retryOperations) {
     RetryOperationsInterceptor interceptor = new RetryOperationsInterceptor();
-    interceptor.setRecoverer(new CustomMessageRecover());
+    interceptor.setRecoverer(new GatewayMessageRecover());
     interceptor.setRetryOperations(retryOperations);
     return interceptor;
   }

@@ -5,12 +5,10 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobBuilder;
-import uk.gov.ons.fwmt.census.rmadapter.data.CensusCaseOutcomeDTO;
 import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceProducer;
-import uk.gov.ons.fwmt.census.rmadapter.message.RMProducer;
 import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
 @Slf4j
 @Component
@@ -19,7 +17,7 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   @Autowired
   private JobServiceProducer jobServiceProducer;
 
-  public void sendJobRequest(ActionInstruction actionInstruction) throws CTPException {
+  public void sendJobRequest(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
       jobServiceProducer.sendMessage(CanonicalJobBuilder.newCreateJob(actionInstruction));
     } else if (actionInstruction.getActionUpdate() != null) {

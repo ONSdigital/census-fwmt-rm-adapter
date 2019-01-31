@@ -10,8 +10,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
+import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
 @Slf4j
 @Component
@@ -27,18 +27,18 @@ public class JobServiceProducer {
   private ObjectMapper objectMapper;
 
   @Retryable
-  public void sendMessage(Object dto) throws CTPException {
+  public void sendMessage(Object dto) throws GatewayException {
     String JSONJobRequest = convertToJSON(dto);
     rabbitTemplate.convertAndSend(exchange.getName(), QueueConfig.JOBSVC_REQUEST_ROUTING_KEY, JSONJobRequest);
     log.info("Message send to queue");
   }
 
-  protected String convertToJSON(Object dto) throws CTPException {
+  protected String convertToJSON(Object dto) throws GatewayException {
     String JSONJobRequest;
     try {
       JSONJobRequest = objectMapper.writeValueAsString(dto);
     } catch (JsonProcessingException e) {
-      throw new CTPException(CTPException.Fault.SYSTEM_ERROR, "Failed to process JSON.", e);
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Failed to process JSON.", e);
     }
     return JSONJobRequest;
   }

@@ -1,3 +1,4 @@
+
 package uk.gov.ons.fwmt.census.rmadapter.config;
 
 import org.springframework.beans.factory.annotation.Value;

@@ -19,9 +19,6 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   @Autowired
   private JobServiceProducer jobServiceProducer;
 
-  @Autowired
-  private RMProducer rmProducer;
-
   public void sendJobRequest(ActionInstruction actionInstruction) throws CTPException {
     if (actionInstruction.getActionRequest() != null) {
       jobServiceProducer.sendMessage(CanonicalJobBuilder.newCreateJob(actionInstruction));
@@ -31,9 +28,4 @@ public class RMAdapterServiceImpl implements RMAdapterService {
       jobServiceProducer.sendMessage(CanonicalJobBuilder.newCancelJob(actionInstruction));
     }
   }
-
-  public void returnJobRequest(CensusCaseOutcomeDTO response) throws CTPException {
-    rmProducer.sendJobRequestResponse(response);
-  }
-
 }

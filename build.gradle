@@ -92,7 +92,7 @@ task genJaxb {
 }
 
 dependencies {
-    compile("uk.gov.ons.fwmt:fwmt-gateway-common:0.0.15-RELEASE")
+    compile("uk.gov.ons.fwmt:fwmt-census-canonical:1.0.0-SNAPSHOT")
 
 	jaxb("javax.xml.bind:jaxb-api:2.3.0")
 	jaxb("com.sun.xml.bind:jaxb-core:2.3.0.1")

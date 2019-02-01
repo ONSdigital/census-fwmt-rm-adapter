@@ -18,18 +18,18 @@ import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
 
 @Component
 @Slf4j
-public class RMReceiver {
+public class ActionInstructionReceiver {
 
   @Autowired
   private RMAdapterService rmAdapterService;
 
-  public void receiveMessage(String createJobRequestXML) throws GatewayException {
+  public void receiveMessage(String message) throws GatewayException {
     try {
       //TODO Move this Queue Config
       //===================================================
       JAXBContext jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-      ByteArrayInputStream input = new ByteArrayInputStream(createJobRequestXML.getBytes());
+      ByteArrayInputStream input = new ByteArrayInputStream(message.getBytes());
       JAXBElement<ActionInstruction> rmActionInstruction = unmarshaller
           .unmarshal(new StreamSource(input), ActionInstruction.class);
       //===================================================

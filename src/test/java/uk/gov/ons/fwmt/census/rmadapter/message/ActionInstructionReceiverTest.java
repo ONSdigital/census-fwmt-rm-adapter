@@ -22,10 +22,10 @@ import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.service.impl.RMAdapterServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RMReceiverImplTest {
+public class ActionInstructionReceiverTest {
 
   @InjectMocks
-  private RMReceiver rmReceiver;
+  private ActionInstructionReceiver rmReceiver;
 
   @Mock
   private RMAdapterServiceImpl rmAdapterService;

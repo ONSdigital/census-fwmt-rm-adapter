@@ -19,7 +19,7 @@ import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
 
 @Slf4j
 @Component
-public class JobServiceProducer {
+public class GatewayActionProducer {
 
   @Autowired
   private RabbitTemplate rabbitTemplate;

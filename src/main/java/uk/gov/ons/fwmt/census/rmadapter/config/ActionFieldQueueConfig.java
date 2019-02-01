@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 
-import uk.gov.ons.fwmt.census.rmadapter.message.RMReceiver;
+import uk.gov.ons.fwmt.census.rmadapter.message.ActionInstructionReceiver;
 
 @Configuration
 public class ActionFieldQueueConfig {
@@ -44,7 +44,7 @@ public class ActionFieldQueueConfig {
 
   //Listener Adapter
   @Bean
-  public MessageListenerAdapter actionFieldListenerAdapter(RMReceiver receiver) {
+  public MessageListenerAdapter actionFieldListenerAdapter(ActionInstructionReceiver receiver) {
     return new MessageListenerAdapter(receiver, "receiveMessage");
   }
   

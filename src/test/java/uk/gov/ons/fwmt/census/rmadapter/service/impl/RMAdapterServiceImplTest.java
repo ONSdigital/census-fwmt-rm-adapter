@@ -18,7 +18,7 @@ import uk.gov.ons.fwmt.census.canonical.v1.UpdateFieldWorkerJobRequest;
 import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobBuilder;
 import uk.gov.ons.fwmt.census.rmadapter.helper.ActionInstructionBuilder;
-import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceProducer;
+import uk.gov.ons.fwmt.census.rmadapter.message.GatewayActionProducer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RMAdapterServiceImplTest {
@@ -27,7 +27,7 @@ public class RMAdapterServiceImplTest {
   private RMAdapterServiceImpl rmAdapterService;
 
   @Mock
-  private JobServiceProducer jobServiceProducer;
+  private GatewayActionProducer jobServiceProducer;
 
   @Mock
   private CanonicalJobBuilder messageConverter;

@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobBuilder;
-import uk.gov.ons.fwmt.census.rmadapter.message.JobServiceProducer;
+import uk.gov.ons.fwmt.census.rmadapter.message.GatewayActionProducer;
 import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
 
 @Slf4j
@@ -15,7 +15,7 @@ import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
 public class RMAdapterServiceImpl implements RMAdapterService {
 
   @Autowired
-  private JobServiceProducer jobServiceProducer;
+  private GatewayActionProducer jobServiceProducer;
 
   public void sendJobRequest(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {

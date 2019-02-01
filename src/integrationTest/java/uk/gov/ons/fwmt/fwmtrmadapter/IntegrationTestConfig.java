@@ -19,7 +19,7 @@ public class IntegrationTestConfig {
       @Qualifier("testListenerAdapter") MessageListenerAdapter listenerAdapter) {
     SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
-    container.setQueueNames(GatewayActionsQueueConfig.GATEWAY_ACTIONS);
+    container.setQueueNames(GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE);
     container.setMessageListener(listenerAdapter);
     return container;
   }

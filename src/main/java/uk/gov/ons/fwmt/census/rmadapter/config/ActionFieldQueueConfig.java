@@ -17,8 +17,8 @@ import uk.gov.ons.fwmt.census.rmadapter.message.ActionInstructionReceiver;
 
 @Configuration
 public class ActionFieldQueueConfig {
-  public static final String ACTION_FIELD_DLQ = "Action.FieldDLQ";
   public static final String ACTION_FIELD_QUEUE = "Action.Field";
+  public static final String ACTION_FIELD_DLQ = "Action.Field.DLQ";
 
   @Autowired
   private AmqpAdmin amqpAdmin;

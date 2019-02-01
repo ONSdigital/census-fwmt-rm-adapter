@@ -8,7 +8,7 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 import uk.gov.ons.fwmt.census.common.retry.GatewayRetryPolicy;
-import uk.gov.ons.fwmt.census.rmadapter.retrysupport.DefaultListenerSupport;
+import uk.gov.ons.fwmt.census.common.retry.DefaultListenerSupport;
 
 @Configuration
 public class RabbitMQConfig {

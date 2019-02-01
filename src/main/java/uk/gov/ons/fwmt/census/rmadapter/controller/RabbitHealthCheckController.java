@@ -40,7 +40,7 @@ public class RabbitHealthCheckController {
     List<String> queues = Arrays.asList(
         ActionFieldQueueConfig.ACTION_FIELD_QUEUE,
         ActionFieldQueueConfig.ACTION_FIELD_DLQ,
-        GatewayActionsQueueConfig.GATEWAY_ACTIONS
+        GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE
     );
 
       return queues.stream()

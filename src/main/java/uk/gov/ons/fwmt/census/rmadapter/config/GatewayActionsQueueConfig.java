@@ -17,15 +17,14 @@ public class GatewayActionsQueueConfig {
   @Autowired
   private AmqpAdmin amqpAdmin;
   
-  public static final String GATEWAY_ACTIONS = "gateway.actions";
-
+  public static final String GATEWAY_ACTIONS_QUEUE = "gateway.actions";
   public static final String GATEWAY_ACTIONS_EXCHANGE = "gateway.actions.exchange";
   public static final String GATEWAY_ACTIONS_ROUTING_KEY = "gateway.action.request";
   
   // Queue
   @Bean
   public Queue gatewayActionsQueue() {
-    Queue queue = QueueBuilder.durable(GATEWAY_ACTIONS).build();
+    Queue queue = QueueBuilder.durable(GATEWAY_ACTIONS_QUEUE).build();
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
   }

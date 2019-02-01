@@ -34,7 +34,7 @@ public class RabbitHealthCheckController {
     return (props != null) ? props.getProperty("QUEUE_NAME") : null;
   }
 
-  @RequestMapping(value = "/rabbitHealth", method = RequestMethod.GET, produces = "application/json")
+  @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
   public List<String> canAccessQueue() {
     rabbitAdmin = new RabbitAdmin(connectionFactory);
     List<String> queues = Arrays.asList(

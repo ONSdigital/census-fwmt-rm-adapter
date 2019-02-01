@@ -27,7 +27,7 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 - |
   set -e
-  base64 -d "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" --username "$DOCKER_USERNAME" --password-stdin
+  echo "$DOCKER_PASSWORD" | base64 --decode | docker login "$DOCKER_REGISTRY" --username "$DOCKER_USERNAME" --password-stdin
   docker build -t "$DOCKER_LOCATION"/fwmt-census-rm-adapter -t "$DOCKER_LOCATION"/fwmt-census-rm-adapter:fwmt-census-rm-adapter-$TRAVIS_BUILD_NUMBER --build-arg jar=build/libs/fwmt-census-rm-adapter-*.jar .
   docker push "$DOCKER_LOCATION"/fwmt-census-rm-adapter
 - |

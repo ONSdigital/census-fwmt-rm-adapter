@@ -116,8 +116,10 @@ dependencies {
     compile("org.springframework:spring-aop")
     compile("org.springframework.retry:spring-retry") 
 
-    compile("com.fasterxml.jackson.core:jackson-databind")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+	compile("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
+//    compile("com.fasterxml.jackson.core:jackson-databind")
+//    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     compile("com.rabbitmq:amqp-client")
 
     compile("org.projectlombok:lombok")

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.fwmt.census.common.error.GatewayException;
+import uk.gov.ons.fwmt.census.rmadapter.config.GatewayActionsQueueConfig;
 import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
 import uk.gov.ons.fwmt.census.rmadapter.helper.FieldWorkerRequestMessageBuilder;
 
@@ -55,7 +56,7 @@ public class JobServiceProducerImplTest {
 
     //Then
     verify(rabbitTemplate)
-        .convertAndSend(eq("fwmtExchange"), eq(QueueConfig.JOBSVC_REQUEST_ROUTING_KEY), argumentCaptor.capture());
+        .convertAndSend(eq("fwmtExchange"), eq(GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY), argumentCaptor.capture());
     String result = String.valueOf(argumentCaptor.getValue());
 
     assertEquals(expectedJSON, result);

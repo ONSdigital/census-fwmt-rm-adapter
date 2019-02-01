@@ -11,13 +11,13 @@ import uk.gov.ons.fwmt.census.common.retry.GatewayRetryPolicy;
 import uk.gov.ons.fwmt.census.rmadapter.retrysupport.DefaultListenerSupport;
 
 @Configuration
-public class SharedConfig {
+public class RabbitMQConfig {
 
   private int initialInterval;
   private double multiplier;
   private int maxInterval;
 
-  public SharedConfig(@Value("${rabbitmq.initialinterval}") Integer initialInterval,
+  public RabbitMQConfig(@Value("${rabbitmq.initialinterval}") Integer initialInterval,
       @Value("${rabbitmq.multiplier}") Double multiplier,
       @Value("${rabbitmq.maxInterval}") Integer maxInterval) {
     this.initialInterval = initialInterval;

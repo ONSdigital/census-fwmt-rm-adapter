@@ -18,7 +18,6 @@ public class GatewayActionsQueueConfig {
   private AmqpAdmin amqpAdmin;
   
   public static final String GATEWAY_ACTIONS = "gateway.actions";
-  public static final String GATEWAY_ACTIONS_DLQ = "gateway.actions.DLQ";
 
   public static final String GATEWAY_ACTIONS_EXCHANGE = "gateway.actions.exchange";
   public static final String GATEWAY_ACTIONS_ROUTING_KEY = "gateway.action.request";

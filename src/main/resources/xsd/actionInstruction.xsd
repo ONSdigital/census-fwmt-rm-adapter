@@ -14,9 +14,7 @@
         </xs:choice>
     </xs:complexType>
 
-
     <xs:complexType name="ActionContact">
-
         <xs:sequence>
             <xs:element name="title" type="xs:string" minOccurs="0"
                         maxOccurs="1"/>

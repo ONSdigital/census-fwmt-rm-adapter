@@ -20,11 +20,34 @@ public class GatewayActionsQueueConfig {
   public static final String GATEWAY_ACTIONS_QUEUE = "Gateway.Actions";
   public static final String GATEWAY_ACTIONS_EXCHANGE = "Gateway.Actions.Exchange";
   public static final String GATEWAY_ACTIONS_ROUTING_KEY = "Gateway.Action.Request";
+  public static final String GATEWAY_ACTIONS_DLQ = "Gateway.ActionsDLQ";
   
-  // Queue
+//===========================================================
+// //TODO rm adapter shouldnt have to declare the DLQ but if errors
+// it doesnt.
+//  // Queue
+//  @Bean
+//  public Queue gatewayActionsQueue() {
+//    Queue queue = QueueBuilder.durable(GATEWAY_ACTIONS_QUEUE).build();
+//    queue.setAdminsThatShouldDeclare(amqpAdmin);
+//    return queue;
+//  }
+
+  //Queues
   @Bean
   public Queue gatewayActionsQueue() {
-    Queue queue = QueueBuilder.durable(GATEWAY_ACTIONS_QUEUE).build();
+    Queue queue = QueueBuilder.durable(GATEWAY_ACTIONS_QUEUE)
+        .withArgument("x-dead-letter-exchange", "")
+        .withArgument("x-dead-letter-routing-key", GATEWAY_ACTIONS_DLQ)
+        .build();
+    queue.setAdminsThatShouldDeclare(amqpAdmin);
+    return queue;
+  } 
+
+  //Dead Letter Queue
+  @Bean
+  public Queue gatewayActionsDeadLetterQueue() {
+    Queue queue = QueueBuilder.durable(GATEWAY_ACTIONS_DLQ).build();
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
   }

@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: fwmt-job-uk.gov.ons.fwmt.fwmtrmadapter
+    name: fwmt-census-rmadapter
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false

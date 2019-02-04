@@ -21,7 +21,7 @@ import uk.gov.ons.fwmt.census.rmadapter.helper.ActionInstructionBuilder;
 @RunWith(MockitoJUnitRunner.class)
 public class CanonicalJobBuilderTest {
 
-  @InjectMocks CanonicalJobBuilder messageConverter;
+  @InjectMocks CanonicalJobHelper messageConverter;
 
   @Test
   public void createJob() throws GatewayException {

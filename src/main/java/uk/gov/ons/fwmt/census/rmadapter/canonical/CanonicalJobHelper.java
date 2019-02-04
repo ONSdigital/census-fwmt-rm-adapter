@@ -15,7 +15,7 @@ import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.fwmt.census.canonical.v1.UpdateFieldWorkerJobRequest;
 import uk.gov.ons.fwmt.census.common.error.GatewayException;
 
-public final class CanonicalJobBuilder {
+public final class CanonicalJobHelper {
 
   public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();

@@ -16,7 +16,7 @@ import uk.gov.ons.fwmt.census.canonical.v1.CancelFieldWorkerJobRequest;
 import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.fwmt.census.canonical.v1.UpdateFieldWorkerJobRequest;
 import uk.gov.ons.fwmt.census.common.error.GatewayException;
-import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobBuilder;
+import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobHelper;
 import uk.gov.ons.fwmt.census.rmadapter.helper.ActionInstructionBuilder;
 import uk.gov.ons.fwmt.census.rmadapter.message.GatewayActionProducer;
 
@@ -30,7 +30,7 @@ public class RMAdapterServiceImplTest {
   private GatewayActionProducer jobServiceProducer;
 
   @Mock
-  private CanonicalJobBuilder messageConverter;
+  private CanonicalJobHelper messageConverter;
 
   @Captor
   private ArgumentCaptor argCaptor;

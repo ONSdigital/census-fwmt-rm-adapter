@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.fwmt.census.common.error.GatewayException;
-import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobBuilder;
+import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobHelper;
 import uk.gov.ons.fwmt.census.rmadapter.message.GatewayActionProducer;
 import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
 
@@ -19,11 +19,11 @@ public class RMAdapterServiceImpl implements RMAdapterService {
 
   public void sendJobRequest(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
-      jobServiceProducer.sendMessage(CanonicalJobBuilder.newCreateJob(actionInstruction));
+      jobServiceProducer.sendMessage(CanonicalJobHelper.newCreateJob(actionInstruction));
     } else if (actionInstruction.getActionUpdate() != null) {
-      jobServiceProducer.sendMessage(CanonicalJobBuilder.newUpdateJob(actionInstruction));
+      jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
     } else if (actionInstruction.getActionCancel() != null) {
-      jobServiceProducer.sendMessage(CanonicalJobBuilder.newCancelJob(actionInstruction));
+      jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));
     }
   }
 }

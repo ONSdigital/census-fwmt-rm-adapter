@@ -17,9 +17,9 @@ public class GatewayActionsQueueConfig {
   @Autowired
   private AmqpAdmin amqpAdmin;
   
-  public static final String GATEWAY_ACTIONS_QUEUE = "gateway.actions";
-  public static final String GATEWAY_ACTIONS_EXCHANGE = "gateway.actions.exchange";
-  public static final String GATEWAY_ACTIONS_ROUTING_KEY = "gateway.action.request";
+  public static final String GATEWAY_ACTIONS_QUEUE = "Gateway.Actions";
+  public static final String GATEWAY_ACTIONS_EXCHANGE = "Gateway.Actions.Exchange";
+  public static final String GATEWAY_ACTIONS_ROUTING_KEY = "Gateway.Action.Request";
   
   // Queue
   @Bean

@@ -22,17 +22,6 @@ public class GatewayActionsQueueConfig {
   public static final String GATEWAY_ACTIONS_ROUTING_KEY = "Gateway.Action.Request";
   public static final String GATEWAY_ACTIONS_DLQ = "Gateway.ActionsDLQ";
   
-//===========================================================
-// //TODO rm adapter shouldnt have to declare the DLQ but if errors
-// it doesnt.
-//  // Queue
-//  @Bean
-//  public Queue gatewayActionsQueue() {
-//    Queue queue = QueueBuilder.durable(GATEWAY_ACTIONS_QUEUE).build();
-//    queue.setAdminsThatShouldDeclare(amqpAdmin);
-//    return queue;
-//  }
-
   //Queues
   @Bean
   public Queue gatewayActionsQueue() {

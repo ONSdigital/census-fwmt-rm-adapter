@@ -25,14 +25,14 @@ public class ActionInstructionReceiver {
 
   public void receiveMessage(String message) throws GatewayException {
     try {
-      //TODO Move this Queue Config
-      //===================================================
+      // This should be moved to Queue Config, but cant get it to work
+      //==============================================================
       JAXBContext jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
       ByteArrayInputStream input = new ByteArrayInputStream(message.getBytes());
       JAXBElement<ActionInstruction> rmActionInstruction = unmarshaller
           .unmarshal(new StreamSource(input), ActionInstruction.class);
-      //===================================================
+      //===============================================================
       rmAdapterService.sendJobRequest(rmActionInstruction.getValue());
       log.info("Received Job request from RM");
     } catch (JAXBException e) {

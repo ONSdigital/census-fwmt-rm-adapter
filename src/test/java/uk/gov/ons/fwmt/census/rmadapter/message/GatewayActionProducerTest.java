@@ -14,6 +14,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
@@ -30,14 +31,17 @@ import uk.gov.ons.fwmt.census.rmadapter.helper.FieldWorkerRequestMessageBuilder;
 public class GatewayActionProducerTest {
 
   private final String expectedJSON = "{\"jobIdentity\":\"testJobIdentity\",\"surveyType\":\"testSurveyType\",\"preallocatedJob\":false,\"mandatoryResourceAuthNo\":\"testMandatoryResourceAuthNo\",\"dueDate\":{\"year\":2000,\"month\":\"NOVEMBER\",\"era\":\"CE\",\"dayOfYear\":316,\"dayOfWeek\":\"SATURDAY\",\"leapYear\":true,\"dayOfMonth\":11,\"monthValue\":11,\"chronology\":{\"id\":\"ISO\",\"calendarType\":\"iso8601\"}},\"address\":{\"line1\":\"testLine1\",\"line2\":\"testLine2\",\"line3\":\"testLine3\",\"line4\":\"testLine4\",\"townName\":\"testTownName\",\"postCode\":\"testPostCode\",\"latitude\":1000.0,\"longitude\":1000.0}}";
+  
   @InjectMocks
   private GatewayActionProducer jobServiceProducer;
 
   @Mock
   private RabbitTemplate rabbitTemplate;
 
+
   @Mock
-  private Exchange exchange;
+  private DirectExchange gatewayActionsExchange;
+
   @Captor
   private ArgumentCaptor argumentCaptor;
   @Mock
@@ -48,7 +52,7 @@ public class GatewayActionProducerTest {
     //Given
     FieldWorkerRequestMessageBuilder messageBuilder = new FieldWorkerRequestMessageBuilder();
     CreateFieldWorkerJobRequest createJobRequest = messageBuilder.buildCreateFieldWorkerJobRequest();
-    when(exchange.getName()).thenReturn("fwmtExchange");
+    when(gatewayActionsExchange.getName()).thenReturn("fwmtExchange");
     when(objectMapper.writeValueAsString(eq(createJobRequest))).thenReturn(expectedJSON);
 
     //When

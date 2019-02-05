@@ -1,15 +1,16 @@
 package uk.gov.ons.fwmt.census.rmadapter.helper;
 
-import uk.gov.ons.fwmt.fwmtgatewaycommon.data.Address;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCreateJobRequest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class FWMTMessageBuilder {
+import uk.gov.ons.fwmt.census.canonical.v1.Address;
+import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
 
-  public FWMTCreateJobRequest buildFWMTCreateJobRequest() {
-    FWMTCreateJobRequest fwmtCreateJobRequest = new FWMTCreateJobRequest();
+public class FieldWorkerRequestMessageBuilder {
+
+  public CreateFieldWorkerJobRequest buildCreateFieldWorkerJobRequest() {
+    CreateFieldWorkerJobRequest fwmtCreateJobRequest = new CreateFieldWorkerJobRequest();
 
     Address address = new Address();
     address.setLatitude(BigDecimal.valueOf(1000.00));

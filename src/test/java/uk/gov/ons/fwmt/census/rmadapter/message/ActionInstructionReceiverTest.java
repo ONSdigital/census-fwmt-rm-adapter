@@ -1,4 +1,11 @@
-package uk.gov.ons.fwmt.census.rmadapter.message.impl;
+package uk.gov.ons.fwmt.census.rmadapter.message;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.verify;
+
+import java.math.BigDecimal;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,26 +13,19 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
-import uk.gov.ons.fwmt.census.rmadapter.message.impl.RMReceiver;
+import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.service.impl.RMAdapterServiceImpl;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
-
-import java.math.BigDecimal;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RMReceiverImplTest {
+public class ActionInstructionReceiverTest {
 
   @InjectMocks
-  private RMReceiver rmReceiver;
+  private ActionInstructionReceiver rmReceiver;
 
   @Mock
   private RMAdapterServiceImpl rmAdapterService;
@@ -35,7 +35,7 @@ public class RMReceiverImplTest {
   private final String ACTION_CANCEL_XML = "<ins:actionInstruction xmlns:ins=\"http://ons.gov.uk/ctp/response/action/message/instruction\"><actionCancel><actionId>actionId</actionId><responseRequired>true</responseRequired><reason>Reason</reason></actionCancel></ins:actionInstruction>";
 
   @Test
-  public void receiveMessageCreate() throws CTPException {
+  public void receiveMessageCreate() throws GatewayException {
 
     rmReceiver.receiveMessage(ACTION_REQUEST_XML);
 
@@ -71,7 +71,7 @@ public class RMReceiverImplTest {
   }
 
   @Test
-  public void receiveMessageCancel() throws CTPException {
+  public void receiveMessageCancel() throws GatewayException {
 
     rmReceiver.receiveMessage(ACTION_CANCEL_XML);
 

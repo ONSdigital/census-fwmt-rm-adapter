@@ -1,3 +1,4 @@
+
 package uk.gov.ons.fwmt.census.rmadapter.config;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -5,17 +6,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
-import uk.gov.ons.fwmt.census.rmadapter.retrysupport.DefaultListenerSupport;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.retry.CTPRetryPolicy;
+
+import uk.gov.ons.fwmt.census.common.retry.GatewayRetryPolicy;
+import uk.gov.ons.fwmt.census.common.retry.DefaultListenerSupport;
 
 @Configuration
-public class SharedConfig {
+public class RabbitMQConfig {
 
   private int initialInterval;
   private double multiplier;
   private int maxInterval;
 
-  public SharedConfig(@Value("${rabbitmq.initialinterval}") Integer initialInterval,
+  public RabbitMQConfig(@Value("${rabbitmq.initialinterval}") Integer initialInterval,
       @Value("${rabbitmq.multiplier}") Double multiplier,
       @Value("${rabbitmq.maxInterval}") Integer maxInterval) {
     this.initialInterval = initialInterval;
@@ -34,8 +36,8 @@ public class SharedConfig {
     backOffPolicy.setMaxInterval(maxInterval);
     retryTemplate.setBackOffPolicy(backOffPolicy);
 
-    CTPRetryPolicy ctpRetryPolicy = new CTPRetryPolicy();
-    retryTemplate.setRetryPolicy(ctpRetryPolicy);
+    GatewayRetryPolicy gatewayRetryPolicy = new GatewayRetryPolicy();
+    retryTemplate.setRetryPolicy(gatewayRetryPolicy);
 
     retryTemplate.registerListener(new DefaultListenerSupport());
 

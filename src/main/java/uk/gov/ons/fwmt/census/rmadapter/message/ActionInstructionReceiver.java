@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.message.impl;
+package uk.gov.ons.fwmt.census.rmadapter.message;
 
 import java.io.ByteArrayInputStream;
 
@@ -13,30 +13,30 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
 
 @Component
 @Slf4j
-public class RMReceiver {
+public class ActionInstructionReceiver {
 
   @Autowired
   private RMAdapterService rmAdapterService;
 
-  public void receiveMessage(String createJobRequestXML) throws CTPException {
+  public void receiveMessage(String message) throws GatewayException {
     try {
-      //TODO Move this Queue Config
-      //===================================================
+      // This should be moved to Queue Config, but cant get it to work
+      //==============================================================
       JAXBContext jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-      ByteArrayInputStream input = new ByteArrayInputStream(createJobRequestXML.getBytes());
+      ByteArrayInputStream input = new ByteArrayInputStream(message.getBytes());
       JAXBElement<ActionInstruction> rmActionInstruction = unmarshaller
           .unmarshal(new StreamSource(input), ActionInstruction.class);
-      //===================================================
+      //===============================================================
       rmAdapterService.sendJobRequest(rmActionInstruction.getValue());
       log.info("Received Job request from RM");
     } catch (JAXBException e) {
-      throw new CTPException(CTPException.Fault.SYSTEM_ERROR, "Failed to unmarshal XML message.", e);
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Failed to unmarshal XML message.", e);
     }
   }
 }

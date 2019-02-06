@@ -23,11 +23,16 @@ public class RMReceiver {
   @Autowired
   private RMAdapterService rmAdapterService;
 
+  private JAXBContext jaxbContext;
+
+  public RMReceiver() throws JAXBException {
+    jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
+  }
+
   public void receiveMessage(String createJobRequestXML) throws CTPException {
     try {
       //TODO Move this Queue Config
       //===================================================
-      JAXBContext jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
       ByteArrayInputStream input = new ByteArrayInputStream(createJobRequestXML.getBytes());
       JAXBElement<ActionInstruction> rmActionInstruction = unmarshaller

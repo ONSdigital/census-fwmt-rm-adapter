@@ -45,10 +45,10 @@ public class RabbitHealthCheckController {
         "rm.feedback.DLQ"
     );
 
-      return queues.stream()
-          .map(a -> this.checkQueue(a))
-          .filter(Objects::nonNull)
-          .collect(Collectors.toList());
-}
+    return queues.stream()
+        .map(this::checkQueue)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+  }
 
 }

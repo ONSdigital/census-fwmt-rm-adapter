@@ -25,7 +25,7 @@ public class ActionInstructionReceiver {
 
   private JAXBContext jaxbContext;
 
-  public RMReceiver() throws JAXBException {
+  public ActionInstructionReceiver() throws JAXBException {
     jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
   }
 

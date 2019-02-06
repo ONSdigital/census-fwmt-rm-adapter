@@ -1,9 +1,6 @@
 package uk.gov.ons.fwmt.census.rmadapter.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import uk.gov.ons.fwmt.census.rmadapter.config.ActionFieldQueueConfig;
-import uk.gov.ons.fwmt.census.rmadapter.config.GatewayActionsQueueConfig;
-
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.ons.fwmt.census.rmadapter.config.ActionFieldQueueConfig;
+import uk.gov.ons.fwmt.census.rmadapter.config.GatewayActionsQueueConfig;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,25 +26,24 @@ public class RabbitHealthCheckController {
   @Qualifier("connectionFactory")
   private ConnectionFactory connectionFactory;
 
-  private RabbitAdmin rabbitAdmin;
-
-  private String checkQueue(String queueName) {
+  private String checkQueue(RabbitAdmin rabbitAdmin, String queueName) {
     Properties props = rabbitAdmin.getQueueProperties(queueName);
     return (props != null) ? props.getProperty("QUEUE_NAME") : null;
   }
 
-  @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+  @RequestMapping(method = RequestMethod.GET, produces = "application/json")
   public List<String> canAccessQueue() {
-    rabbitAdmin = new RabbitAdmin(connectionFactory);
+    RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
+
     List<String> queues = Arrays.asList(
         ActionFieldQueueConfig.ACTION_FIELD_QUEUE,
         ActionFieldQueueConfig.ACTION_FIELD_DLQ,
         GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE
     );
 
-      return queues.stream()
-          .map(this::checkQueue)
-          .filter(Objects::nonNull)
-          .collect(Collectors.toList());
+    return queues.stream()
+        .map(a -> this.checkQueue(rabbitAdmin, a))
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
   }
 }

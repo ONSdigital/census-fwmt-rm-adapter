@@ -1,20 +1,18 @@
 package uk.gov.ons.fwmt.census.rmadapter.message;
 
-import java.io.ByteArrayInputStream;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.common.error.GatewayException;
+import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import lombok.extern.slf4j.Slf4j;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.fwmt.census.common.error.GatewayException;
-import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
+import java.io.ByteArrayInputStream;
 
 @Component
 @Slf4j
@@ -22,6 +20,9 @@ public class ActionInstructionReceiver {
 
   @Autowired
   private RMAdapterService rmAdapterService;
+
+  @Autowired
+  private GatewayEventProducer gatewayEventProducer;
 
   public void receiveMessage(String message) throws GatewayException {
     try {
@@ -33,6 +34,8 @@ public class ActionInstructionReceiver {
       JAXBElement<ActionInstruction> rmActionInstruction = unmarshaller
           .unmarshal(new StreamSource(input), ActionInstruction.class);
       //===============================================================
+      gatewayEventProducer
+          .sendEvent(rmActionInstruction.getValue().getActionRequest().getCaseId(), "RM - Request Received");
       rmAdapterService.sendJobRequest(rmActionInstruction.getValue());
       log.info("Received Job request from RM");
     } catch (JAXBException e) {

@@ -35,7 +35,7 @@ public class GatewayEventProducer {
         .build();
     String msg = convertToJSON(gatewayEventDTO);
     rabbitTemplate.convertAndSend(eventExchange.getName(), GatewayEventQueueConfig.GATEWAY_EVENTS_ROUTING_KEY, msg);
-    log.info("Message send to queue");
+    log.info("Message send to events queue");
   }
 
   protected String convertToJSON(Object dto) throws GatewayException {

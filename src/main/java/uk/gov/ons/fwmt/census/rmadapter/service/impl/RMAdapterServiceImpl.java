@@ -24,15 +24,15 @@ public class RMAdapterServiceImpl implements RMAdapterService {
     if (actionInstruction.getActionRequest() != null) {
       jobServiceProducer.sendMessage(CanonicalJobHelper.newCreateJob(actionInstruction));
       gatewayEventProducer
-          .sendEvent(actionInstruction.getActionRequest().getCaseId(), "Canonical - Action Create Sent");
+          .sendEvent(actionInstruction.getActionRequest().getCaseId(), "- Canonical - Action Create Sent");
     } else if (actionInstruction.getActionUpdate() != null) {
       jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
       gatewayEventProducer
-          .sendEvent(actionInstruction.getActionRequest().getCaseId(), "Canonical - Action Update Sent");
+          .sendEvent(actionInstruction.getActionRequest().getCaseId(), "- Canonical - Action Update Sent");
     } else if (actionInstruction.getActionCancel() != null) {
       jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));
       gatewayEventProducer
-          .sendEvent(actionInstruction.getActionRequest().getCaseId(), "Canonical - Action Cancel Sent");
+          .sendEvent(actionInstruction.getActionRequest().getCaseId(), "- Canonical - Action Cancel Sent");
     }
   }
 }

@@ -35,7 +35,7 @@ public class ActionInstructionReceiver {
           .unmarshal(new StreamSource(input), ActionInstruction.class);
       //===============================================================
       gatewayEventProducer
-          .sendEvent(rmActionInstruction.getValue().getActionRequest().getCaseId(), "RM - Request Received");
+          .sendEvent(rmActionInstruction.getValue().getActionRequest().getCaseId(), "- RM - Request Received");
       rmAdapterService.sendJobRequest(rmActionInstruction.getValue());
       log.info("Received Job request from RM");
     } catch (JAXBException e) {

@@ -92,7 +92,8 @@ task genJaxb {
 }
 
 dependencies {
-    compile("uk.gov.ons.fwmt:fwmt-gateway-common:0.0.15-RELEASE")
+    compile("uk.gov.ons.fwmt:fwmt-census-canonical:1.0.1-SNAPSHOT")
+    compile("uk.gov.ons.fwmt:fwmt-census-common:1.0.1-SNAPSHOT")
 
 	jaxb("javax.xml.bind:jaxb-api:2.3.0")
 	jaxb("com.sun.xml.bind:jaxb-core:2.3.0.1")
@@ -115,8 +116,10 @@ dependencies {
     compile("org.springframework:spring-aop")
     compile("org.springframework.retry:spring-retry") 
 
-    compile("com.fasterxml.jackson.core:jackson-databind")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+	compile("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
+//    compile("com.fasterxml.jackson.core:jackson-databind")
+//    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     compile("com.rabbitmq:amqp-client")
 
     compile("org.projectlombok:lombok")

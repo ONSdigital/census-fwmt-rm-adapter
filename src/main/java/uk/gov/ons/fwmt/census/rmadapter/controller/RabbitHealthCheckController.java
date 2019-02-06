@@ -1,6 +1,9 @@
 package uk.gov.ons.fwmt.census.rmadapter.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import uk.gov.ons.fwmt.census.rmadapter.config.ActionFieldQueueConfig;
+import uk.gov.ons.fwmt.census.rmadapter.config.GatewayActionsQueueConfig;
+
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,24 +34,18 @@ public class RabbitHealthCheckController {
     return (props != null) ? props.getProperty("QUEUE_NAME") : null;
   }
 
-  @RequestMapping(value = "/rabbitHealth", method = RequestMethod.GET, produces = "application/json")
+  @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
   public List<String> canAccessQueue() {
     rabbitAdmin = new RabbitAdmin(connectionFactory);
     List<String> queues = Arrays.asList(
-        "gateway.feedback",
-        "gateway.feedback.DLQ",
-        "gateway.actions",
-        "gateway.actions.DLQ",
-        "Action.Field",
-        "Action.FieldDLQ",
-        "rm.feedback",
-        "rm.feedback.DLQ"
+        ActionFieldQueueConfig.ACTION_FIELD_QUEUE,
+        ActionFieldQueueConfig.ACTION_FIELD_DLQ,
+        GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE
     );
 
-    return queues.stream()
-        .map(this::checkQueue)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
+      return queues.stream()
+          .map(this::checkQueue)
+          .filter(Objects::nonNull)
+          .collect(Collectors.toList());
   }
-
 }

@@ -1,36 +1,36 @@
-package uk.gov.ons.fwmt.census.rmadapter.service.impl;
+package uk.gov.ons.fwmt.census.rmadapter.canonical;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.fwmt.census.canonical.v1.CancelFieldWorkerJobRequest;
+import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
+import uk.gov.ons.fwmt.census.canonical.v1.UpdateFieldWorkerJobRequest;
+import uk.gov.ons.fwmt.census.common.error.GatewayException;
 import uk.gov.ons.fwmt.census.rmadapter.helper.ActionInstructionBuilder;
-import uk.gov.ons.fwmt.census.rmadapter.service.impl.MessageConverterImpl;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCancelJobRequest;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTCreateJobRequest;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.data.FWMTUpdateJobRequest;
-import uk.gov.ons.fwmt.fwmtgatewaycommon.error.CTPException;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MessageConverterImplTest {
+public class CanonicalJobBuilderTest {
 
-  @InjectMocks MessageConverterImpl messageConverter;
+  @InjectMocks CanonicalJobHelper messageConverter;
 
   @Test
-  public void createJob() throws CTPException {
+  public void createJob() throws GatewayException {
     //Given
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilder();
 
     //When
-    FWMTCreateJobRequest result = messageConverter.createJob(actionInstruction);
+    CreateFieldWorkerJobRequest result = messageConverter.newCreateJob(actionInstruction);
 
     //Then
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -57,7 +57,7 @@ public class MessageConverterImplTest {
     ActionInstruction actionInstruction = actionInstructionBuilder.cancelActionInstructionBuilder();
 
     //When
-    FWMTCancelJobRequest result = messageConverter.cancelJob(actionInstruction);
+    CancelFieldWorkerJobRequest result = messageConverter.newCancelJob(actionInstruction);
 
     //Then
     assertEquals("testCaseRef", result.getJobIdentity());
@@ -71,7 +71,7 @@ public class MessageConverterImplTest {
     ActionInstruction actionInstruction = actionInstructionBuilder.updateActionInstructionBuilder();
 
     //When
-    FWMTUpdateJobRequest result = messageConverter.updateJob(actionInstruction);
+    UpdateFieldWorkerJobRequest result = messageConverter.newUpdateJob(actionInstruction);
 
     //Then
     assertNotNull(result);

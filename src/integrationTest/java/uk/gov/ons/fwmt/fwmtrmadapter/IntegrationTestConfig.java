@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import uk.gov.ons.fwmt.census.rmadapter.config.GatewayActionsQueueConfig;
 import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
 import uk.gov.ons.fwmt.fwmtrmadapter.helper.TestReceiver;
 
@@ -18,7 +19,7 @@ public class IntegrationTestConfig {
       @Qualifier("testListenerAdapter") MessageListenerAdapter listenerAdapter) {
     SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
-    container.setQueueNames(QueueConfig.GATEWAY_ACTIONS, QueueConfig.GATEWAY_FEEDBACK);
+    container.setQueueNames(GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE);
     container.setMessageListener(listenerAdapter);
     return container;
   }

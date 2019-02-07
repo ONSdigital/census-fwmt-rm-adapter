@@ -23,3 +23,6 @@ To run:
 ![](/canonical-rm-mapping.png "canonical - rm - mapping")	
 
 
+## Copyright
+Copyright (C) 2018 Crown Copyright (Office for National Statistics)
+

@@ -6,7 +6,7 @@ This service is a gateway between the Response Management System and the FWMT jo
 It takes an Action Instruction (Create, Update or Delete Request) message off the Action.Field RabbitMQ Queue and transforms it into a Field Worker Job Request Canonical message and places it onto the Gateway.Actions RabbitMQ Queue.
 
 
-<High Level Diagram>
+![](/rmadapter-highlevel.png "rmadapter highlevel diagram")	
 
 ## Quick Start
 
@@ -22,4 +22,4 @@ To run:
 
 ![](/canonical-rm-mapping.png "canonical - rm - mapping")	
 
-## RabbitMQ Diagram
+

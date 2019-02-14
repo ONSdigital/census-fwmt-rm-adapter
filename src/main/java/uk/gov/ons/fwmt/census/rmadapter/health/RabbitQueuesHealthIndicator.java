@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.controller;
+package uk.gov.ons.fwmt.census.rmadapter.health;
 
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -12,7 +12,7 @@ import uk.gov.ons.fwmt.census.rmadapter.config.GatewayActionsQueueConfig;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -29,26 +29,24 @@ public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
   private ConnectionFactory connectionFactory;
   private RabbitAdmin rabbitAdmin;
 
-  private String checkQueue(String queueName) {
-    Properties props = rabbitAdmin.getQueueProperties(queueName);
-    return (props != null) ? props.getProperty("QUEUE_NAME") : null;
+  private boolean checkQueue(String queueName) {
+    Properties properties = rabbitAdmin.getQueueProperties(queueName);
+    return (properties != null);
   }
 
-  public List<String> getAccessibleQueues() {
+  private Map<String, Boolean> getAccessibleQueues() {
     rabbitAdmin = new RabbitAdmin(connectionFactory);
 
     return QUEUES.stream()
-        .map(a -> this.checkQueue(a))
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
+        .collect(Collectors.toMap(queueName -> queueName, this::checkQueue));
   }
 
-  @Override protected void doHealthCheck(Health.Builder builder) throws Exception {
-    List<String> accessibleQueues = getAccessibleQueues();
+  @Override protected void doHealthCheck(Health.Builder builder) {
+    Map<String, Boolean> accessibleQueues = getAccessibleQueues();
 
     builder.withDetail("accessible-queues", accessibleQueues);
 
-    if (accessibleQueues.containsAll(QUEUES)) {
+    if (accessibleQueues.containsValue(false)) {
       builder.up();
     } else {
       builder.down();

@@ -5,8 +5,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -14,11 +16,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.fwmt.census.common.error.GatewayException;
+import uk.gov.ons.fwmt.census.events.component.GatewayEventManager;
 import uk.gov.ons.fwmt.census.rmadapter.service.impl.RMAdapterServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,11 +35,22 @@ public class ActionInstructionReceiverTest {
 
   @Mock
   private RMAdapterServiceImpl rmAdapterService;
+  
+  @Mock
+  private GatewayEventManager gatewayEventManager;
 
-  private final String ACTION_REQUEST_XML = "<ins:actionInstruction xmlns:ins=\"http://ons.gov.uk/ctp/response/action/message/instruction\"><actionRequest><actionId>actionId</actionId><responseRequired>false</responseRequired><actionPlan>string</actionPlan><actionType>actionType</actionType><questionSet>string</questionSet><contact><title>string</title><forename>string</forename><surname>string</surname><phoneNumber>string</phoneNumber><emailAddress>string</emailAddress></contact><address><sampleUnitRef>string</sampleUnitRef><type>string</type><estabType>string</estabType><locality>string</locality><organisationName>string</organisationName><category>string</category><line1>line1</line1><line2>line2</line2><line3>line3</line3><line4>line4</line4><townName>Town</townName><postcode>P05T C0D3</postcode><ladCode>string</ladCode><latitude>1234.56</latitude><longitude>2345.67</longitude></address><caseId>caseId</caseId><returnByDate>19950718</returnByDate><priority>lower</priority><caseRef>string</caseRef><iac>string</iac><surveyRef>surveyRef</surveyRef><events><event>string</event></events><exerciseRef>string</exerciseRef></actionRequest></ins:actionInstruction>\n";
 
-  private final String ACTION_CANCEL_XML = "<ins:actionInstruction xmlns:ins=\"http://ons.gov.uk/ctp/response/action/message/instruction\"><actionCancel><actionId>actionId</actionId><responseRequired>true</responseRequired><reason>Reason</reason></actionCancel></ins:actionInstruction>";
+  private String ACTION_REQUEST_XML;
 
+  private String ACTION_CANCEL_XML;
+  
+  @Before
+  public void setup() throws IOException {
+    ACTION_REQUEST_XML = Resources.toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_REQUEST_XML.xml"), Charsets.UTF_8);
+    ACTION_CANCEL_XML = Resources.toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_CANCEL_XML.xml"), Charsets.UTF_8);
+  }
+  
+  
   @Test
   public void receiveMessageCreate() throws GatewayException {
 

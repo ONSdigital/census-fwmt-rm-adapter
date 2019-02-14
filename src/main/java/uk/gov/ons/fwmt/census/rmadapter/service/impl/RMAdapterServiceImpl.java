@@ -27,16 +27,10 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   public void sendJobRequest(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
       jobServiceProducer.sendMessage(CanonicalJobHelper.newCreateJob(actionInstruction));
-      gatewayEventManager
-          .triggerEvent(actionInstruction.getActionRequest().getCaseId(), CANONICAL_CREATE_SENT);
-    } else if (actionInstruction.getActionUpdate() != null) {
-      jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
-      gatewayEventManager
-          .triggerEvent(actionInstruction.getActionRequest().getCaseId(), CANONICAL_UPDATE_SENT);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), CANONICAL_CREATE_SENT);
     } else if (actionInstruction.getActionCancel() != null) {
       jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));
-      gatewayEventManager
-          .triggerEvent(actionInstruction.getActionRequest().getCaseId(), CANONICAL_CANCEL_SENT);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT);
     }
   }
 }

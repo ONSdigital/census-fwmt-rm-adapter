@@ -84,7 +84,6 @@ public class ActionInstructionReceiverTest {
     assertEquals(address.getTownName(),"Town");
 
     verify(rmAdapterService).sendJobRequest(actionInstruction);
-
   }
 
   @Test

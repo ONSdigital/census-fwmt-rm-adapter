@@ -31,11 +31,15 @@ public class ActionInstructionReceiver {
   @Autowired
   private GatewayEventManager gatewayEventManager;
 
+  private JAXBContext jaxbContext;
+
+  public ActionInstructionReceiver() throws JAXBException {
+    jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
+  }
+>>
   public void receiveMessage(String message) throws GatewayException {
     try {
       // This should be moved to Queue Config, but cant get it to work
-      // ==============================================================
-      JAXBContext jaxbContext = JAXBContext.newInstance(ActionInstruction.class);
       Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
       ByteArrayInputStream input = new ByteArrayInputStream(message.getBytes());
       JAXBElement<ActionInstruction> rmActionInstruction = unmarshaller

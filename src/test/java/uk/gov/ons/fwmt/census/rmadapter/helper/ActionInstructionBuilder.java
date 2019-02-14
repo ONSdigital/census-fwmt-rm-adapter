@@ -16,7 +16,7 @@ public class ActionInstructionBuilder {
     ActionRequest actionRequest = new ActionRequest();
     ActionAddress actionAddress = new ActionAddress();
 
-    actionRequest.setCaseId("testCaseId");
+    actionRequest.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
     actionRequest.setSurveyRef("testSurveyRef");
     actionRequest.setReturnByDate("11/11/2000");
 

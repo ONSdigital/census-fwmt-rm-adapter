@@ -44,7 +44,7 @@ public class RabbitHealthCheckController {
     );
 
       return queues.stream()
-          .map(a -> this.checkQueue(a))
+          .map(this::checkQueue)
           .filter(Objects::nonNull)
           .collect(Collectors.toList());
   }

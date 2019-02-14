@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
@@ -34,7 +35,8 @@ public final class CanonicalJobHelper {
     // TODO not yet implemented in Canonical
     //address.setCategory(actionAddress.getCategory());
 
-    createJobRequest.setJobIdentity(actionRequest.getCaseRef()); 
+    createJobRequest.setJobIdentity(actionRequest.getCaseRef());
+    createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setSurveyType(actionRequest.getSurveyRef()); 
     //TODO set as per data mapping
     //fwmtCreateJobRequest.setMandatoryResourceAuthNo(actionRequest();
@@ -61,7 +63,6 @@ public final class CanonicalJobHelper {
     createJobRequest.setContact(contact);
     
     Map<String, String> additionalPropertiesMap = new HashMap<>();
-    additionalPropertiesMap.put("caseId", actionRequest.getCaseId());
     additionalPropertiesMap.put("establishmentType", actionRequest.getAddress().getEstabType());
     additionalPropertiesMap.put("region", actionRequest.getRegion());
     createJobRequest.setAdditionalProperties(additionalPropertiesMap);

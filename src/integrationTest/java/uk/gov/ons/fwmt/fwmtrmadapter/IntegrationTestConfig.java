@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import uk.gov.ons.fwmt.census.rmadapter.config.GatewayActionsQueueConfig;
-import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
+import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
+import uk.gov.ons.census.fwmt.rmadapter.config.QueueConfig;
 import uk.gov.ons.fwmt.fwmtrmadapter.helper.TestReceiver;
 
 @Configuration

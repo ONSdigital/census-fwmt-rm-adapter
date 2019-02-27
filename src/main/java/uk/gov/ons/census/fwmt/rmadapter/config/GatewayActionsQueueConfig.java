@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.config;
+package uk.gov.ons.census.fwmt.rmadapter.config;
 
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;

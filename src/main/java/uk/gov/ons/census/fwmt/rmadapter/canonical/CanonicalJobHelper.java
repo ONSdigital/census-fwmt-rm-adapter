@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.canonical;
+package uk.gov.ons.census.fwmt.rmadapter.canonical;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -9,12 +9,12 @@ import java.util.UUID;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
-import uk.gov.ons.fwmt.census.canonical.v1.Address;
-import uk.gov.ons.fwmt.census.canonical.v1.CancelFieldWorkerJobRequest;
-import uk.gov.ons.fwmt.census.canonical.v1.Contact;
-import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
-import uk.gov.ons.fwmt.census.canonical.v1.UpdateFieldWorkerJobRequest;
-import uk.gov.ons.fwmt.census.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.canonical.v1.Address;
+import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.canonical.v1.Contact;
+import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.common.error.GatewayException;
 
 public final class CanonicalJobHelper {
 

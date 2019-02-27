@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.config;
+package uk.gov.ons.census.fwmt.rmadapter.config;
 
 import org.aopalliance.aop.Advice;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 
-import uk.gov.ons.fwmt.census.rmadapter.message.ActionInstructionReceiver;
+import uk.gov.ons.census.fwmt.rmadapter.message.ActionInstructionReceiver;
 
 @Configuration
 public class ActionFieldQueueConfig {

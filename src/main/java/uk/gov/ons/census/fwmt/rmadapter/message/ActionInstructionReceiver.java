@@ -1,13 +1,13 @@
-package uk.gov.ons.fwmt.census.rmadapter.message;
+package uk.gov.ons.census.fwmt.rmadapter.message;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.fwmt.census.common.error.GatewayException;
-import uk.gov.ons.fwmt.census.events.component.GatewayEventManager;
-import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobHelper;
-import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
+import uk.gov.ons.census.fwmt.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
+import uk.gov.ons.census.fwmt.rmadapter.canonical.CanonicalJobHelper;
+import uk.gov.ons.census.fwmt.rmadapter.service.RMAdapterService;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -16,10 +16,10 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
 
-import static uk.gov.ons.fwmt.census.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
-import static uk.gov.ons.fwmt.census.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
-import static uk.gov.ons.fwmt.census.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
-import static uk.gov.ons.fwmt.census.rmadapter.config.GatewayEventsConfig.RM_REQUEST_RECEIVED;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.RM_REQUEST_RECEIVED;
 
 @Component
 @Slf4j

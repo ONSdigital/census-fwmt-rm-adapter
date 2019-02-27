@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.message;
+package uk.gov.ons.census.fwmt.rmadapter.message;
 
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -11,8 +11,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import uk.gov.ons.fwmt.census.common.error.GatewayException;
-import uk.gov.ons.fwmt.census.rmadapter.config.GatewayActionsQueueConfig;
+import uk.gov.ons.census.fwmt.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
 
 @Slf4j
 @Component

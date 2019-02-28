@@ -31,7 +31,7 @@ version = '3.0.4-SNAPSHOT'
 
 mainClassName = 'uk.gov.ons.census.fwmt.rmadapter.Application'
 
-group = 'uk.gov.ons.fwmt'
+group = 'uk.gov.ons.census.fwmt'
 
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -180,7 +180,7 @@ task integrationTest(type: Test) {
 
 bootJar {
     baseName = 'census-fwmt-rm-adapter'
-    group = 'uk.gov.ons.fwmt'
+    group = 'uk.gov.ons.census.fwmt'
     version = version
     manifest {
         attributes(['Git-Commit': grgit.head().getAbbreviatedId(8),

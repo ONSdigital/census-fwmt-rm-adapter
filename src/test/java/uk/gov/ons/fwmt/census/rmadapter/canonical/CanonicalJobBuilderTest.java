@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.canonical;
+package uk.gov.ons.census.fwmt.rmadapter.canonical;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,11 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.fwmt.census.canonical.v1.CancelFieldWorkerJobRequest;
-import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
-import uk.gov.ons.fwmt.census.canonical.v1.UpdateFieldWorkerJobRequest;
-import uk.gov.ons.fwmt.census.common.error.GatewayException;
-import uk.gov.ons.fwmt.census.rmadapter.helper.ActionInstructionBuilder;
+import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.rmadapter.helper.ActionInstructionBuilder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CanonicalJobBuilderTest {

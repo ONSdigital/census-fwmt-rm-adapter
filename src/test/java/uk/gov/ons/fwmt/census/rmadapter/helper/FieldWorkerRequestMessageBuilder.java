@@ -1,11 +1,11 @@
-package uk.gov.ons.fwmt.census.rmadapter.helper;
+package uk.gov.ons.census.fwmt.rmadapter.helper;
 
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import uk.gov.ons.fwmt.census.canonical.v1.Address;
-import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.canonical.v1.Address;
+import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 
 public class FieldWorkerRequestMessageBuilder {
 

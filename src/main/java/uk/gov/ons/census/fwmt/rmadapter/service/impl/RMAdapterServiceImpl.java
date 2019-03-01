@@ -1,18 +1,18 @@
-package uk.gov.ons.fwmt.census.rmadapter.service.impl;
+package uk.gov.ons.census.fwmt.rmadapter.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.fwmt.census.common.error.GatewayException;
-import uk.gov.ons.fwmt.census.events.component.GatewayEventManager;
-import uk.gov.ons.fwmt.census.rmadapter.canonical.CanonicalJobHelper;
-import uk.gov.ons.fwmt.census.rmadapter.message.GatewayActionProducer;
-import uk.gov.ons.fwmt.census.rmadapter.service.RMAdapterService;
+import uk.gov.ons.census.fwmt.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
+import uk.gov.ons.census.fwmt.rmadapter.canonical.CanonicalJobHelper;
+import uk.gov.ons.census.fwmt.rmadapter.message.GatewayActionProducer;
+import uk.gov.ons.census.fwmt.rmadapter.service.RMAdapterService;
 
-import static uk.gov.ons.fwmt.census.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
-import static uk.gov.ons.fwmt.census.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
-import static uk.gov.ons.fwmt.census.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
 
 @Slf4j
 @Component

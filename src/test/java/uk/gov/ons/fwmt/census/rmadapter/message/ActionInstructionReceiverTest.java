@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.message;
+package uk.gov.ons.census.fwmt.rmadapter.message;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -23,9 +23,9 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
-import uk.gov.ons.fwmt.census.common.error.GatewayException;
-import uk.gov.ons.fwmt.census.events.component.GatewayEventManager;
-import uk.gov.ons.fwmt.census.rmadapter.service.impl.RMAdapterServiceImpl;
+import uk.gov.ons.census.fwmt.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
+import uk.gov.ons.census.fwmt.rmadapter.service.impl.RMAdapterServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ActionInstructionReceiverTest {

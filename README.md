@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/ONSdigital/fwmt-rm-adapter.svg?branch=master)](https://travis-ci.org/ONSdigital/fwmt-rm-adapter) [![codecov](https://codecov.io/gh/ONSdigital/fwmt-rm-adapter/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/fwmt-rm-adapter) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9a61e9e47fef456894559330ba96b82c)](https://www.codacy.com/app/ONSDigital_FWMT/fwmt-census-rm-adapter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/fwmt-census-rm-adapter&amp;utm_campaign=Badge_Grade)
-# fwmt-census-rm-adapter
+[![Build Status](https://travis-ci.org/ONSdigital/fwmt-rm-adapter.svg?branch=master)](https://travis-ci.org/ONSdigital/fwmt-rm-adapter) [![codecov](https://codecov.io/gh/ONSdigital/fwmt-rm-adapter/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/fwmt-rm-adapter) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9a61e9e47fef456894559330ba96b82c)](https://www.codacy.com/app/ONSDigital_FWMT/census-fwmt-rm-adapter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/census-fwmt-rm-adapter&amp;utm_campaign=Badge_Grade)
+# census-fwmt-rm-adapter
 
 This service is a gateway between the Response Management System and the FWMT job service.
 

@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter;
+package uk.gov.ons.census.fwmt.rmadapter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

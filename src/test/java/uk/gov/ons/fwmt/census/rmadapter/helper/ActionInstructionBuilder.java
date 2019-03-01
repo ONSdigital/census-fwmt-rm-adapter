@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.helper;
+package uk.gov.ons.census.fwmt.rmadapter.helper;
 
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;

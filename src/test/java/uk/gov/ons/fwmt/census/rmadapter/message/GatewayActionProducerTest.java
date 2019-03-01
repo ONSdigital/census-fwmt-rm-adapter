@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter.message;
+package uk.gov.ons.census.fwmt.rmadapter.message;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,11 +21,11 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import uk.gov.ons.fwmt.census.canonical.v1.CreateFieldWorkerJobRequest;
-import uk.gov.ons.fwmt.census.common.error.GatewayException;
-import uk.gov.ons.fwmt.census.rmadapter.config.GatewayActionsQueueConfig;
-import uk.gov.ons.fwmt.census.rmadapter.config.QueueConfig;
-import uk.gov.ons.fwmt.census.rmadapter.helper.FieldWorkerRequestMessageBuilder;
+import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
+import uk.gov.ons.census.fwmt.rmadapter.config.QueueConfig;
+import uk.gov.ons.census.fwmt.rmadapter.helper.FieldWorkerRequestMessageBuilder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GatewayActionProducerTest {

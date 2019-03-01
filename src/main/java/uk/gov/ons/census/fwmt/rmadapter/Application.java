@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.census.rmadapter;
+package uk.gov.ons.census.fwmt.rmadapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"uk.gov.ons.fwmt.census.rmadapter", "uk.gov.ons.fwmt.census.events"})
+@ComponentScan({"uk.gov.ons.census.fwmt.rmadapter", "uk.gov.ons.census.fwmt.events"})
 public class Application {
 
   @Bean

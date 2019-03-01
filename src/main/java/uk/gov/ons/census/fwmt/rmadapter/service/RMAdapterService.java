@@ -1,7 +1,7 @@
-package uk.gov.ons.fwmt.census.rmadapter.service;
+package uk.gov.ons.census.fwmt.rmadapter.service;
 
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.fwmt.census.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.common.error.GatewayException;
 
 public interface RMAdapterService {
 

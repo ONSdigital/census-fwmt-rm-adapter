@@ -13,6 +13,8 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 
 import java.util.UUID;
 
+import static uk.gov.ons.census.fwmt.common.data.modelcase.CaseRequest.TypeEnum.HH;
+
 public final class CanonicalJobHelper {
 
   public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
@@ -49,6 +51,13 @@ public final class CanonicalJobHelper {
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
     createJobRequest.setAddress(address);
+
+    if (String.valueOf(actionAddress.getType()).equals(String.valueOf(HH)) && actionAddress.getEstabType()
+        .equals("Sheltered Accommodation")) {
+      createJobRequest.setSai(true);
+    } else {
+      createJobRequest.setSai(false);
+    }
 
     Pause pause = new Pause();
     // Need to be updated with new xsd changes

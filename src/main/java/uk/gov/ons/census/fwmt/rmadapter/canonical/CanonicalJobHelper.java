@@ -1,20 +1,17 @@
 package uk.gov.ons.census.fwmt.rmadapter.canonical;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.Address;
 import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.Contact;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.canonical.v1.Pause;
 import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
+
+import java.util.UUID;
 
 public final class CanonicalJobHelper {
 
@@ -22,50 +19,47 @@ public final class CanonicalJobHelper {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
+    
+    createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
+    createJobRequest.setCaseReference(actionRequest.getCaseRef());
+    createJobRequest.setCaseReference("caseTypeCreate");
+    createJobRequest.setSurveyType("surveyTypeCreate");
+    createJobRequest.setEstablishmentType(actionAddress.getEstabType());
+
+    // does not apply to HouseHold
+    createJobRequest.setMandatoryResource(null);
+
+    createJobRequest.setCoordinatorId("add after xsd update");
+
+    Contact contact = new Contact();
+    contact.setForename(actionRequest.getContact().getForename());
+    contact.setSurname(actionRequest.getContact().getSurname());
+    contact.setOrganisationName(actionAddress.getOrganisationName());
+    contact.setPhoneNumber(actionRequest.getContact().getPhoneNumber());
+    createJobRequest.setContact(contact);
 
     Address address = new Address();
+    address.setARID(Long.valueOf("add once xsd update"));
+    address.setUPRN(Long.valueOf("add once xsd update"));
     address.setLine1(actionAddress.getLine1());
     address.setLine2(actionAddress.getLine2());
+    address.setLine3("add once xsd update");
     address.setTownName(actionAddress.getTownName());
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
-    address.setOrganisationName(actionAddress.getOrganisationName());
-    
-    // TODO not yet implemented in Canonical
-    //address.setCategory(actionAddress.getCategory());
-
-    createJobRequest.setJobIdentity(actionRequest.getCaseRef());
-    createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
-    createJobRequest.setSurveyType(actionRequest.getSurveyRef()); 
-    //TODO set as per data mapping
-    //fwmtCreateJobRequest.setMandatoryResourceAuthNo(actionRequest();
-    //fwmtCreateJobRequest.setPreallocatedJob();
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    try {
-      createJobRequest.setDueDate(LocalDate.parse(actionRequest.getReturnByDate(), formatter)); 
-    } catch (RuntimeException e) {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, e,
-          "Failed to convert return by date, expected format dd/MM/yyyy: ",
-          actionRequest.getReturnByDate());
-    }
-
     createJobRequest.setAddress(address);
-    createJobRequest.setActionType("Create");
-    
-    Contact contact = new Contact();
-    contact.setEmail(actionRequest.getContact().getEmailAddress());
-    contact.setForename(actionRequest.getContact().getForename());
-    contact.setPhoneNumber(actionRequest.getContact().getPhoneNumber());
-    contact.setSurname(actionRequest.getContact().getSurname());
-    
-    createJobRequest.setContact(contact);
-    
-    Map<String, String> additionalPropertiesMap = new HashMap<>();
-    additionalPropertiesMap.put("establishmentType", actionRequest.getAddress().getEstabType());
-    additionalPropertiesMap.put("region", actionRequest.getRegion());
-    createJobRequest.setAdditionalProperties(additionalPropertiesMap);
+
+    Pause pause = new Pause();
+    pause.setEffectiveDate("xsd");
+    pause.setCode("xsd");
+    pause.setReason("xsd");
+    //    pause.setHoldUntil("xsd");
+
+    createJobRequest.setCcsQuestionnaireURL("xsd");
+    createJobRequest.setCeDeliveryRequired("derived from treatment");
+    createJobRequest.setCeCE1Complete("xsd");
+    createJobRequest.setCeActualResponses("xsd");
 
     return createJobRequest;
   }

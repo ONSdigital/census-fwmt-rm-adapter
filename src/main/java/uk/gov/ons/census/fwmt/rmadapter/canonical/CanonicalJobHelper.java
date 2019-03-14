@@ -39,8 +39,8 @@ public final class CanonicalJobHelper {
     createJobRequest.setContact(contact);
 
     Address address = new Address();
-    address.setARID(Long.valueOf("add once xsd update"));
-    address.setUPRN(Long.valueOf("add once xsd update"));
+    address.setArid("add once xsd update");
+    address.setUprn("add once xsd update");
     address.setLine1(actionAddress.getLine1());
     address.setLine2(actionAddress.getLine2());
     address.setLine3("add once xsd update");
@@ -51,15 +51,18 @@ public final class CanonicalJobHelper {
     createJobRequest.setAddress(address);
 
     Pause pause = new Pause();
-    pause.setEffectiveDate("xsd");
+    // Need to be updated with new xsd changes
+    //    pause.setEffectiveDate();
     pause.setCode("xsd");
     pause.setReason("xsd");
     //    pause.setHoldUntil("xsd");
 
+    // Need to be corrected with new xsd
     createJobRequest.setCcsQuestionnaireURL("xsd");
-    createJobRequest.setCeDeliveryRequired("derived from treatment");
-    createJobRequest.setCeCE1Complete("xsd");
-    createJobRequest.setCeActualResponses("xsd");
+    createJobRequest.setCeDeliveryRequired(false);
+    createJobRequest.setCeCE1Complete(false);
+    createJobRequest.setCeExpectedResponses(50);
+    createJobRequest.setCeActualResponses(40);
 
     return createJobRequest;
   }

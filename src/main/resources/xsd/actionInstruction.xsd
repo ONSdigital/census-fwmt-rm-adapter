@@ -68,6 +68,8 @@
                         maxOccurs="1"/>
             <xs:element name="longitude" type="xs:decimal" minOccurs="0"
                         maxOccurs="1"/>
+            <xs:element name="oa" type="xs:string" minOccurs="0"
+                        maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -97,12 +99,17 @@
                     <xs:element name="surveyRef" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="returnByDate" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="sampleUnitRef" type="xs:string" minOccurs="1" maxOccurs="1"/>
-                    <xs:element name="undeliveredAsAddress" type="xs:boolean"/>
-                    <xs:element name="shelteredAccommodationIndicator" type="xs:boolean"/>
-                    <xs:element name="blankQreReturned" type="xs:boolean"/>
-                    <xs:element name="specialInstructions" type="xs:date" minOccurs="0" maxOccurs="1"/>
 
-                    <xs:element name="ccsAddressPostcode" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+                    <xs:element name="addressType" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="addressLevel" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="treatmentID" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="fieldOfficerID" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="coordinatorId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+                    <xs:element name="undeliveredAsAddress" type="xs:boolean"/>
+                    <xs:element name="blankQreReturned" type="xs:boolean"/>
+
                     <xs:element name="ccsQuestionaireUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="ceDeliveryReqd" type="xs:boolean"/>
                     <xs:element name="ceCE1Complete" type="xs:boolean"/>

@@ -52,7 +52,8 @@ public final class CanonicalJobHelper {
     address.setLongitude(actionAddress.getLongitude());
     createJobRequest.setAddress(address);
 
-    createJobRequest.setUua("undeliveredAsAddress from xsd");
+    // set from XSD
+    createJobRequest.setUua(false);
 
     if (String.valueOf(actionAddress.getType()).equals(String.valueOf(HH)) && actionAddress.getEstabType()
         .equals("Sheltered Accommodation")) {

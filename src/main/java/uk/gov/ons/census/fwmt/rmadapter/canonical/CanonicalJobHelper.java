@@ -19,7 +19,7 @@ public final class CanonicalJobHelper {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
-    
+
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
     createJobRequest.setCaseReference("caseTypeCreate");

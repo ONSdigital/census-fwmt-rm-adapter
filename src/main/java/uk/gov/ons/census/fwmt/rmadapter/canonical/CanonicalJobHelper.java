@@ -38,6 +38,7 @@ public final class CanonicalJobHelper {
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
     createJobRequest.setMandatoryResource(actionRequest.getFieldOfficerID());
     createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
+    createJobRequest.setActionType(actionRequest.getActionType());
 
     Contact contact = getContact(actionContact, actionAddress);
     createJobRequest.setContact(contact);
@@ -55,15 +56,21 @@ public final class CanonicalJobHelper {
     createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionaireUrl());
     createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
     createJobRequest.setCeCE1Complete(actionRequest.isCeCE1Complete());
-    createJobRequest.setCeExpectedResponses(actionRequest.getCeExpectedResponses().intValue());
-    createJobRequest.setCeActualResponses(actionRequest.getCeActualdResponses().intValue());
+
+    // TODO better login for handling this - only used in CE jobs
+    if (actionRequest.getCeExpectedResponses() != null) {
+      createJobRequest.setCeExpectedResponses(actionRequest.getCeExpectedResponses().intValue());
+    }
+    if (actionRequest.getCeActualdResponses() != null) {
+      createJobRequest.setCeActualResponses(actionRequest.getCeActualdResponses().intValue());
+    }
 
     return createJobRequest;
   }
 
   private static Pause getPause(ActionPause actionPause) {
     Pause pause = new Pause();
-    pause.setEffectiveDate(convertXmlGregorianCalendarToDate(actionPause.getEffectiveDate()));
+    //    pause.setEffectiveDate(convertXmlGregorianCalendarToDate(actionPause.getEffectiveDate()));
     pause.setCode(actionPause.getCode());
     pause.setReason(actionPause.getReason());
     pause.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionPause.getHoldUntil()));

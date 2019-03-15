@@ -6,6 +6,7 @@ import uk.gov.ons.census.fwmt.canonical.v1.Contact;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.Pause;
 import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
@@ -23,7 +24,7 @@ import static uk.gov.ons.census.fwmt.common.data.modelcase.CaseRequest.TypeEnum.
 
 public final class CanonicalJobHelper {
 
-  public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws Exception {
+  public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
@@ -95,7 +96,7 @@ public final class CanonicalJobHelper {
     return address;
   }
 
-  private static String setCaseType(ActionRequest actionRequest) throws Exception {
+  private static String setCaseType(ActionRequest actionRequest) throws GatewayException {
     String addressType = actionRequest.getAddressType();
     String addressLevel = actionRequest.getAddressLevel();
 
@@ -111,7 +112,7 @@ public final class CanonicalJobHelper {
       return "CSS Interview";
     } else {
       // TODO return a default string or throw an exception?
-      throw new Exception("Unable to match case type");
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set case type.");
     }
   }
 

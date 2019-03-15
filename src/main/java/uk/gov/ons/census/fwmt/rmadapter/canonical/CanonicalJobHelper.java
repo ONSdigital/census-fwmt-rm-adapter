@@ -6,77 +6,135 @@ import uk.gov.ons.census.fwmt.canonical.v1.Contact;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.Pause;
 import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
-import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionPause;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import static uk.gov.ons.census.fwmt.common.data.modelcase.CaseRequest.TypeEnum.HH;
 
 public final class CanonicalJobHelper {
 
-  public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
+  public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws Exception {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
+    ActionContact actionContact = actionRequest.getContact();
+    ActionPause actionPause = actionRequest.getPause();
 
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
-    createJobRequest.setCaseReference("caseTypeCreate");
-    createJobRequest.setSurveyType("surveyTypeCreate");
+    createJobRequest.setCaseType(setCaseType(actionRequest));
+    createJobRequest.setSurveyType("Treatment ID");
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
+    createJobRequest.setMandatoryResource(actionRequest.getFieldOfficerID());
+    createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
 
-    // does not apply to HouseHold
-    createJobRequest.setMandatoryResource(null);
-
-    createJobRequest.setCoordinatorId("add after xsd update");
-
-    Contact contact = new Contact();
-    contact.setForename(actionRequest.getContact().getForename());
-    contact.setSurname(actionRequest.getContact().getSurname());
-    contact.setOrganisationName(actionAddress.getOrganisationName());
-    contact.setPhoneNumber(actionRequest.getContact().getPhoneNumber());
+    Contact contact = getContact(actionContact, actionAddress);
     createJobRequest.setContact(contact);
 
+    Address address = getAddress(actionAddress);
+    createJobRequest.setAddress(address);
+
+    createJobRequest.setUua(actionRequest.isUndeliveredAsAddress());
+
+    checkIfSai(createJobRequest, actionAddress);
+
+    Pause pause = getPause(actionPause);
+    createJobRequest.setPause(pause);
+
+    createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionaireUrl());
+    createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
+    createJobRequest.setCeCE1Complete(actionRequest.isCeCE1Complete());
+    createJobRequest.setCeExpectedResponses(actionRequest.getCeExpectedResponses().intValue());
+    createJobRequest.setCeActualResponses(actionRequest.getCeActualdResponses().intValue());
+
+    return createJobRequest;
+  }
+
+  private static Pause getPause(ActionPause actionPause) {
+    Pause pause = new Pause();
+    pause.setEffectiveDate(convertXmlGregorianCalendarToDate(actionPause.getEffectiveDate()));
+    pause.setCode(actionPause.getCode());
+    pause.setReason(actionPause.getReason());
+    pause.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionPause.getHoldUntil()));
+
+    return pause;
+  }
+
+  private static Contact getContact(ActionContact actionContact, ActionAddress actionAddress) {
+    Contact contact = new Contact();
+    contact.setForename(actionContact.getForename());
+    contact.setSurname(actionContact.getSurname());
+    contact.setOrganisationName(actionAddress.getOrganisationName());
+    contact.setPhoneNumber(actionContact.getPhoneNumber());
+
+    return contact;
+  }
+
+  private static Address getAddress(ActionAddress actionAddress) {
     Address address = new Address();
-    address.setArid("add once xsd update");
-    address.setUprn("add once xsd update");
+    address.setArid(actionAddress.getArid());
+    address.setUprn(actionAddress.getUprn());
     address.setLine1(actionAddress.getLine1());
     address.setLine2(actionAddress.getLine2());
-    address.setLine3("add once xsd update");
+    address.setLine3(actionAddress.getLine3());
     address.setTownName(actionAddress.getTownName());
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
-    createJobRequest.setAddress(address);
 
-    // set from XSD
-    createJobRequest.setUua(false);
+    return address;
+  }
 
+  private static String setCaseType(ActionRequest actionRequest) throws Exception {
+    String addressType = actionRequest.getAddressType();
+    String addressLevel = actionRequest.getAddressLevel();
+
+    if (addressType.equals("HH")) {
+      return "Household";
+    } else if (addressType.equals("CE") && addressLevel.equals("E")) {
+      return "CE";
+    } else if (addressType.equals("CE") && addressLevel.equals("U")) {
+      return "CE Unit Level";
+    } else if (addressType.equals("SPG")) {
+      return "CE SPG";
+    } else if (addressType.equals("CSS Int")) {
+      return "CSS Interview";
+    } else {
+      // TODO return a default string or throw an exception?
+      throw new Exception("Unable to match case type");
+    }
+  }
+
+  private static void checkIfSai(CreateFieldWorkerJobRequest createJobRequest, ActionAddress actionAddress) {
     if (String.valueOf(actionAddress.getType()).equals(String.valueOf(HH)) && actionAddress.getEstabType()
         .equals("Sheltered Accommodation")) {
       createJobRequest.setSai(true);
     } else {
       createJobRequest.setSai(false);
     }
+  }
 
-    Pause pause = new Pause();
-    // Need to be updated with new xsd changes
-    //    pause.setEffectiveDate();
-    pause.setCode("xsd");
-    pause.setReason("xsd");
-    //    pause.setHoldUntil("xsd");
+  private static Date convertXmlGregorianCalendarToDate(XMLGregorianCalendar xmlGregorianCalendar) {
+    GregorianCalendar cal = xmlGregorianCalendar.toGregorianCalendar();
 
-    // Need to be corrected with new xsd
-    createJobRequest.setCcsQuestionnaireURL("xsd");
-    createJobRequest.setCeDeliveryRequired(false);
-    createJobRequest.setCeCE1Complete(false);
-    createJobRequest.setCeExpectedResponses(50);
-    createJobRequest.setCeActualResponses(40);
+    return cal.getTime();
+  }
 
-    return createJobRequest;
+  private static OffsetDateTime convertXmlGregorianToOffsetDateTime(XMLGregorianCalendar xmlGregorianCalendar) {
+    GregorianCalendar cal = xmlGregorianCalendar.toGregorianCalendar();
+    Date date = cal.getTime();
+
+    return OffsetDateTime.ofInstant(date.toInstant(), ZoneId.of("+01:00"));
   }
 
   public static CancelFieldWorkerJobRequest newCancelJob(ActionInstruction actionInstruction) {

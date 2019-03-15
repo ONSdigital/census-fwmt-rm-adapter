@@ -108,12 +108,12 @@
                     <xs:element name="fieldOfficerID" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="coordinatorId" type="xs:string" minOccurs="0" maxOccurs="1"/>
 
-                    <xs:element name="undeliveredAsAddress" type="xs:boolean"/>
-                    <xs:element name="blankQreReturned" type="xs:boolean"/>
+                    <xs:element name="undeliveredAsAddress" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="blankQreReturned" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
 
                     <xs:element name="ccsQuestionaireUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="ceDeliveryReqd" type="xs:boolean"/>
-                    <xs:element name="ceCE1Complete" type="xs:boolean"/>
+                    <xs:element name="ceDeliveryReqd" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="ceCE1Complete" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="ceExpectedResponses" type="xs:integer" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="ceActualdResponses" type="xs:integer" minOccurs="0" maxOccurs="1"/>
 

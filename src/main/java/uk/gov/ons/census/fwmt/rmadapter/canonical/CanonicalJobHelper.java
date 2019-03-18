@@ -53,15 +53,21 @@ public final class CanonicalJobHelper {
     Pause pause = getPause(actionPause);
     createJobRequest.setPause(pause);
 
-    createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionaireUrl());
-    createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
-    createJobRequest.setCeCE1Complete(actionRequest.isCeCE1Complete());
+    // TODO better login for handling this - only used in CE OR CCS jobs
+    if (actionRequest.getAddressType().equals("CSS")) {
+      createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionaireUrl());
+    }
+    if (actionRequest.getAddressType().equals("CE")) {
+      createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
+    }
+    if (actionRequest.getAddressType().equals("CE")) {
+      createJobRequest.setCeCE1Complete(actionRequest.isCeCE1Complete());
+    }
 
-    // TODO better login for handling this - only used in CE jobs
-    if (actionRequest.getCeExpectedResponses() != null) {
+    if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeExpectedResponses(actionRequest.getCeExpectedResponses().intValue());
     }
-    if (actionRequest.getCeActualdResponses() != null) {
+    if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeActualResponses(actionRequest.getCeActualdResponses().intValue());
     }
 
@@ -119,7 +125,8 @@ public final class CanonicalJobHelper {
       return "CSS Interview";
     } else {
       // TODO return a default string or throw an exception?
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set case type.");
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set case type using "
+              + addressType + " and " + addressLevel);
     }
   }
 

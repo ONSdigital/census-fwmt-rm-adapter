@@ -33,27 +33,27 @@ public final class CanonicalJobHelper {
 
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
-    createJobRequest.setCaseType(setCaseType(actionRequest));
-    createJobRequest.setSurveyType("Treatment ID");
+    createJobRequest.setCaseType(processCaseType(actionRequest));
+    createJobRequest.setSurveyType(actionRequest.getTreatmentID());
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
-    createJobRequest.setMandatoryResource(actionRequest.getFieldOfficerID());
+    createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
     createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
     createJobRequest.setActionType(actionRequest.getActionType());
 
     Contact contact = getContact(actionContact, actionAddress);
     createJobRequest.setContact(contact);
 
-    Address address = getAddress(actionAddress);
+    Address address = buildAddress(actionAddress);
     createJobRequest.setAddress(address);
 
     createJobRequest.setUua(actionRequest.isUndeliveredAsAddress());
+    createJobRequest.setBlankFormReturned(actionRequest.isBlankQreReturned());
 
-    checkIfSai(createJobRequest, actionAddress);
+    processShelteredAccomodationIndicator(createJobRequest, actionAddress);
 
-    Pause pause = getPause(actionPause);
+    Pause pause = buildPause(actionPause);
     createJobRequest.setPause(pause);
 
-    // TODO better login for handling this - only used in CE OR CCS jobs
     if (actionRequest.getAddressType().equals("CSS")) {
       createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionaireUrl());
     }
@@ -74,7 +74,7 @@ public final class CanonicalJobHelper {
     return createJobRequest;
   }
 
-  private static Pause getPause(ActionPause actionPause) {
+  private static Pause buildPause(ActionPause actionPause) {
     Pause pause = new Pause();
     //    pause.setEffectiveDate(convertXmlGregorianCalendarToDate(actionPause.getEffectiveDate()));
     pause.setCode(actionPause.getCode());
@@ -94,7 +94,7 @@ public final class CanonicalJobHelper {
     return contact;
   }
 
-  private static Address getAddress(ActionAddress actionAddress) {
+  private static Address buildAddress(ActionAddress actionAddress) {
     Address address = new Address();
     address.setArid(actionAddress.getArid());
     address.setUprn(actionAddress.getUprn());
@@ -109,7 +109,19 @@ public final class CanonicalJobHelper {
     return address;
   }
 
-  private static String setCaseType(ActionRequest actionRequest) throws GatewayException {
+  private static String processMandatoryResource(ActionRequest actionRequest) {
+    switch (actionRequest.getAddressType()) {
+    case "HH":
+      return null;
+    case "CE":
+      return actionRequest.getFieldOfficerID();
+    case "CSS":
+      return null;
+    }
+    return null;
+  }
+
+  private static String processCaseType(ActionRequest actionRequest) throws GatewayException {
     String addressType = actionRequest.getAddressType();
     String addressLevel = actionRequest.getAddressLevel();
 
@@ -124,13 +136,13 @@ public final class CanonicalJobHelper {
     } else if (addressType.equals("CSS Int")) {
       return "CSS Interview";
     } else {
-      // TODO return a default string or throw an exception?
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set case type using "
               + addressType + " and " + addressLevel);
     }
   }
 
-  private static void checkIfSai(CreateFieldWorkerJobRequest createJobRequest, ActionAddress actionAddress) {
+  private static void processShelteredAccomodationIndicator(CreateFieldWorkerJobRequest createJobRequest,
+      ActionAddress actionAddress) {
     if (String.valueOf(actionAddress.getType()).equals(String.valueOf(HH)) && actionAddress.getEstabType()
         .equals("Sheltered Accommodation")) {
       createJobRequest.setSai(true);

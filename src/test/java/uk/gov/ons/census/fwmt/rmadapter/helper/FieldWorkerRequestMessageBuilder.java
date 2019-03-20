@@ -1,11 +1,9 @@
 package uk.gov.ons.census.fwmt.rmadapter.helper;
 
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import uk.gov.ons.census.fwmt.canonical.v1.Address;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
+
+import java.math.BigDecimal;
 
 public class FieldWorkerRequestMessageBuilder {
 
@@ -23,10 +21,6 @@ public class FieldWorkerRequestMessageBuilder {
     address.setTownName("testTownName");
     fwmtCreateJobRequest.setActionType("create");
     fwmtCreateJobRequest.setAddress(address);
-    fwmtCreateJobRequest.setDueDate(LocalDate.of(2000, 11, 11));
-    fwmtCreateJobRequest.setJobIdentity("testJobIdentity");
-    fwmtCreateJobRequest.setMandatoryResourceAuthNo("testMandatoryResourceAuthNo");
-    fwmtCreateJobRequest.setPreallocatedJob(false);
     fwmtCreateJobRequest.setSurveyType("testSurveyType");
 
     return fwmtCreateJobRequest;

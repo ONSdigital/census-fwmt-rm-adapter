@@ -10,6 +10,8 @@ import uk.gov.ons.census.fwmt.rmadapter.canonical.CanonicalJobHelper;
 import uk.gov.ons.census.fwmt.rmadapter.message.GatewayActionProducer;
 import uk.gov.ons.census.fwmt.rmadapter.service.RMAdapterService;
 
+import java.time.LocalTime;
+
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
@@ -27,10 +29,10 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   public void sendJobRequest(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
       jobServiceProducer.sendMessage(CanonicalJobHelper.newCreateJob(actionInstruction));
-      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), CANONICAL_CREATE_SENT);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), CANONICAL_CREATE_SENT, LocalTime.now().toString());
     } else if (actionInstruction.getActionCancel() != null) {
       jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));
-      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, LocalTime.now().toString());
     }
   }
 }

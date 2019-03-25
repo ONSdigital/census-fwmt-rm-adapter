@@ -7,6 +7,10 @@ spring:
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
+  security:
+    user:
+      name: "user"
+      password: "password"
 
 management:
   # Place /info and /health in the root

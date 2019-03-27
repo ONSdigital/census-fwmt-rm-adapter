@@ -56,9 +56,9 @@ public class ActionInstructionReceiver {
 
   private void triggerEvent(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now().toString());
+      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now());
     } else if (actionInstruction.getActionCancel() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now().toString());
+      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now());
     }
   }
 }

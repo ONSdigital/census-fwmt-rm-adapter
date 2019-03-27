@@ -1,43 +1,31 @@
 package uk.gov.ons.census.fwmt.rmadapter.canonical;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.census.fwmt.rmadapter.helper.ActionInstructionBuilder;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
-@RunWith(MockitoJUnitRunner.class)
+import javax.xml.datatype.DatatypeConfigurationException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 public class CanonicalJobBuilderTest {
 
-  @InjectMocks CanonicalJobHelper messageConverter;
-
   @Test
-  public void createJob() throws GatewayException {
+  public void createJob() throws GatewayException, DatatypeConfigurationException {
     //Given
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilder();
 
     //When
-    CreateFieldWorkerJobRequest result = messageConverter.newCreateJob(actionInstruction);
+    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
 
     //Then
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    assertEquals(actionInstruction.getActionRequest().getSurveyRef(), result.getSurveyType());
-    assertEquals(
-        LocalDate.parse(actionInstruction.getActionRequest().getReturnByDate(), formatter),
-        result.getDueDate());
+    assertEquals(actionInstruction.getActionRequest().getCaseId(), String.valueOf(result.getCaseId()));
     assertEquals(actionInstruction.getActionRequest().getAddress().getLatitude(),
         result.getAddress().getLatitude());
     assertEquals(actionInstruction.getActionRequest().getAddress().getLongitude(),
@@ -57,10 +45,9 @@ public class CanonicalJobBuilderTest {
     ActionInstruction actionInstruction = actionInstructionBuilder.cancelActionInstructionBuilder();
 
     //When
-    CancelFieldWorkerJobRequest result = messageConverter.newCancelJob(actionInstruction);
+    CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
 
     //Then
-    assertEquals("testCaseRef", result.getJobIdentity());
     assertEquals(actionInstruction.getActionCancel().getReason(), result.getReason());
   }
 
@@ -71,7 +58,7 @@ public class CanonicalJobBuilderTest {
     ActionInstruction actionInstruction = actionInstructionBuilder.updateActionInstructionBuilder();
 
     //When
-    UpdateFieldWorkerJobRequest result = messageConverter.newUpdateJob(actionInstruction);
+    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
 
     //Then
     assertNotNull(result);

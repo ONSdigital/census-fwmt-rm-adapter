@@ -1,24 +1,23 @@
 package uk.gov.ons.census.fwmt.rmadapter.controller;
 
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import uk.gov.ons.census.fwmt.rmadapter.service.impl.MessageListenerService;
 
 @Controller
 public class QueueListenerController {
-
-  @Autowired MessageListenerService messageListenerService;
+  @Autowired SimpleMessageListenerContainer simpleMessageListenerContainer;
 
   @GetMapping("/startListener")
   public String startListener() {
-    messageListenerService.startMessageListener();
+    simpleMessageListenerContainer.start();
     return "Listener started";
   }
 
   @GetMapping("/stopListener")
   public String stopListener() {
-    messageListenerService.stopMessageListener();
+    simpleMessageListenerContainer.stop();
     return "Listener stopped";
   }
 }

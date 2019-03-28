@@ -7,6 +7,10 @@ spring:
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
+  security:
+    user:
+      name: "user"
+      password: "password"
 
 management:
   # Place /info and /health in the root
@@ -39,4 +43,3 @@ rabbitmq:
   initialinterval: 5000
   multiplier: 3.0
   maxInterval: 45000
-

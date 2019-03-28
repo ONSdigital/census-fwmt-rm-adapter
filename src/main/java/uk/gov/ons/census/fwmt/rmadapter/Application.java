@@ -7,9 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @ComponentScan({"uk.gov.ons.census.fwmt.rmadapter", "uk.gov.ons.census.fwmt.events"})
+@EnableSwagger2
 public class Application {
 
   @Bean

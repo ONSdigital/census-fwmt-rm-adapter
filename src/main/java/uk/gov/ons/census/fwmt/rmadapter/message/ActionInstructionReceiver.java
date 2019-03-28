@@ -15,6 +15,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
+import java.time.LocalTime;
 
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
@@ -55,9 +56,9 @@ public class ActionInstructionReceiver {
 
   private void triggerEvent(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), RM_REQUEST_RECEIVED);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now());
     } else if (actionInstruction.getActionCancel() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), RM_REQUEST_RECEIVED);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now());
     }
   }
 }

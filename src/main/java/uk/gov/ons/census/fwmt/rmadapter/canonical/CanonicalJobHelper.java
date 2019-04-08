@@ -34,7 +34,7 @@ public final class CanonicalJobHelper {
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
     createJobRequest.setCaseType(processCaseType(actionRequest));
-    createJobRequest.setSurveyType(actionRequest.getTreatmentID());
+    createJobRequest.setSurveyType(actionRequest.getTreatmentId());
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
     createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
     createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
@@ -55,7 +55,7 @@ public final class CanonicalJobHelper {
     createJobRequest.setPause(pause);
 
     if (actionRequest.getAddressType().equals("CSS")) {
-      createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionaireUrl());
+      createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionnaireUrl());
     }
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
@@ -68,7 +68,7 @@ public final class CanonicalJobHelper {
       createJobRequest.setCeExpectedResponses(actionRequest.getCeExpectedResponses().intValue());
     }
     if (actionRequest.getAddressType().equals("CE")) {
-      createJobRequest.setCeActualResponses(actionRequest.getCeActualdResponses().intValue());
+      createJobRequest.setCeActualResponses(actionRequest.getCeActualResponses().intValue());
     }
 
     return createJobRequest;
@@ -114,7 +114,7 @@ public final class CanonicalJobHelper {
     case "HH":
       return null;
     case "CE":
-      return actionRequest.getFieldOfficerID();
+      return actionRequest.getFieldOfficerId();
     case "CSS":
       return null;
     }

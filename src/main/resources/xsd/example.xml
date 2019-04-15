@@ -111,20 +111,20 @@
         <!--Optional:-->
         <addressLevel>string</addressLevel>
         <!--Optional:-->
-        <treatmentID>string</treatmentID>
+        <treatmentId>string</treatmentId>
         <!--Optional:-->
-        <fieldOfficerID>string</fieldOfficerID>
+        <fieldOfficerId>string</fieldOfficerId>
         <!--Optional:-->
         <coordinatorId>string</coordinatorId>
         <undeliveredAsAddress>false</undeliveredAsAddress>
         <blankQreReturned>false</blankQreReturned>
         <!--Optional:-->
-        <ccsQuestionaireUrl>string</ccsQuestionaireUrl>
+        <ccsQuestionnaireUrl>string</ccsQuestionnaireUrl>
         <ceDeliveryReqd>true</ceDeliveryReqd>
         <ceCE1Complete>true</ceCE1Complete>
         <!--Optional:-->
         <ceExpectedResponses>100</ceExpectedResponses>
         <!--Optional:-->
-        <ceActualdResponses>100</ceActualdResponses>
+        <ceActualResponses>100</ceActualResponses>
     </actionRequest>
 </ins:actionInstruction>

@@ -49,10 +49,12 @@ public final class CanonicalJobHelper {
     createJobRequest.setUua(actionRequest.isUndeliveredAsAddress());
     createJobRequest.setBlankFormReturned(actionRequest.isBlankQreReturned());
 
-    processShelteredAccomodationIndicator(createJobRequest, actionAddress);
+    processShelteredAccommodationIndicator(createJobRequest, actionAddress);
 
-    Pause pause = buildPause(actionPause);
-    createJobRequest.setPause(pause);
+    if (actionPause != null) {
+      Pause pause = buildPause(actionPause);
+      createJobRequest.setPause(pause);
+    }
 
     if (actionRequest.getAddressType().equals("CSS")) {
       createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionnaireUrl());
@@ -76,7 +78,7 @@ public final class CanonicalJobHelper {
 
   private static Pause buildPause(ActionPause actionPause) {
     Pause pause = new Pause();
-    //    pause.setEffectiveDate(convertXmlGregorianCalendarToDate(actionPause.getEffectiveDate()));
+    pause.setEffectiveDate(convertXmlGregorianCalendarToDate(actionPause.getEffectiveDate()));
     pause.setCode(actionPause.getCode());
     pause.setReason(actionPause.getReason());
     pause.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionPause.getHoldUntil()));
@@ -90,6 +92,7 @@ public final class CanonicalJobHelper {
     contact.setSurname(actionContact.getSurname());
     contact.setOrganisationName(actionAddress.getOrganisationName());
     contact.setPhoneNumber(actionContact.getPhoneNumber());
+    contact.setEmailAddress(actionContact.getEmailAddress());
 
     return contact;
   }
@@ -141,7 +144,7 @@ public final class CanonicalJobHelper {
     }
   }
 
-  private static void processShelteredAccomodationIndicator(CreateFieldWorkerJobRequest createJobRequest,
+  private static void processShelteredAccommodationIndicator(CreateFieldWorkerJobRequest createJobRequest,
       ActionAddress actionAddress) {
     if (String.valueOf(actionAddress.getType()).equals(String.valueOf(HH)) && actionAddress.getEstabType()
         .equals("Sheltered Accommodation")) {

@@ -1,5 +1,6 @@
 package uk.gov.ons.census.fwmt.rmadapter.canonical;
 
+import org.springframework.util.StringUtils;
 import uk.gov.ons.census.fwmt.canonical.v1.Address;
 import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.Contact;
@@ -115,7 +116,7 @@ public final class CanonicalJobHelper {
   private static String processMandatoryResource(ActionRequest actionRequest) {
     switch (actionRequest.getAddressType()) {
     case "HH":
-      if (actionRequest.getFieldOfficerId() != "") {
+      if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
         return actionRequest.getFieldOfficerId();
       } else {
         return null;

@@ -115,7 +115,11 @@ public final class CanonicalJobHelper {
   private static String processMandatoryResource(ActionRequest actionRequest) {
     switch (actionRequest.getAddressType()) {
     case "HH":
-      return null;
+      if (actionRequest.getFieldOfficerId() != "") {
+        return actionRequest.getFieldOfficerId();
+      } else {
+        return null;
+      }
     case "CE":
       return actionRequest.getFieldOfficerId();
     case "CSS":

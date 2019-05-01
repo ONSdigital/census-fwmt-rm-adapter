@@ -10,8 +10,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class CanonicalJobBuilderTest {
 
@@ -62,5 +61,29 @@ public class CanonicalJobBuilderTest {
 
     //Then
     assertNotNull(result);
+  }
+
+  @Test
+  public void createNisraJob() throws DatatypeConfigurationException, GatewayException {
+    //Given
+    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
+    ActionInstruction actionInstruction = actionInstructionBuilder.createNisraActionInstructionBuilder();
+
+    //When
+    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+
+    //Then
+    assertEquals(actionInstruction.getActionRequest().getCaseId(), String.valueOf(result.getCaseId()));
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLatitude(),
+        result.getAddress().getLatitude());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLongitude(),
+        result.getAddress().getLongitude());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getPostcode(),
+        result.getAddress().getPostCode());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getTownName(),
+        result.getAddress().getTownName());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLine1(), result.getAddress().getLine1());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLine2(), result.getAddress().getLine2());
+    assertEquals(actionInstruction.getActionRequest().getFieldOfficerId(), result.getMandatoryResource());
   }
 }

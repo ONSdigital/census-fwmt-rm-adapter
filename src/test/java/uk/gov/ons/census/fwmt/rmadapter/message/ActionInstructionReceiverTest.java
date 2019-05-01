@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.service.impl.RMAdapterServiceImpl;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
@@ -32,6 +33,9 @@ public class ActionInstructionReceiverTest {
 
   @Mock
   private RMAdapterServiceImpl rmAdapterService;
+
+  @Mock
+  private GatewayEventManager gatewayEventManager;
   
   private String ACTION_REQUEST_XML;
 

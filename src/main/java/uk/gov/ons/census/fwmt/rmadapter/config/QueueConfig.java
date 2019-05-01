@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.retry.RetryOperations;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
-
 import uk.gov.ons.census.fwmt.common.retry.GatewayMessageRecover;
 
 @Configuration
@@ -35,6 +34,17 @@ public class QueueConfig {
     this.virtualHost = virtualHost;
   }
 
+  public static CachingConnectionFactory createConnectionFactory(int port, String hostname, String virtualHost,
+      String password, String username) {
+    CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(hostname, port);
+
+    cachingConnectionFactory.setVirtualHost(virtualHost);
+    cachingConnectionFactory.setPassword(password);
+    cachingConnectionFactory.setUsername(username);
+
+    return cachingConnectionFactory;
+  }
+
   // Interceptor
   @Bean
   public RetryOperationsInterceptor interceptor(
@@ -55,16 +65,5 @@ public class QueueConfig {
   @Primary
   public ConnectionFactory connectionFactory() {
     return createConnectionFactory(port, hostname, virtualHost, password, username);
-  }
-  
-  public static CachingConnectionFactory createConnectionFactory(int port, String hostname, String virtualHost,
-      String password, String username) {
-    CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(hostname, port);
-
-    cachingConnectionFactory.setVirtualHost(virtualHost);
-    cachingConnectionFactory.setPassword(password);
-    cachingConnectionFactory.setUsername(username);
-
-    return cachingConnectionFactory;
   }
 }

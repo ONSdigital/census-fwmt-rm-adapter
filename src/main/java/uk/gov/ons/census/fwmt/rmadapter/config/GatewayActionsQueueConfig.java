@@ -14,14 +14,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GatewayActionsQueueConfig {
 
-  @Autowired
-  private AmqpAdmin amqpAdmin;
-  
   public static final String GATEWAY_ACTIONS_QUEUE = "Gateway.Actions";
   public static final String GATEWAY_ACTIONS_EXCHANGE = "Gateway.Actions.Exchange";
   public static final String GATEWAY_ACTIONS_ROUTING_KEY = "Gateway.Action.Request";
   public static final String GATEWAY_ACTIONS_DLQ = "Gateway.ActionsDLQ";
-  
+  @Autowired
+  private AmqpAdmin amqpAdmin;
+
   //Queues
   @Bean
   public Queue gatewayActionsQueue() {
@@ -31,7 +30,7 @@ public class GatewayActionsQueueConfig {
         .build();
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
-  } 
+  }
 
   //Dead Letter Queue
   @Bean
@@ -40,7 +39,7 @@ public class GatewayActionsQueueConfig {
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
   }
-  
+
   //Exchange
   @Bean
   public DirectExchange gatewayActionsExchange() {
@@ -58,5 +57,5 @@ public class GatewayActionsQueueConfig {
     binding.setAdminsThatShouldDeclare(amqpAdmin);
     return binding;
   }
- 
+
 }

@@ -29,15 +29,14 @@ import static org.mockito.Mockito.verify;
 public class ActionInstructionReceiverTest {
 
   @InjectMocks
-  private ActionInstructionReceiver rmReceiver;
+  private ActionInstructionReceiver actionInstructionReceiver;
 
   @Mock
   private RMAdapterServiceImpl rmAdapterService;
-  
+
   @Mock
   private GatewayEventManager gatewayEventManager;
-
-
+  
   private String ACTION_REQUEST_XML;
 
   private String ACTION_CANCEL_XML;
@@ -47,12 +46,11 @@ public class ActionInstructionReceiverTest {
     ACTION_REQUEST_XML = Resources.toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_REQUEST_XML.xml"), Charsets.UTF_8);
     ACTION_CANCEL_XML = Resources.toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_CANCEL_XML.xml"), Charsets.UTF_8);
   }
-  
-  
+
   @Test
   public void receiveMessageCreate() throws GatewayException {
 
-    rmReceiver.receiveMessage(ACTION_REQUEST_XML);
+    actionInstructionReceiver.receiveMessage(ACTION_REQUEST_XML);
 
     ArgumentCaptor <ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor.forClass(ActionInstruction.class);
 
@@ -87,7 +85,7 @@ public class ActionInstructionReceiverTest {
   @Test
   public void receiveMessageCancel() throws GatewayException {
 
-    rmReceiver.receiveMessage(ACTION_CANCEL_XML);
+    actionInstructionReceiver.receiveMessage(ACTION_CANCEL_XML);
 
     ArgumentCaptor <ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor.forClass(ActionInstruction.class);
 
@@ -105,6 +103,5 @@ public class ActionInstructionReceiverTest {
     assertEquals(actionCancel.getActionId(),"actionId");
 
     verify(rmAdapterService).sendJobRequest(actionInstruction);
-
   }
 }

@@ -1,16 +1,14 @@
 package uk.gov.ons.census.fwmt.rmadapter.message;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
 
@@ -31,7 +29,9 @@ public class GatewayActionProducer {
   @Retryable
   public void sendMessage(Object dto) throws GatewayException {
     String JSONJobRequest = convertToJSON(dto);
-    rabbitTemplate.convertAndSend(gatewayActionsExchange.getName(), GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY, JSONJobRequest);
+    rabbitTemplate
+        .convertAndSend(gatewayActionsExchange.getName(), GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY,
+            JSONJobRequest);
     log.info("Message send to queue");
   }
 

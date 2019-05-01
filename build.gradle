@@ -133,7 +133,7 @@ dependencies {
 //    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     compile("com.rabbitmq:amqp-client")
 
-    compileOnly("org.projectlombok:lombok")
+    compile("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
     testCompile("org.springframework.boot:spring-boot-starter-test") {

@@ -27,19 +27,19 @@ import static org.mockito.Mockito.when;
 public class GatewayActionProducerTest {
 
   private final String expectedJSON = "{\"jobIdentity\":\"testJobIdentity\",\"surveyType\":\"testSurveyType\",\"preallocatedJob\":false,\"mandatoryResourceAuthNo\":\"testMandatoryResourceAuthNo\",\"dueDate\":{\"year\":2000,\"month\":\"NOVEMBER\",\"era\":\"CE\",\"dayOfYear\":316,\"dayOfWeek\":\"SATURDAY\",\"leapYear\":true,\"dayOfMonth\":11,\"monthValue\":11,\"chronology\":{\"id\":\"ISO\",\"calendarType\":\"iso8601\"}},\"address\":{\"line1\":\"testLine1\",\"line2\":\"testLine2\",\"line3\":\"testLine3\",\"line4\":\"testLine4\",\"townName\":\"testTownName\",\"postCode\":\"testPostCode\",\"latitude\":1000.0,\"longitude\":1000.0}}";
-  
+
   @InjectMocks
-  private GatewayActionProducer jobServiceProducer;
+  private GatewayActionProducer gatewayActionProducer;
 
   @Mock
   private RabbitTemplate rabbitTemplate;
 
-
   @Mock
-  private DirectExchange gatewayActionsExchange;
+  private DirectExchange directExchange;
 
   @Captor
   private ArgumentCaptor argumentCaptor;
+
   @Mock
   private ObjectMapper objectMapper;
 
@@ -48,11 +48,11 @@ public class GatewayActionProducerTest {
     //Given
     FieldWorkerRequestMessageBuilder messageBuilder = new FieldWorkerRequestMessageBuilder();
     CreateFieldWorkerJobRequest createJobRequest = messageBuilder.buildCreateFieldWorkerJobRequest();
-    when(gatewayActionsExchange.getName()).thenReturn("fwmtExchange");
+    when(directExchange.getName()).thenReturn("fwmtExchange");
     when(objectMapper.writeValueAsString(eq(createJobRequest))).thenReturn(expectedJSON);
 
     //When
-    jobServiceProducer.sendMessage(createJobRequest);
+    gatewayActionProducer.sendMessage(createJobRequest);
 
     //Then
     verify(rabbitTemplate)
@@ -73,7 +73,7 @@ public class GatewayActionProducerTest {
 
     //When
     String JSONResponce;
-    JSONResponce = jobServiceProducer.convertToJSON(createJobRequest);
+    JSONResponce = gatewayActionProducer.convertToJSON(createJobRequest);
 
     //Then
     assertNotNull(JSONResponce);
@@ -87,7 +87,6 @@ public class GatewayActionProducerTest {
     when(objectMapper.writeValueAsString(eq(createJobRequest))).thenThrow(new JsonProcessingException("Error"){});
 
     //When
-    jobServiceProducer.sendMessage(createJobRequest);
-
+    gatewayActionProducer.sendMessage(createJobRequest);
   }
 }

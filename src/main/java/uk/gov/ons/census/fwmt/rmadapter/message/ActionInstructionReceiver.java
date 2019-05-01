@@ -3,11 +3,10 @@ package uk.gov.ons.census.fwmt.rmadapter.message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
-import uk.gov.ons.census.fwmt.rmadapter.canonical.CanonicalJobHelper;
 import uk.gov.ons.census.fwmt.rmadapter.service.RMAdapterService;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -17,9 +16,6 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
 import java.time.LocalTime;
 
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.RM_REQUEST_RECEIVED;
 
 @Component
@@ -56,9 +52,11 @@ public class ActionInstructionReceiver {
 
   private void triggerEvent(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now());
+      gatewayEventManager
+          .triggerEvent(actionInstruction.getActionRequest().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now());
     } else if (actionInstruction.getActionCancel() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now());
+      gatewayEventManager
+          .triggerEvent(actionInstruction.getActionCancel().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now());
     }
   }
 }

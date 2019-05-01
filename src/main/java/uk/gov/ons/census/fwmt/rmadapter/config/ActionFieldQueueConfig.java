@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
-
 import uk.gov.ons.census.fwmt.rmadapter.message.ActionInstructionReceiver;
 
 @Configuration
@@ -22,7 +21,7 @@ public class ActionFieldQueueConfig {
 
   @Autowired
   private AmqpAdmin amqpAdmin;
- 
+
   //Queues
   @Bean
   public Queue actionFieldQueue() {
@@ -32,7 +31,7 @@ public class ActionFieldQueueConfig {
         .build();
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
-  } 
+  }
 
   //Dead Letter Queue
   @Bean
@@ -47,7 +46,7 @@ public class ActionFieldQueueConfig {
   public MessageListenerAdapter actionFieldListenerAdapter(ActionInstructionReceiver receiver) {
     return new MessageListenerAdapter(receiver, "receiveMessage");
   }
-  
+
   //Message Listener
   @Bean
   public SimpleMessageListenerContainer actionFieldMessagerListener(
@@ -62,5 +61,5 @@ public class ActionFieldQueueConfig {
     container.setMessageListener(messageListenerAdapter);
     return container;
   }
-  
+
 }

@@ -145,7 +145,7 @@ public final class CanonicalJobHelper {
       return "CSS Interview";
     } else {
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set case type using "
-              + addressType + " and " + addressLevel);
+          + addressType + " and " + addressLevel);
     }
   }
 

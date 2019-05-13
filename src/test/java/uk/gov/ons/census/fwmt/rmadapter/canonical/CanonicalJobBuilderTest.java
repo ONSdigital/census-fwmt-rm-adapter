@@ -10,8 +10,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class CanonicalJobBuilderTest {
 
@@ -86,5 +85,33 @@ public class CanonicalJobBuilderTest {
     assertEquals(actionInstruction.getActionRequest().getAddress().getLine1(), result.getAddress().getLine1());
     assertEquals(actionInstruction.getActionRequest().getAddress().getLine2(), result.getAddress().getLine2());
     assertEquals(actionInstruction.getActionRequest().getFieldOfficerId(), result.getMandatoryResource());
+  }
+
+  @Test
+  public void cancelJobWithPause() {
+    //Given
+    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
+    ActionInstruction actionInstruction = actionInstructionBuilder.cancelActionInstructionBuilderForPause();
+
+    //When
+    CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
+
+    //Then
+    assertEquals(actionInstruction.getActionCancel().getReason(), result.getReason());
+    assertEquals(actionInstruction.getActionCancel().getAddressType(),"HH");
+    assertNotNull(result.getUntil());
+  }
+  @Test
+  public void cancelJobWithPauseNonHH() {
+    //Given
+    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
+    ActionInstruction actionInstruction = actionInstructionBuilder.cancelActionInstructionBuilderForNonHouseHold();
+
+    //When
+    CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
+
+    //Then
+    assertNull(result.getReason());
+    assertNull(result.getUntil());
   }
 }

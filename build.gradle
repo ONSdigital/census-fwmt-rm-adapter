@@ -98,9 +98,9 @@ task genJaxb {
 }
 
 dependencies {
-    compile('uk.gov.ons.census.fwmt:census-fwmt-canonical:1.0.10-RELEASE')
-    compile('uk.gov.ons.census.fwmt:census-fwmt-common:1.0.12-RELEASE')
+    compile('uk.gov.ons.census.fwmt:census-fwmt-canonical:1.0.11-RELEASE')
     compile("uk.gov.ons.census.fwmt:census-fwmt-events:1.0.5-RELEASE")
+    compile('uk.gov.ons.census.fwmt:census-fwmt-common:1.0.13-RELEASE')
     
     compile("com.google.guava:guava:27.0.1-jre")
 

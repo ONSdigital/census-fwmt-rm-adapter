@@ -10,6 +10,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static uk.gov.ons.census.fwmt.rmadapter.utils.UtilityMethods.getXMLGregorianCalendarNow;
 
@@ -59,6 +60,8 @@ public class ActionInstructionBuilder {
     actionCancel.setReason("reason");
     actionCancel.setActionId("testActionID");
     actionCancel.setCaseRef("testCaseRef");
+    actionCancel.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+    actionCancel.setAddressType("HH");
 
     actionInstruction.setActionCancel(actionCancel);
 
@@ -107,6 +110,36 @@ public class ActionInstructionBuilder {
     actionPause.setReason("reason");
 
     actionRequest.setPause(actionPause);
+
+    return actionInstruction;
+  }
+
+  public ActionInstruction cancelActionInstructionBuilderForPause() {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionCancel actionCancel = new ActionCancel();
+
+    actionCancel.setReason("reason");
+    actionCancel.setActionId("testActionID");
+    actionCancel.setCaseRef("testCaseRef");
+    actionCancel.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+    actionCancel.setAddressType("HH");
+
+    actionInstruction.setActionCancel(actionCancel);
+
+    return actionInstruction;
+  }
+
+  public ActionInstruction cancelActionInstructionBuilderForNonHouseHold() {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionCancel actionCancel = new ActionCancel();
+
+    actionCancel.setReason("reason");
+    actionCancel.setActionId("testActionID");
+    actionCancel.setCaseRef("testCaseRef");
+    actionCancel.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+    actionCancel.setAddressType("CC");
+
+    actionInstruction.setActionCancel(actionCancel);
 
     return actionInstruction;
   }

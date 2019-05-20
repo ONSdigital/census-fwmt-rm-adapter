@@ -18,7 +18,7 @@ import static uk.gov.ons.census.fwmt.rmadapter.utils.UtilityMethods.getXMLGregor
 
 public class ActionInstructionBuilder {
 
-  public ActionInstruction createActionInstructionBuilder() throws DatatypeConfigurationException {
+  public ActionInstruction createActionInstructionBuilder() {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionRequest actionRequest = new ActionRequest();
     ActionAddress actionAddress = new ActionAddress();
@@ -47,7 +47,7 @@ public class ActionInstructionBuilder {
     return actionInstruction;
   }
 
-  public ActionInstruction createActionInstructionBuilderCEE() throws DatatypeConfigurationException {
+  public ActionInstruction createActionInstructionBuilderCEE() {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionRequest actionRequest = new ActionRequest();
     ActionAddress actionAddress = new ActionAddress();
@@ -81,7 +81,7 @@ public class ActionInstructionBuilder {
     return actionInstruction;
   }
 
-  public ActionInstruction createActionInstructionBuilderCEU() throws DatatypeConfigurationException {
+  public ActionInstruction createActionInstructionBuilderCEU() {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionRequest actionRequest = new ActionRequest();
     ActionAddress actionAddress = new ActionAddress();

@@ -12,7 +12,9 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import java.time.LocalTime;
 
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.*;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_FAILED;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
 
 @Slf4j
 @Component
@@ -35,7 +37,8 @@ public class RMAdapterServiceImpl implements RMAdapterService {
         gatewayEventManager
             .triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, LocalTime.now());
       } else {
-        gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_FAILED, LocalTime.now());
+        gatewayEventManager
+            .triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_FAILED, LocalTime.now());
       }
     }
   }

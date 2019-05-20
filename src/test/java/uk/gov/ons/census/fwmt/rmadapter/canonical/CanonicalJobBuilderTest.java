@@ -10,12 +10,14 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class CanonicalJobBuilderTest {
 
   @Test
-  public void createJobHH() throws GatewayException, DatatypeConfigurationException {
+  public void createJobHH() throws GatewayException {
     //Given
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilder();
@@ -38,7 +40,7 @@ public class CanonicalJobBuilderTest {
   }
 
   @Test
-  public void createJobCEE() throws GatewayException, DatatypeConfigurationException {
+  public void createJobCEE() throws GatewayException {
     //Given
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilderCEE();
@@ -62,7 +64,7 @@ public class CanonicalJobBuilderTest {
   }
 
   @Test
-  public void createJobCEU() throws GatewayException, DatatypeConfigurationException {
+  public void createJobCEU() throws GatewayException {
     //Given
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilderCEU();
@@ -146,9 +148,10 @@ public class CanonicalJobBuilderTest {
 
     //Then
     assertEquals(actionInstruction.getActionCancel().getReason(), result.getReason());
-    assertEquals(actionInstruction.getActionCancel().getAddressType(),"HH");
+    assertEquals(actionInstruction.getActionCancel().getAddressType(), "HH");
     assertNotNull(result.getUntil());
   }
+
   @Test
   public void cancelJobWithPauseNonHH() {
     //Given

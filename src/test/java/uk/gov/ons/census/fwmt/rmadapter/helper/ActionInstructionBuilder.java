@@ -11,9 +11,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.UUID;
 
-import static java.lang.Boolean.TRUE;
 import static uk.gov.ons.census.fwmt.rmadapter.utils.UtilityMethods.getXMLGregorianCalendarNow;
 
 public class ActionInstructionBuilder {
@@ -139,7 +137,7 @@ public class ActionInstructionBuilder {
     return actionInstruction;
   }
 
-  public ActionInstruction createNisraActionInstructionBuilder () throws DatatypeConfigurationException {
+  public ActionInstruction createNisraActionInstructionBuilder() throws DatatypeConfigurationException {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionRequest actionRequest = new ActionRequest();
     ActionAddress actionAddress = new ActionAddress();

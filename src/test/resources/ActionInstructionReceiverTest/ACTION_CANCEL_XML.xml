@@ -1,7 +1,7 @@
 <ins:actionInstruction xmlns:ins="http://ons.gov.uk/ctp/response/action/message/instruction">
-	<actionCancel>
-		<actionId>actionId</actionId>
-		<responseRequired>true</responseRequired>
-		<reason>Reason</reason>
-	</actionCancel>
+    <actionCancel>
+        <actionId>actionId</actionId>
+        <responseRequired>true</responseRequired>
+        <reason>Reason</reason>
+    </actionCancel>
 </ins:actionInstruction>

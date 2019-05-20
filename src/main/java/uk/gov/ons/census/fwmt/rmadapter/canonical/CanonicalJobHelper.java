@@ -15,7 +15,6 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionPause;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -120,12 +119,12 @@ public final class CanonicalJobHelper {
       if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
         return actionRequest.getFieldOfficerId();
       } else {
-        return null;
+        break;
       }
     case "CE":
       return actionRequest.getFieldOfficerId();
     case "CSS":
-      return null;
+      break;
     }
     return null;
   }
@@ -184,7 +183,8 @@ public final class CanonicalJobHelper {
     return cancelJobRequest;
   }
 
-  private static void createIndefinitePause(CancelFieldWorkerJobRequest cancelJobRequest, ActionInstruction actionInstruction) {
+  private static void createIndefinitePause(CancelFieldWorkerJobRequest cancelJobRequest,
+      ActionInstruction actionInstruction) {
     cancelJobRequest.setReason(actionInstruction.getActionCancel().getReason());
     cancelJobRequest.setUntil(OffsetDateTime.parse("2030-01-01T00:00+00:00"));
   }

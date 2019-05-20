@@ -36,15 +36,17 @@ public class ActionInstructionReceiverTest {
 
   @Mock
   private GatewayEventManager gatewayEventManager;
-  
+
   private String ACTION_REQUEST_XML;
 
   private String ACTION_CANCEL_XML;
-  
+
   @Before
   public void setup() throws IOException {
-    ACTION_REQUEST_XML = Resources.toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_REQUEST_XML.xml"), Charsets.UTF_8);
-    ACTION_CANCEL_XML = Resources.toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_CANCEL_XML.xml"), Charsets.UTF_8);
+    ACTION_REQUEST_XML = Resources
+        .toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_REQUEST_XML.xml"), Charsets.UTF_8);
+    ACTION_CANCEL_XML = Resources
+        .toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_CANCEL_XML.xml"), Charsets.UTF_8);
   }
 
   @Test
@@ -52,7 +54,8 @@ public class ActionInstructionReceiverTest {
 
     actionInstructionReceiver.receiveMessage(ACTION_REQUEST_XML);
 
-    ArgumentCaptor <ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor.forClass(ActionInstruction.class);
+    ArgumentCaptor<ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor
+        .forClass(ActionInstruction.class);
 
     verify(rmAdapterService).sendJobRequest(actionInstructionArgumentCaptor.capture());
 
@@ -64,20 +67,20 @@ public class ActionInstructionReceiverTest {
 
     ActionRequest actionRequest = actionInstruction.getActionRequest();
 
-    assertEquals(actionRequest.getCaseId(),"caseId");
-    assertEquals(actionRequest.getActionType(),"actionType");
-    assertEquals(actionRequest.getActionId(),"actionId");
-    assertEquals(actionRequest.getReturnByDate(),"19950718");
-    assertEquals(actionRequest.getSurveyRef(),"surveyRef");
+    assertEquals(actionRequest.getCaseId(), "caseId");
+    assertEquals(actionRequest.getActionType(), "actionType");
+    assertEquals(actionRequest.getActionId(), "actionId");
+    assertEquals(actionRequest.getReturnByDate(), "19950718");
+    assertEquals(actionRequest.getSurveyRef(), "surveyRef");
 
     ActionAddress address = actionRequest.getAddress();
 
     assertEquals(address.getLatitude(), BigDecimal.valueOf(1234.56));
     assertEquals(address.getLongitude(), BigDecimal.valueOf(2345.67));
-    assertEquals(address.getLine1(),"line1");
-    assertEquals(address.getLine2(),"line2");
-    assertEquals(address.getPostcode(),"P05T C0D3");
-    assertEquals(address.getTownName(),"Town");
+    assertEquals(address.getLine1(), "line1");
+    assertEquals(address.getLine2(), "line2");
+    assertEquals(address.getPostcode(), "P05T C0D3");
+    assertEquals(address.getTownName(), "Town");
 
     verify(rmAdapterService).sendJobRequest(actionInstruction);
   }
@@ -87,7 +90,8 @@ public class ActionInstructionReceiverTest {
 
     actionInstructionReceiver.receiveMessage(ACTION_CANCEL_XML);
 
-    ArgumentCaptor <ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor.forClass(ActionInstruction.class);
+    ArgumentCaptor<ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor
+        .forClass(ActionInstruction.class);
 
     verify(rmAdapterService).sendJobRequest(actionInstructionArgumentCaptor.capture());
 
@@ -99,8 +103,8 @@ public class ActionInstructionReceiverTest {
 
     ActionCancel actionCancel = actionInstruction.getActionCancel();
 
-    assertEquals(actionCancel.getReason(),"Reason");
-    assertEquals(actionCancel.getActionId(),"actionId");
+    assertEquals(actionCancel.getReason(), "Reason");
+    assertEquals(actionCancel.getActionId(), "actionId");
 
     verify(rmAdapterService).sendJobRequest(actionInstruction);
   }

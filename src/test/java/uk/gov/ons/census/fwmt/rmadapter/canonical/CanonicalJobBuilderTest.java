@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class CanonicalJobBuilderTest {
 
   @Test
-  public void createJob() throws GatewayException, DatatypeConfigurationException {
+  public void createJobHH() throws GatewayException, DatatypeConfigurationException {
     //Given
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilder();
@@ -35,6 +35,54 @@ public class CanonicalJobBuilderTest {
         result.getAddress().getTownName());
     assertEquals(actionInstruction.getActionRequest().getAddress().getLine1(), result.getAddress().getLine1());
     assertEquals(actionInstruction.getActionRequest().getAddress().getLine2(), result.getAddress().getLine2());
+  }
+
+  @Test
+  public void createJobCEE() throws GatewayException, DatatypeConfigurationException {
+    //Given
+    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
+    ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilderCEE();
+
+    //When
+    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+
+    //Then
+    assertEquals(actionInstruction.getActionRequest().getCaseId(), String.valueOf(result.getCaseId()));
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLatitude(),
+        result.getAddress().getLatitude());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLongitude(),
+        result.getAddress().getLongitude());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getPostcode(),
+        result.getAddress().getPostCode());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getTownName(),
+        result.getAddress().getTownName());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLine1(), result.getAddress().getLine1());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLine2(), result.getAddress().getLine2());
+    assertEquals("CE", result.getCaseType());
+  }
+
+  @Test
+  public void createJobCEU() throws GatewayException, DatatypeConfigurationException {
+    //Given
+    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
+    ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilderCEU();
+
+    //When
+    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+
+    //Then
+    assertEquals(actionInstruction.getActionRequest().getCaseId(), String.valueOf(result.getCaseId()));
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLatitude(),
+        result.getAddress().getLatitude());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLongitude(),
+        result.getAddress().getLongitude());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getPostcode(),
+        result.getAddress().getPostCode());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getTownName(),
+        result.getAddress().getTownName());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLine1(), result.getAddress().getLine1());
+    assertEquals(actionInstruction.getActionRequest().getAddress().getLine2(), result.getAddress().getLine2());
+    assertEquals("CE Unit Level", result.getCaseType());
   }
 
   @Test

@@ -120,12 +120,12 @@ public final class CanonicalJobHelper {
       if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
         return actionRequest.getFieldOfficerId();
       } else {
-        return null;
+        break;
       }
     case "CE":
       return actionRequest.getFieldOfficerId();
     case "CSS":
-      return null;
+      break;
     }
     return null;
   }

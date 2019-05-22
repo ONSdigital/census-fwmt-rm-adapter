@@ -24,6 +24,7 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   @Autowired
   private GatewayActionProducer jobServiceProducer;
 
+
   public void sendJobRequest(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
       jobServiceProducer.sendMessage(CanonicalJobHelper.newCreateJob(actionInstruction));
@@ -37,6 +38,12 @@ public class RMAdapterServiceImpl implements RMAdapterService {
       } else {
         gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_FAILED, LocalTime.now());
       }
+    }
+    //  Note: Action pause requirments may changes, this has been coded temporarily to allow for further development wok to proceed
+    else if (actionInstruction.getActionUpdate() != null){
+      jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
+      gatewayEventManager
+          .triggerEvent(actionInstruction.getActionUpdate().getPause().getId(), CANONICAL_UPDATE_SENT, LocalTime.now());
     }
   }
 }

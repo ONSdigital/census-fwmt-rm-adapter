@@ -10,7 +10,9 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class CanonicalJobBuilderTest {
 
@@ -113,5 +115,17 @@ public class CanonicalJobBuilderTest {
     //Then
     assertNull(result.getReason());
     assertNull(result.getUntil());
+  }
+
+  @Test
+  public void updateJobWithPause() throws DatatypeConfigurationException {
+    //Given
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().updateActionInstructionWithPauseBuilder();
+
+    //When
+    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
+
+    //Then
+    assertEquals("update", result.getActionType());
   }
 }

@@ -13,9 +13,9 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionPause;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -83,7 +83,7 @@ public final class CanonicalJobHelper {
     pause.setEffectiveDate(convertXmlGregorianCalendarToDate(actionPause.getEffectiveDate()));
     pause.setCode(actionPause.getCode());
     pause.setReason(actionPause.getReason());
-    pause.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionPause.getHoldUntil()));
+    pause.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionPause.getUntil()));
 
     return pause;
   }
@@ -190,9 +190,19 @@ public final class CanonicalJobHelper {
   }
 
   public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) {
+    ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
     updateJobRequest.setActionType("update");
+    updateJobRequest.setUntil(OffsetDateTime.parse("2019-05-27T00:00+00:00"));
+    updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getPause().getId()));
+    updateJobRequest.setReason(actionUpdate.getPause().getReason());
+
+    if(!StringUtils.isEmpty(actionUpdate.getPause())) {
+      ActionPause actionPause = actionUpdate.getPause();
+      buildPause(actionPause);
+    }
 
     return updateJobRequest;
   }
+
 }

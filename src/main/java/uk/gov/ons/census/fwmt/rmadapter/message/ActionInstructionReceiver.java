@@ -57,6 +57,9 @@ public class ActionInstructionReceiver {
     } else if (actionInstruction.getActionCancel() != null) {
       gatewayEventManager
           .triggerEvent(actionInstruction.getActionCancel().getCaseId(), RM_REQUEST_RECEIVED, LocalTime.now());
+    } else if (actionInstruction.getActionUpdate() != null) {
+      gatewayEventManager
+          .triggerEvent(actionInstruction.getActionUpdate().getPause().getId(), RM_REQUEST_RECEIVED, LocalTime.now());
     }
   }
 }

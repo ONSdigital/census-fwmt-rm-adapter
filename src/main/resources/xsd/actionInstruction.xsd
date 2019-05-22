@@ -127,7 +127,8 @@
             <xs:element name="effectiveDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
             <xs:element name="code" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="reason" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="holdUntil" type="xs:date" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="until" type="xs:date" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -172,6 +173,7 @@
                 <xs:sequence>
                     <xs:element name="priority" type="Priority"/>
                     <xs:element name="events" type="ActionEvent"/>
+                    <xs:element name="pause" type="ActionPause" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

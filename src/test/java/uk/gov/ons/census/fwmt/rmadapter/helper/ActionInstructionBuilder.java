@@ -9,7 +9,9 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.Duration;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.UUID;
 
 import static uk.gov.ons.census.fwmt.rmadapter.utils.UtilityMethods.getXMLGregorianCalendarNow;
@@ -44,7 +46,7 @@ public class ActionInstructionBuilder {
     ActionPause actionPause = new ActionPause();
     actionPause.setCode("code");
     actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
-    actionPause.setHoldUntil(getXMLGregorianCalendarNow());
+    actionPause.setUntil(getXMLGregorianCalendarNow());
     actionPause.setReason("reason");
 
     actionRequest.setPause(actionPause);
@@ -106,7 +108,7 @@ public class ActionInstructionBuilder {
     ActionPause actionPause = new ActionPause();
     actionPause.setCode("code");
     actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
-    actionPause.setHoldUntil(getXMLGregorianCalendarNow());
+    actionPause.setUntil(getXMLGregorianCalendarNow());
     actionPause.setReason("reason");
 
     actionRequest.setPause(actionPause);
@@ -140,6 +142,19 @@ public class ActionInstructionBuilder {
     actionCancel.setAddressType("CC");
 
     actionInstruction.setActionCancel(actionCancel);
+
+    return actionInstruction;
+  }
+
+  public ActionInstruction updateActionInstructionWithPauseBuilder() throws DatatypeConfigurationException {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionUpdate actionUpdate = new ActionUpdate();
+    ActionPause actionPause = new ActionPause();
+
+    actionInstruction.setActionUpdate(actionUpdate);
+    actionPause.setUntil(getXMLGregorianCalendarNow());
+    actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
+    actionPause.setId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
 
     return actionInstruction;
   }

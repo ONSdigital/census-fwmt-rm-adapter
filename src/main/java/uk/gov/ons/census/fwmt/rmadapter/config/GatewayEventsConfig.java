@@ -8,6 +8,7 @@ import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 public class GatewayEventsConfig {
 
   public static final String CANONICAL_CREATE_SENT = "Canonical - Action Create Sent";
+  public static final String CANONICAL_UPDATE_FAILED = "Canonical - Action Update Failed";
   public static final String CANONICAL_UPDATE_SENT = "Canonical - Action Update Sent";
   public static final String CANONICAL_CANCEL_SENT = "Canonical - Action Cancel Sent";
   public static final String CANONICAL_CANCEL_FAILED ="Canonical - Action cancel failed. Address type is not a Household (HH)";
@@ -16,7 +17,7 @@ public class GatewayEventsConfig {
   @Bean
   public GatewayEventManager gatewayEventManager() {
     GatewayEventManager gatewayEventManager = new GatewayEventManager();
-    gatewayEventManager.addEventTypes(new String[] {CANONICAL_CREATE_SENT, CANONICAL_UPDATE_SENT, CANONICAL_CANCEL_SENT,
+    gatewayEventManager.addEventTypes(new String[] {CANONICAL_CREATE_SENT, CANONICAL_UPDATE_FAILED, CANONICAL_UPDATE_SENT, CANONICAL_CANCEL_SENT,
         RM_REQUEST_RECEIVED, CANONICAL_CANCEL_FAILED});
     return gatewayEventManager;
   }

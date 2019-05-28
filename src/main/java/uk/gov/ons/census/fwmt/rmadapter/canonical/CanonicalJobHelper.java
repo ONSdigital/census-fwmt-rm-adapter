@@ -192,14 +192,24 @@ public final class CanonicalJobHelper {
   public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) {
     ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
-    updateJobRequest.setActionType("update");
-    updateJobRequest.setUntil(OffsetDateTime.parse("2019-05-27T00:00+00:00"));
-    updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getPause().getId()));
-    updateJobRequest.setReason(actionUpdate.getPause().getReason());
+
+    OffsetDateTime dateConversion = null;
 
     if(!StringUtils.isEmpty(actionUpdate.getPause())) {
       ActionPause actionPause = actionUpdate.getPause();
       buildPause(actionPause);
+
+      updateJobRequest.setActionType("update");
+
+      if (!StringUtils.isEmpty(actionPause.getUntil())) {
+        dateConversion = OffsetDateTime.parse(actionPause.getUntil().toString());
+      } else {
+        dateConversion = OffsetDateTime.now().plusDays(7);
+      }
+
+      updateJobRequest.setUntil(dateConversion);
+      updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getPause().getId()));
+      updateJobRequest.setReason(actionUpdate.getPause().getReason());
     }
 
     return updateJobRequest;

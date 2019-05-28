@@ -156,6 +156,23 @@ public class ActionInstructionBuilder {
     actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
     actionPause.setId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
 
+    actionUpdate.setPause(actionPause);
+
+    return actionInstruction;
+  }
+
+  public ActionInstruction updateActionInstructionWithPauseNoCaseIdBuilder() throws DatatypeConfigurationException {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionUpdate actionUpdate = new ActionUpdate();
+    ActionPause actionPause = new ActionPause();
+
+    actionInstruction.setActionUpdate(actionUpdate);
+    actionPause.setUntil(getXMLGregorianCalendarNow());
+    actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
+    actionPause.setId("");
+
+    actionUpdate.setPause(actionPause);
+
     return actionInstruction;
   }
 }

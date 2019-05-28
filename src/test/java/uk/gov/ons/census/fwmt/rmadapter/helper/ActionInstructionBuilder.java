@@ -9,10 +9,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.Duration;
 import java.math.BigDecimal;
-import java.time.LocalTime;
-import java.util.UUID;
 
 import static uk.gov.ons.census.fwmt.rmadapter.utils.UtilityMethods.getXMLGregorianCalendarNow;
 

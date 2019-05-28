@@ -11,7 +11,7 @@ public class GatewayEventsConfig {
   public static final String CANONICAL_UPDATE_FAILED = "Canonical - Action Update Failed";
   public static final String CANONICAL_UPDATE_SENT = "Canonical - Action Update Sent";
   public static final String CANONICAL_CANCEL_SENT = "Canonical - Action Cancel Sent";
-  public static final String CANONICAL_CANCEL_FAILED ="Canonical - Action cancel failed. Address type is not a Household (HH)";
+  public static final String CANONICAL_CANCEL_FAILED = "Canonical - Action cancel failed. Address type is not a Household (HH)";
   public static final String RM_REQUEST_RECEIVED = "RM - Request Received";
 
   @Bean

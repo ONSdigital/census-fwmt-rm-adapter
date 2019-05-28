@@ -24,8 +24,8 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest
 public class RmAdapterApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
+  @Test
+  public void contextLoads() {
+  }
 
 }

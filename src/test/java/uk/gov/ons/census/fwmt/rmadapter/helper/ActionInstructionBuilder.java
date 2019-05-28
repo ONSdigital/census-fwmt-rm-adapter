@@ -15,7 +15,7 @@ import static uk.gov.ons.census.fwmt.rmadapter.utils.UtilityMethods.getXMLGregor
 
 public class ActionInstructionBuilder {
 
-  public ActionInstruction createActionInstructionBuilder() throws DatatypeConfigurationException {
+  public ActionInstruction createActionInstructionBuilder() {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionRequest actionRequest = new ActionRequest();
     ActionAddress actionAddress = new ActionAddress();
@@ -46,8 +46,73 @@ public class ActionInstructionBuilder {
     actionPause.setUntil(getXMLGregorianCalendarNow());
     actionPause.setReason("reason");
 
-    actionRequest.setPause(actionPause);
+    return actionInstruction;
+  }
 
+  public ActionInstruction createActionInstructionBuilderCEE() {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionRequest actionRequest = new ActionRequest();
+    ActionAddress actionAddress = new ActionAddress();
+
+    actionRequest.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+    actionRequest.setSurveyRef("testSurveyRef");
+    actionRequest.setReturnByDate("11/11/2000");
+    actionRequest.setUndeliveredAsAddress(false);
+    actionRequest.setBlankQreReturned(false);
+
+    ActionContact contact = new ActionContact();
+
+    actionAddress.setLatitude(BigDecimal.valueOf(1000.00));
+    actionAddress.setLongitude(BigDecimal.valueOf(1000.00));
+    actionAddress.setLine1("addressLine1");
+    actionAddress.setLine2("addressLine2");
+    actionAddress.setPostcode("testPostcode");
+    actionAddress.setTownName("testTownName");
+
+    actionRequest.setAddress(actionAddress);
+    actionInstruction.setActionRequest(actionRequest);
+    actionRequest.setContact(contact);
+
+    actionRequest.setAddressType("CE");
+    actionRequest.setAddressLevel("E");
+    actionRequest.setCeDeliveryReqd(true);
+    actionRequest.setCeCE1Complete(false);
+    actionRequest.setCeExpectedResponses(BigInteger.valueOf(20));
+    actionRequest.setCeActualResponses(BigInteger.valueOf(15));
+
+    return actionInstruction;
+  }
+
+  public ActionInstruction createActionInstructionBuilderCEU() {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionRequest actionRequest = new ActionRequest();
+    ActionAddress actionAddress = new ActionAddress();
+
+    actionRequest.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+    actionRequest.setSurveyRef("testSurveyRef");
+    actionRequest.setReturnByDate("11/11/2000");
+    actionRequest.setUndeliveredAsAddress(false);
+    actionRequest.setBlankQreReturned(false);
+
+    ActionContact contact = new ActionContact();
+
+    actionAddress.setLatitude(BigDecimal.valueOf(1000.00));
+    actionAddress.setLongitude(BigDecimal.valueOf(1000.00));
+    actionAddress.setLine1("addressLine1");
+    actionAddress.setLine2("addressLine2");
+    actionAddress.setPostcode("testPostcode");
+    actionAddress.setTownName("testTownName");
+
+    actionRequest.setAddress(actionAddress);
+    actionInstruction.setActionRequest(actionRequest);
+    actionRequest.setContact(contact);
+
+    actionRequest.setAddressType("CE");
+    actionRequest.setAddressLevel("U");
+    actionRequest.setCeDeliveryReqd(true);
+    actionRequest.setCeCE1Complete(false);
+    actionRequest.setCeExpectedResponses(BigInteger.valueOf(20));
+    actionRequest.setCeActualResponses(BigInteger.valueOf(15));
 
     return actionInstruction;
   }
@@ -76,7 +141,7 @@ public class ActionInstructionBuilder {
     return actionInstruction;
   }
 
-  public ActionInstruction createNisraActionInstructionBuilder () throws DatatypeConfigurationException {
+  public ActionInstruction createNisraActionInstructionBuilder() throws DatatypeConfigurationException {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionRequest actionRequest = new ActionRequest();
     ActionAddress actionAddress = new ActionAddress();

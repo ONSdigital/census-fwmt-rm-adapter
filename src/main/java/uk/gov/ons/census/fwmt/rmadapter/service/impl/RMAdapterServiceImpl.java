@@ -19,7 +19,6 @@ import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONI
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_FAILED;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
 
-
 @Slf4j
 @Component
 public class RMAdapterServiceImpl implements RMAdapterService {
@@ -42,7 +41,8 @@ public class RMAdapterServiceImpl implements RMAdapterService {
         gatewayEventManager
             .triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, LocalTime.now());
       } else {
-        gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_FAILED, LocalTime.now());
+        gatewayEventManager
+            .triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_FAILED, LocalTime.now());
       }
     }
     else if (actionInstruction.getActionUpdate() != null){

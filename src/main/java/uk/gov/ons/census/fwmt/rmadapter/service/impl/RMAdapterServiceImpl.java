@@ -3,7 +3,6 @@ package uk.gov.ons.census.fwmt.rmadapter.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.canonical.CanonicalJobHelper;
@@ -13,10 +12,8 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import java.time.LocalTime;
 
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_FAILED;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_FAILED;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
 
 
@@ -42,18 +39,15 @@ public class RMAdapterServiceImpl implements RMAdapterService {
         gatewayEventManager
             .triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, LocalTime.now());
       } else {
-        gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_FAILED, LocalTime.now());
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found"
+            + actionInstruction.getActionCancel().getAddressType());
       }
-    }
-    else if (actionInstruction.getActionUpdate() != null){
-      if (!StringUtils.isEmpty(actionInstruction.getActionUpdate().getPause().getId())) {
-        jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
-        gatewayEventManager
-            .triggerEvent(actionInstruction.getActionUpdate().getPause().getId(), CANONICAL_UPDATE_SENT, LocalTime.now());
-      } else {
-        gatewayEventManager
-            .triggerEvent("00000000-0000-0000-0000-000000000000", CANONICAL_UPDATE_FAILED, LocalTime.now());
-      }
+    } else if (actionInstruction.getActionUpdate() != null){
+      jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
+      gatewayEventManager
+          .triggerEvent(actionInstruction.getActionUpdate().getPause().getId(), CANONICAL_UPDATE_SENT, LocalTime.now());
+    } else {
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching request was found");
     }
   }
 }

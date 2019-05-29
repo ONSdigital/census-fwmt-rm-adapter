@@ -189,11 +189,11 @@ public final class CanonicalJobHelper {
     cancelJobRequest.setUntil(OffsetDateTime.parse("2030-01-01T00:00+00:00"));
   }
 
-  public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) {
+  public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) throws GatewayException {
     ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
 
-    OffsetDateTime dateConversion = null;
+    OffsetDateTime dateConversion;
 
     if(!StringUtils.isEmpty(actionUpdate.getPause())) {
       ActionPause actionPause = actionUpdate.getPause();
@@ -210,6 +210,10 @@ public final class CanonicalJobHelper {
       updateJobRequest.setUntil(dateConversion);
       updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getPause().getId()));
       updateJobRequest.setReason(actionUpdate.getPause().getReason());
+
+    } else {
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,
+          "Unable to update job as no pause was found");
     }
 
     return updateJobRequest;

@@ -9,5 +9,10 @@
 			<until>2019-05-27</until>
 			<id>8ed3fc08-e95f-44db-a6d7-cde4e76a6182</id>
 		</pause>
+		<caseId>8ed3fc08-e95f-44db-a6d7-cde4e76a6182</caseId>
+		<addressType>HH</addressType>
+		<undeliveredAsAddress>false</undeliveredAsAddress>
+		<blankQreReturned>false</blankQreReturned>
+		<ce1Complete>false</ce1Complete>
 	</actionUpdate>
 </ins:actionInstruction>

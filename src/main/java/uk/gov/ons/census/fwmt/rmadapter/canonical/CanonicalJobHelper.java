@@ -120,12 +120,12 @@ public final class CanonicalJobHelper {
       if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
         return actionRequest.getFieldOfficerId();
       } else {
-        return null;
+        break;
       }
     case "CE":
       return actionRequest.getFieldOfficerId();
     case "CSS":
-      return null;
+      break;
     }
     return null;
   }
@@ -184,7 +184,8 @@ public final class CanonicalJobHelper {
     return cancelJobRequest;
   }
 
-  private static void createIndefinitePause(CancelFieldWorkerJobRequest cancelJobRequest, ActionInstruction actionInstruction) {
+  private static void createIndefinitePause(CancelFieldWorkerJobRequest cancelJobRequest,
+      ActionInstruction actionInstruction) {
     cancelJobRequest.setReason(actionInstruction.getActionCancel().getReason());
     cancelJobRequest.setUntil(OffsetDateTime.parse("2030-01-01T00:00+00:00"));
   }

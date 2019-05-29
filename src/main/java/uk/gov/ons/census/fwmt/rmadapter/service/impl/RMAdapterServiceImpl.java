@@ -16,7 +16,6 @@ import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONI
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
 
-
 @Slf4j
 @Component
 public class RMAdapterServiceImpl implements RMAdapterService {

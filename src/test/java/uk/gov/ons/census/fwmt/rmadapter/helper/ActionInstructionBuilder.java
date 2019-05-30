@@ -10,12 +10,13 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import static uk.gov.ons.census.fwmt.rmadapter.utils.UtilityMethods.getXMLGregorianCalendarNow;
 
 public class ActionInstructionBuilder {
 
-  public ActionInstruction createActionInstructionBuilder() {
+  public ActionInstruction createActionInstructionBuilder() throws DatatypeConfigurationException {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionRequest actionRequest = new ActionRequest();
     ActionAddress actionAddress = new ActionAddress();

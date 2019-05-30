@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNull;
 public class CanonicalJobBuilderTest {
 
   @Test
-  public void createJobHH() throws GatewayException {
+  public void createJobHH() throws GatewayException, DatatypeConfigurationException {
     //Given
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilder();

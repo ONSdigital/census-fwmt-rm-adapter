@@ -16,7 +16,7 @@ import static uk.gov.ons.census.fwmt.rmadapter.utils.UtilityMethods.getXMLGregor
 
 public class ActionInstructionBuilder {
 
-  public ActionInstruction createActionInstructionBuilder() {
+  public ActionInstruction createActionInstructionBuilder() throws DatatypeConfigurationException {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionRequest actionRequest = new ActionRequest();
     ActionAddress actionAddress = new ActionAddress();
@@ -41,6 +41,11 @@ public class ActionInstructionBuilder {
     actionRequest.setContact(contact);
 
     actionRequest.setAddressType("HH");
+    ActionPause actionPause = new ActionPause();
+    actionPause.setCode("code");
+    actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
+    actionPause.setUntil(getXMLGregorianCalendarNow());
+    actionPause.setReason("reason");
 
     return actionInstruction;
   }
@@ -166,7 +171,7 @@ public class ActionInstructionBuilder {
     ActionPause actionPause = new ActionPause();
     actionPause.setCode("code");
     actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
-    actionPause.setHoldUntil(getXMLGregorianCalendarNow());
+    actionPause.setUntil(getXMLGregorianCalendarNow());
     actionPause.setReason("reason");
 
     actionRequest.setPause(actionPause);
@@ -200,6 +205,22 @@ public class ActionInstructionBuilder {
     actionCancel.setAddressType("CC");
 
     actionInstruction.setActionCancel(actionCancel);
+
+    return actionInstruction;
+  }
+
+  public ActionInstruction updateActionInstructionWithPauseBuilder() throws DatatypeConfigurationException {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionUpdate actionUpdate = new ActionUpdate();
+    ActionPause actionPause = new ActionPause();
+
+    actionInstruction.setActionUpdate(actionUpdate);
+    actionPause.setUntil(getXMLGregorianCalendarNow());
+    actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
+    actionPause.setId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+
+    actionUpdate.setPause(actionPause);
+//    actionUpdate.setAddressType("HH");
 
     return actionInstruction;
   }

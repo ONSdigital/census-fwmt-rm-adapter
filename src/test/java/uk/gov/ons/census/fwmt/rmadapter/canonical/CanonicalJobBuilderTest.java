@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNull;
 public class CanonicalJobBuilderTest {
 
   @Test
-  public void createJobHH() throws GatewayException {
+  public void createJobHH() throws GatewayException, DatatypeConfigurationException {
     //Given
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
     ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilder();
@@ -101,19 +101,6 @@ public class CanonicalJobBuilderTest {
   }
 
   @Test
-  public void updateJob() {
-    //Given
-    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-    ActionInstruction actionInstruction = actionInstructionBuilder.updateActionInstructionBuilder();
-
-    //When
-    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
-
-    //Then
-    assertNotNull(result);
-  }
-
-  @Test
   public void createNisraJob() throws DatatypeConfigurationException, GatewayException {
     //Given
     ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
@@ -164,5 +151,17 @@ public class CanonicalJobBuilderTest {
     //Then
     assertNull(result.getReason());
     assertNull(result.getUntil());
+  }
+
+  @Test
+  public void updateJobWithPause() throws DatatypeConfigurationException, GatewayException {
+    //Given
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().updateActionInstructionWithPauseBuilder();
+
+    //When
+    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
+
+    //Then
+    assertEquals("update", result.getActionType());
   }
 }

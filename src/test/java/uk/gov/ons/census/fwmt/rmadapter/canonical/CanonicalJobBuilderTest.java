@@ -100,19 +100,6 @@ public class CanonicalJobBuilderTest {
     assertEquals(actionInstruction.getActionCancel().getReason(), result.getReason());
   }
 
-//  @Test
-//  public void updateJob() throws GatewayException {
-//    //Given
-//    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-//    ActionInstruction actionInstruction = actionInstructionBuilder.updateActionInstructionBuilder();
-//
-//    //When
-//    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
-//
-//    //Then
-//    assertNotNull(result);
-//  }
-
   @Test
   public void createNisraJob() throws DatatypeConfigurationException, GatewayException {
     //Given

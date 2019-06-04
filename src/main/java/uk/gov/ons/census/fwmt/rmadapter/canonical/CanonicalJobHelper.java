@@ -13,8 +13,10 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionPause;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -190,9 +192,18 @@ public final class CanonicalJobHelper {
   }
 
   public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) {
+    ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
+
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
     updateJobRequest.setActionType("update");
-
+    updateJobRequest.setId(UUID.fromString(actionUpdate.getCaseId()));
+    updateJobRequest.setAddressType(actionUpdate.getAddressType());
+    updateJobRequest.setAddressLevel(actionUpdate.getAddressLevel());
+    updateJobRequest.setUndeliveredAsAddressed(actionUpdate.isUndeliveredAsAddress());
+    updateJobRequest.setUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
+    updateJobRequest.setCe1Complete(actionUpdate.isCe1Complete());
+    updateJobRequest.setCeExpectedResponses(actionUpdate.getCeExpectedResponses().intValue());
+    updateJobRequest.setCeActualResponses(actionUpdate.getCeActualResponses().intValue());
     return updateJobRequest;
   }
 }

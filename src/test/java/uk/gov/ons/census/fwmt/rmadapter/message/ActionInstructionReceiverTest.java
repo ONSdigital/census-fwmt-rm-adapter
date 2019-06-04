@@ -15,7 +15,6 @@ import uk.gov.ons.census.fwmt.rmadapter.service.impl.RMAdapterServiceImpl;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionPause;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 
 import java.io.IOException;
@@ -37,18 +36,18 @@ public class ActionInstructionReceiverTest {
 
   @Mock
   private GatewayEventManager gatewayEventManager;
-  
-  private String ACTION_CANCEL_XML;
 
   private String ACTION_REQUEST_XML;
 
-  private String ACTION_UPDATE_PAUSE_XML;
-  
+  private String ACTION_CANCEL_XML;
+
   @Before
   public void setup() throws IOException {
-    ACTION_CANCEL_XML = Resources.toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_CANCEL_XML.xml"), Charsets.UTF_8);
-    ACTION_REQUEST_XML = Resources.toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_REQUEST_XML.xml"), Charsets.UTF_8);
-    ACTION_UPDATE_PAUSE_XML = Resources.toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_UPDATE_PAUSE_XML.xml"), Charsets.UTF_8); }
+    ACTION_REQUEST_XML = Resources
+        .toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_REQUEST_XML.xml"), Charsets.UTF_8);
+    ACTION_CANCEL_XML = Resources
+        .toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_CANCEL_XML.xml"), Charsets.UTF_8);
+  }
 
   @Test
   public void receiveMessageCreate() throws GatewayException {
@@ -109,24 +108,4 @@ public class ActionInstructionReceiverTest {
 
     verify(rmAdapterService).sendJobRequest(actionInstruction);
   }
-
-  @Test
-  public void receiveMessageUpdatePause() throws GatewayException {
-    actionInstructionReceiver.receiveMessage(ACTION_UPDATE_PAUSE_XML);
-
-    ArgumentCaptor <ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor.forClass(ActionInstruction.class);
-
-    verify(rmAdapterService).sendJobRequest(actionInstructionArgumentCaptor.capture());
-
-    ActionInstruction actionInstruction = actionInstructionArgumentCaptor.getValue();
-
-    assertNotNull(actionInstruction.getActionUpdate());
-
-    ActionPause actionPause = actionInstruction.getActionUpdate().getPause();
-
-    assertEquals(String.valueOf("8ed3fc08-e95f-44db-a6d7-cde4e76a6182"), actionPause.getId());
-    assertEquals("2019-05-27", actionPause.getUntil().toString());
-    verify(rmAdapterService).sendJobRequest(actionInstruction);
-  }
-
 }

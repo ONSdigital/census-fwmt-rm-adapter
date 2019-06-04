@@ -13,7 +13,6 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionPause;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.OffsetDateTime;
@@ -83,7 +82,7 @@ public final class CanonicalJobHelper {
     pause.setEffectiveDate(convertXmlGregorianCalendarToDate(actionPause.getEffectiveDate()));
     pause.setCode(actionPause.getCode());
     pause.setReason(actionPause.getReason());
-    pause.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionPause.getUntil()));
+    pause.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionPause.getHoldUntil()));
 
     return pause;
   }
@@ -190,34 +189,10 @@ public final class CanonicalJobHelper {
     cancelJobRequest.setUntil(OffsetDateTime.parse("2030-01-01T00:00+00:00"));
   }
 
-  public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) throws GatewayException {
-    ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
+  public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) {
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
-
-    OffsetDateTime dateConversion;
-
-    if(!StringUtils.isEmpty(actionUpdate.getPause())) {
-      ActionPause actionPause = actionUpdate.getPause();
-      buildPause(actionPause);
-
-      updateJobRequest.setActionType("update");
-
-      if (!StringUtils.isEmpty(actionPause.getUntil())) {
-        dateConversion = OffsetDateTime.parse(actionPause.getUntil().toString());
-      } else {
-        dateConversion = OffsetDateTime.now().plusDays(7);
-      }
-
-      updateJobRequest.setUntil(dateConversion);
-      updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getPause().getId()));
-      updateJobRequest.setReason(actionUpdate.getPause().getReason());
-
-    } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,
-          "Unable to update job as no pause was found");
-    }
+    updateJobRequest.setActionType("update");
 
     return updateJobRequest;
   }
-
 }

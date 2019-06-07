@@ -182,6 +182,7 @@
                     <xs:element name="ce1Complete" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
                     <xs:element name="ceExpectedResponses" type="xs:integer" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="ceActualResponses" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="pause" type="ActionPause" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

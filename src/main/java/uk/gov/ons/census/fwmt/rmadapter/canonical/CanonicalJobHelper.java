@@ -16,7 +16,6 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -204,6 +203,8 @@ public final class CanonicalJobHelper {
     updateJobRequest.setCe1Complete(actionUpdate.isCe1Complete());
     updateJobRequest.setCeExpectedResponses(actionUpdate.getCeExpectedResponses().intValue());
     updateJobRequest.setCeActualResponses(actionUpdate.getCeActualResponses().intValue());
+    updateJobRequest.setBlankQreReturned(actionUpdate.isBlankQreReturned());
+
     return updateJobRequest;
   }
 }

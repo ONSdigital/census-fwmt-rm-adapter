@@ -9,6 +9,9 @@ import uk.gov.ons.census.fwmt.rmadapter.helper.ActionInstructionBuilder;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import java.time.OffsetDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -100,18 +103,20 @@ public class CanonicalJobBuilderTest {
     assertEquals(actionInstruction.getActionCancel().getReason(), result.getReason());
   }
 
-//  @Test
-//  public void updateJob() {
-//    //Given
-//    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-//    ActionInstruction actionInstruction = actionInstructionBuilder.updateActionInstructionBuilder();
-//
-//    //When
-//    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
-//
-//    //Then
-//    assertNotNull(result);
-//  }
+  @Test
+  public void updateJob() throws DatatypeConfigurationException{
+    //Given
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().updateActionInstructionBuilder();
+
+    //When
+    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
+
+    //Then
+    assertEquals(actionInstruction.getActionUpdate().getCaseId(), String.valueOf(result.getId()));
+    assertEquals(actionInstruction.getActionUpdate().getAddressType(), result.getAddressType());
+    assertEquals(actionInstruction.getActionUpdate().getActionableFrom().toString(), result.getUntil().toString());
+
+  }
 
   @Test
   public void createNisraJob() throws DatatypeConfigurationException, GatewayException {

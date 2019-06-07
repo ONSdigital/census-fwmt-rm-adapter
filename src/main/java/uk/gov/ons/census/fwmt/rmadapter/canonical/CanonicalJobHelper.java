@@ -170,7 +170,7 @@ public final class CanonicalJobHelper {
     GregorianCalendar cal = xmlGregorianCalendar.toGregorianCalendar();
     Date date = cal.getTime();
 
-    return OffsetDateTime.ofInstant(date.toInstant(), ZoneId.of("+01:00"));
+    return OffsetDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
   }
 
   public static CancelFieldWorkerJobRequest newCancelJob(ActionInstruction actionInstruction) {

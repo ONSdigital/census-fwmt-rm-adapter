@@ -112,9 +112,9 @@ public class CanonicalJobBuilderTest {
     UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
 
     //Then
-    assertEquals(actionInstruction.getActionUpdate().getCaseId(), String.valueOf(result.getId()));
+    assertEquals(actionInstruction.getActionUpdate().getCaseId(), String.valueOf(result.getCaseId()));
     assertEquals(actionInstruction.getActionUpdate().getAddressType(), result.getAddressType());
-    assertEquals(actionInstruction.getActionUpdate().getActionableFrom().toString(), result.getUntil().toString());
+    assertEquals(actionInstruction.getActionUpdate().getActionableFrom().toString(), result.getHoldUntil().toString());
 
   }
 

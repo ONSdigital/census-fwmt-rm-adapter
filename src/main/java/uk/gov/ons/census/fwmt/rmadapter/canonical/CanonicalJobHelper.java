@@ -195,15 +195,15 @@ public final class CanonicalJobHelper {
 
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
     updateJobRequest.setActionType("update");
-    updateJobRequest.setId(UUID.fromString(actionUpdate.getCaseId()));
+    updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getCaseId()));
     updateJobRequest.setAddressType(actionUpdate.getAddressType());
     updateJobRequest.setAddressLevel(actionUpdate.getAddressLevel());
-    updateJobRequest.setUndeliveredAsAddressed(actionUpdate.isUndeliveredAsAddress());
-    updateJobRequest.setUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
+    updateJobRequest.setUaa(actionUpdate.isUndeliveredAsAddress());
+    updateJobRequest.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
     updateJobRequest.setCe1Complete(actionUpdate.isCe1Complete());
     updateJobRequest.setCeExpectedResponses(actionUpdate.getCeExpectedResponses().intValue());
     updateJobRequest.setCeActualResponses(actionUpdate.getCeActualResponses().intValue());
-    updateJobRequest.setBlankQreReturned(actionUpdate.isBlankQreReturned());
+    updateJobRequest.setBlankFormReturned(actionUpdate.isBlankQreReturned());
 
     return updateJobRequest;
   }

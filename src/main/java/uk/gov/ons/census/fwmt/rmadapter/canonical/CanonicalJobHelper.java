@@ -40,9 +40,10 @@ public final class CanonicalJobHelper {
     createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
     createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
     createJobRequest.setActionType(actionRequest.getActionType());
-
-    Contact contact = getContact(actionContact, actionAddress);
-    createJobRequest.setContact(contact);
+    if (actionContact != null) {
+      Contact contact = getContact(actionContact, actionAddress);
+      createJobRequest.setContact(contact);
+    }
 
     Address address = buildAddress(actionAddress);
     createJobRequest.setAddress(address);

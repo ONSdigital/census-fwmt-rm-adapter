@@ -26,6 +26,10 @@ import static uk.gov.ons.census.fwmt.common.data.modelcase.CaseRequest.TypeEnum.
 
 public final class CanonicalJobHelper {
 
+  private static final String CANCEL_ACTION_TYPE = "Cancel";
+  private static final String CANCEL_REASON = "HQ Case Closure";
+  private static final String CANCEL_PAUSE_END_DATE = "2030-01-01T00:00+00:00";
+
   public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();
@@ -178,7 +182,7 @@ public final class CanonicalJobHelper {
     if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
       createIndefinitePause(cancelJobRequest, actionInstruction);
     }
-    cancelJobRequest.setActionType("Cancel");
+    cancelJobRequest.setActionType(CANCEL_ACTION_TYPE);
     cancelJobRequest.setCaseId(UUID.fromString(actionInstruction.getActionCancel().getCaseId()));
 
     return cancelJobRequest;
@@ -186,8 +190,8 @@ public final class CanonicalJobHelper {
 
   private static void createIndefinitePause(CancelFieldWorkerJobRequest cancelJobRequest,
       ActionInstruction actionInstruction) {
-    cancelJobRequest.setReason(actionInstruction.getActionCancel().getReason());
-    cancelJobRequest.setUntil(OffsetDateTime.parse("2030-01-01T00:00+00:00"));
+    cancelJobRequest.setReason(CANCEL_REASON);
+    cancelJobRequest.setUntil(OffsetDateTime.parse(CANCEL_PAUSE_END_DATE));
   }
 
   public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) {

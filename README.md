@@ -26,6 +26,10 @@ To run:
 
 ![](/canonical-rm-update-mapping.png "canonical - rm - update - mapping")
 
+## rm-canonical-cancel mapping
+
+![](/canonical-rm-cancel-mapping.png "canonical - rm - cancel - mapping")
+
 
 ## Copyright
 Copyright (C) 2018 Crown Copyright (Office for National Statistics)

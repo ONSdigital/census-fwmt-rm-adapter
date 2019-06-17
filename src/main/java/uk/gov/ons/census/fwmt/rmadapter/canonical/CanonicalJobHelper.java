@@ -13,6 +13,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionPause;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.OffsetDateTime;
@@ -169,7 +170,7 @@ public final class CanonicalJobHelper {
     GregorianCalendar cal = xmlGregorianCalendar.toGregorianCalendar();
     Date date = cal.getTime();
 
-    return OffsetDateTime.ofInstant(date.toInstant(), ZoneId.of("+01:00"));
+    return OffsetDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
   }
 
   public static CancelFieldWorkerJobRequest newCancelJob(ActionInstruction actionInstruction) {
@@ -190,8 +191,19 @@ public final class CanonicalJobHelper {
   }
 
   public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) {
+    ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
+
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
     updateJobRequest.setActionType("update");
+    updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getCaseId()));
+    updateJobRequest.setAddressType(actionUpdate.getAddressType());
+    updateJobRequest.setAddressLevel(actionUpdate.getAddressLevel());
+    updateJobRequest.setUaa(actionUpdate.isUndeliveredAsAddress());
+    updateJobRequest.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
+    updateJobRequest.setCe1Complete(actionUpdate.isCe1Complete());
+    updateJobRequest.setCeExpectedResponses(actionUpdate.getCeExpectedResponses().intValue());
+    updateJobRequest.setCeActualResponses(actionUpdate.getCeActualResponses().intValue());
+    updateJobRequest.setBlankFormReturned(actionUpdate.isBlankQreReturned());
 
     return updateJobRequest;
   }

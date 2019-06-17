@@ -12,9 +12,7 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import java.time.LocalTime;
 
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_FAILED;
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.*;
 
 @Slf4j
 @Component
@@ -37,9 +35,14 @@ public class RMAdapterServiceImpl implements RMAdapterService {
         gatewayEventManager
             .triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, LocalTime.now());
       } else {
-        gatewayEventManager
-            .triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_FAILED, LocalTime.now());
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
       }
+    } else if (actionInstruction.getActionUpdate() != null) {
+      jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
+      gatewayEventManager
+          .triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT, LocalTime.now());
+    } else {
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching request was found");
     }
   }
 }

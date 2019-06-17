@@ -16,13 +16,12 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,12 +40,16 @@ public class ActionInstructionReceiverTest {
 
   private String ACTION_CANCEL_XML;
 
+  private String ACTION_UPDATE_XML;
+
   @Before
   public void setup() throws IOException {
     ACTION_REQUEST_XML = Resources
         .toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_REQUEST_XML.xml"), Charsets.UTF_8);
     ACTION_CANCEL_XML = Resources
         .toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_CANCEL_XML.xml"), Charsets.UTF_8);
+    ACTION_UPDATE_XML = Resources
+        .toString(Resources.getResource("ActionInstructionReceiverTest/ACTION_UPDATE_XML.xml"), Charsets.UTF_8);
   }
 
   @Test
@@ -106,6 +109,25 @@ public class ActionInstructionReceiverTest {
     assertEquals(actionCancel.getReason(), "Reason");
     assertEquals(actionCancel.getActionId(), "actionId");
 
+    verify(rmAdapterService).sendJobRequest(actionInstruction);
+  }
+
+  @Test
+  public void receiveMessageUpdate() throws GatewayException {
+    actionInstructionReceiver.receiveMessage(ACTION_UPDATE_XML);
+
+    ArgumentCaptor <ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor.forClass(ActionInstruction.class);
+
+    verify(rmAdapterService).sendJobRequest(actionInstructionArgumentCaptor.capture());
+
+    ActionInstruction actionInstruction = actionInstructionArgumentCaptor.getValue();
+
+    assertNotNull(actionInstruction.getActionUpdate());
+
+    ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
+
+    assertEquals(String.valueOf("8ed3fc08-e95f-44db-a6d7-cde4e76a6182"), actionUpdate.getCaseId());
+    assertEquals("2019-06-12", actionUpdate.getActionableFrom().toString());
     verify(rmAdapterService).sendJobRequest(actionInstruction);
   }
 }

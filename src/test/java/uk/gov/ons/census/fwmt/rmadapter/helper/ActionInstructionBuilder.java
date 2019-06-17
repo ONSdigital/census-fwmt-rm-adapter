@@ -1,5 +1,6 @@
 package uk.gov.ons.census.fwmt.rmadapter.helper;
 
+import org.checkerframework.checker.units.qual.A;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
@@ -9,8 +10,10 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.OffsetDateTime;
 
 import static uk.gov.ons.census.fwmt.rmadapter.utils.UtilityMethods.getXMLGregorianCalendarNow;
 
@@ -128,9 +131,16 @@ public class ActionInstructionBuilder {
     return actionInstruction;
   }
 
-  public ActionInstruction updateActionInstructionBuilder() {
+  public ActionInstruction updateActionInstructionBuilder() throws DatatypeConfigurationException {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionUpdate actionUpdate = new ActionUpdate();
+
+    actionUpdate.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+    actionUpdate.setAddressType("HH");
+    actionUpdate.setBlankQreReturned(false);
+    actionUpdate.setActionableFrom(getXMLGregorianCalendarNow());
+    actionUpdate.setCeActualResponses(BigInteger.valueOf(0));
+    actionUpdate.setCeExpectedResponses(BigInteger.valueOf(0));
 
     actionInstruction.setActionUpdate(actionUpdate);
 

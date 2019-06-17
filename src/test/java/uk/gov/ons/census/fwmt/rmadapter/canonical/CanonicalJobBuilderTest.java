@@ -9,6 +9,9 @@ import uk.gov.ons.census.fwmt.rmadapter.helper.ActionInstructionBuilder;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import java.time.OffsetDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -101,16 +104,18 @@ public class CanonicalJobBuilderTest {
   }
 
   @Test
-  public void updateJob() {
+  public void updateJob() throws DatatypeConfigurationException{
     //Given
-    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-    ActionInstruction actionInstruction = actionInstructionBuilder.updateActionInstructionBuilder();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().updateActionInstructionBuilder();
 
     //When
     UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
 
     //Then
-    assertNotNull(result);
+    assertEquals(actionInstruction.getActionUpdate().getCaseId(), String.valueOf(result.getCaseId()));
+    assertEquals(actionInstruction.getActionUpdate().getAddressType(), result.getAddressType());
+    assertEquals(actionInstruction.getActionUpdate().getActionableFrom().toString(), result.getHoldUntil().toString());
+
   }
 
   @Test

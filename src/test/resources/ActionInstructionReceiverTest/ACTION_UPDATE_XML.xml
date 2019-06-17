@@ -1,0 +1,16 @@
+<ins:actionInstruction xmlns:ins="http://ons.gov.uk/ctp/response/action/message/instruction">
+    <actionUpdate>
+        <actionId>actionId</actionId>
+        <responseRequired>true</responseRequired>
+        <priority>lower</priority>
+        <events></events>
+        <event></event>
+        <caseId>8ed3fc08-e95f-44db-a6d7-cde4e76a6182</caseId>
+        <addressType>HH</addressType>
+        <addressLevel></addressLevel>
+        <undeliveredAsAddress>false</undeliveredAsAddress>
+        <blankQreReturned>false</blankQreReturned>
+        <actionableFrom>2019-06-12</actionableFrom>
+        <ce1Complete>false</ce1Complete>
+    </actionUpdate>
+</ins:actionInstruction>

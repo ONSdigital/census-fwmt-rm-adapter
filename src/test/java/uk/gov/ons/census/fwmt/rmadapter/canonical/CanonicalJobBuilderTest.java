@@ -100,7 +100,7 @@ public class CanonicalJobBuilderTest {
     CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
 
     //Then
-    assertEquals(actionInstruction.getActionCancel().getReason(), result.getReason());
+    assertEquals("HQ Case Closure", result.getReason());
   }
 
   @Test
@@ -152,7 +152,7 @@ public class CanonicalJobBuilderTest {
     CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
 
     //Then
-    assertEquals(actionInstruction.getActionCancel().getReason(), result.getReason());
+    assertEquals("HQ Case Closure", result.getReason());
     assertEquals(actionInstruction.getActionCancel().getAddressType(), "HH");
     assertNotNull(result.getUntil());
   }

@@ -33,7 +33,7 @@ after_success:
     git checkout master
     num=$(($(grep "version = .*\-SNAPSHOT" build.gradle | sed -e 's/^.*\.\([0-9]*\)-.*$/\1/')+1))
     sed -ie "s/\(^version.*[0-9]*\.[0-9]*\.\)[0-9]*/\1${num}/" build.gradle
-    echo num > concourse_build/version.txt
+    echo $num > concourse_build/version.txt
     git add build.gradle concourse_build/version.txt
     git commit -m "SNAPSHOT AND VERSION UPDATE"
     git push https://$UNAME:$PASSWD@$REPO

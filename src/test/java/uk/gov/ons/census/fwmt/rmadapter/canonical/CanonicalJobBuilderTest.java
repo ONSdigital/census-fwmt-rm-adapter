@@ -19,8 +19,7 @@ public class CanonicalJobBuilderTest {
   @Test
   public void createJobHH() throws GatewayException {
     //Given
-    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-    ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilder();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().createActionInstructionBuilder();
 
     //When
     CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
@@ -42,8 +41,7 @@ public class CanonicalJobBuilderTest {
   @Test
   public void createJobCEE() throws GatewayException {
     //Given
-    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-    ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilderCEE();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().createActionInstructionBuilderCEE();
 
     //When
     CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
@@ -66,8 +64,7 @@ public class CanonicalJobBuilderTest {
   @Test
   public void createJobCEU() throws GatewayException {
     //Given
-    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-    ActionInstruction actionInstruction = actionInstructionBuilder.createActionInstructionBuilderCEU();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().createActionInstructionBuilderCEU();
 
     //When
     CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
@@ -90,8 +87,7 @@ public class CanonicalJobBuilderTest {
   @Test
   public void cancelJob() {
     //Given
-    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-    ActionInstruction actionInstruction = actionInstructionBuilder.cancelActionInstructionBuilder();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().cancelActionInstructionBuilder();
 
     //When
     CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
@@ -150,8 +146,7 @@ public class CanonicalJobBuilderTest {
   @Test
   public void cancelJobWithPause() {
     //Given
-    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-    ActionInstruction actionInstruction = actionInstructionBuilder.cancelActionInstructionBuilderForPause();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().cancelActionInstructionBuilderForPause();
 
     //When
     CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
@@ -165,8 +160,7 @@ public class CanonicalJobBuilderTest {
   @Test
   public void cancelJobWithPauseNonHH() {
     //Given
-    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-    ActionInstruction actionInstruction = actionInstructionBuilder.cancelActionInstructionBuilderForNonHouseHold();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().cancelActionInstructionBuilderForNonHouseHold();
 
     //When
     CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);

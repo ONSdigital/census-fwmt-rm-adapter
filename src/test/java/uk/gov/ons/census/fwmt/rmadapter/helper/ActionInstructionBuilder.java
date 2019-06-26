@@ -38,10 +38,12 @@ public class ActionInstructionBuilder {
     actionAddress.setLine2("addressLine2");
     actionAddress.setPostcode("testPostcode");
     actionAddress.setTownName("testTownName");
+    actionAddress.setCountry("E");
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
     actionRequest.setContact(contact);
+    actionRequest.setCoordinatorId("coordID");
 
     actionRequest.setAddressType("HH");
 
@@ -67,11 +69,12 @@ public class ActionInstructionBuilder {
     actionAddress.setLine2("addressLine2");
     actionAddress.setPostcode("testPostcode");
     actionAddress.setTownName("testTownName");
+    actionAddress.setCountry("E");
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
     actionRequest.setContact(contact);
-
+    actionRequest.setCoordinatorId("coordID");
     actionRequest.setAddressType("CE");
     actionRequest.setAddressLevel("E");
     actionRequest.setCeDeliveryReqd(true);
@@ -101,6 +104,7 @@ public class ActionInstructionBuilder {
     actionAddress.setLine2("addressLine2");
     actionAddress.setPostcode("testPostcode");
     actionAddress.setTownName("testTownName");
+    actionAddress.setCountry("E");
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
@@ -108,6 +112,7 @@ public class ActionInstructionBuilder {
 
     actionRequest.setAddressType("CE");
     actionRequest.setAddressLevel("U");
+    actionRequest.setCoordinatorId("coordID");
     actionRequest.setCeDeliveryReqd(true);
     actionRequest.setCeCE1Complete(false);
     actionRequest.setCeExpectedResponses(BigInteger.valueOf(20));

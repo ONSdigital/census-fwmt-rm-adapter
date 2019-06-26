@@ -43,17 +43,25 @@ public final class CanonicalJobHelper {
     createJobRequest.setSurveyType(actionRequest.getTreatmentId());
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
 
-    if (actionAddress.getCountry() == "N") {
-      if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId()) &&
-          !StringUtils.isEmpty(actionRequest.getCoordinatorId())) {
+    if (actionAddress.getCountry().equals("N")) {
+      if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
       createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,
-            "A NISRA request was sent but did not include a field officer ID and/or coordinator ID for case {}"
-            , actionRequest.getCaseId());
+            "A NISRA request was sent but did not include a field officer ID and/or coordinator ID for case {}",
+            actionRequest.getCaseId());
       }
     }
-    createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
+
+    // Coordinator ID should always be present but if it's not then a null pointer exception would be thrown. Added a
+    // Try/Catch to allow user to know what went wrong
+    try {
+      createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
+    } catch (Exception e) {
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,
+          "A case request was sent that did not include a coordinator ID for case {}",
+          actionRequest.getCaseId());
+    }
     createJobRequest.setActionType(actionRequest.getActionType());
 
     Contact contact = getContact(actionContact, actionAddress);

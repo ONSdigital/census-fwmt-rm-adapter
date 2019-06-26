@@ -42,7 +42,15 @@ public final class CanonicalJobHelper {
     createJobRequest.setCaseType(processCaseType(actionRequest));
     createJobRequest.setSurveyType(actionRequest.getTreatmentId());
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
-    createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
+
+    if (actionAddress.getCountry() == "N") {
+      if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
+      createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
+      } else {
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,
+            "A NISRA request was sent but did not include an officer ID for case {}", actionRequest.getCaseId());
+      }
+    }
     createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
     createJobRequest.setActionType(actionRequest.getActionType());
 

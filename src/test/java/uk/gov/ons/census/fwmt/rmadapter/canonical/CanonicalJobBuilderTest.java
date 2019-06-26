@@ -9,9 +9,6 @@ import uk.gov.ons.census.fwmt.rmadapter.helper.ActionInstructionBuilder;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import java.time.OffsetDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -121,8 +118,7 @@ public class CanonicalJobBuilderTest {
   @Test
   public void createNisraJob() throws DatatypeConfigurationException, GatewayException {
     //Given
-    ActionInstructionBuilder actionInstructionBuilder = new ActionInstructionBuilder();
-    ActionInstruction actionInstruction = actionInstructionBuilder.createNisraActionInstructionBuilder();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().createNisraActionInstructionBuilder();
 
     //When
     CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
@@ -140,6 +136,15 @@ public class CanonicalJobBuilderTest {
     assertEquals(actionInstruction.getActionRequest().getAddress().getLine1(), result.getAddress().getLine1());
     assertEquals(actionInstruction.getActionRequest().getAddress().getLine2(), result.getAddress().getLine2());
     assertEquals(actionInstruction.getActionRequest().getFieldOfficerId(), result.getMandatoryResource());
+  }
+
+  @Test (expected = GatewayException.class)
+  public void createIncorrectNISRAJob() throws DatatypeConfigurationException, GatewayException {
+    // Given
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().createIncorrectNisraActionInstructionBuilder();
+
+    // When
+    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
   }
 
   @Test

@@ -44,11 +44,13 @@ public final class CanonicalJobHelper {
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
 
     if (actionAddress.getCountry() == "N") {
-      if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
+      if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId()) &&
+          !StringUtils.isEmpty(actionRequest.getCoordinatorId())) {
       createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,
-            "A NISRA request was sent but did not include an officer ID for case {}", actionRequest.getCaseId());
+            "A NISRA request was sent but did not include a field officer ID and/or coordinator ID for case {}"
+            , actionRequest.getCaseId());
       }
     }
     createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());

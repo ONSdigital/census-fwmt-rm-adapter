@@ -172,6 +172,7 @@ public class ActionInstructionBuilder {
     actionInstruction.setActionRequest(actionRequest);
     actionRequest.setContact(contact);
     actionRequest.setFieldOfficerId("testFieldOfficer");
+    actionRequest.setCoordinatorId("testCoord");
 
     actionRequest.setAddressType("HH");
     ActionPause actionPause = new ActionPause();

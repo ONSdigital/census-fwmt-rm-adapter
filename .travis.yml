@@ -35,7 +35,7 @@ after_success:
     version=$(grep "version = .*\-SNAPSHOT" build.gradle | sed -E "s/version = '(.+)-SNAPSHOT'/\\1/")
     sed -ie "s/\(^version.*[0-9]*\.[0-9]*\.\)[0-9]*/\1${num}/" build.gradle
     echo $version > concourse_build/version.txt
-    git add build.gradle concourse_build/version.txt
+    git add build.gradle 
     git commit -m "SNAPSHOT UPDATE"
     git push https://$UNAME:$PASSWD@$REPO
   fi

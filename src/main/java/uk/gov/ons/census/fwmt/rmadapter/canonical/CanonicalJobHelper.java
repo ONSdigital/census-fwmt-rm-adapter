@@ -64,8 +64,10 @@ public final class CanonicalJobHelper {
     }
     createJobRequest.setActionType(actionRequest.getActionType());
 
-    Contact contact = getContact(actionContact, actionAddress);
-    createJobRequest.setContact(contact);
+    if (!StringUtils.isEmpty(actionContact)) {
+      Contact contact = getContact(actionContact, actionAddress);
+      createJobRequest.setContact(contact);
+    }
 
     Address address = buildAddress(actionAddress);
     createJobRequest.setAddress(address);
@@ -212,16 +214,24 @@ public final class CanonicalJobHelper {
     cancelJobRequest.setUntil(OffsetDateTime.parse(CANCEL_PAUSE_END_DATE));
   }
 
-  public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) {
+  public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) throws GatewayException {
     ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
 
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
     updateJobRequest.setActionType("update");
+
     updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getCaseId()));
     updateJobRequest.setAddressType(actionUpdate.getAddressType());
     updateJobRequest.setAddressLevel(actionUpdate.getAddressLevel());
     updateJobRequest.setUaa(actionUpdate.isUndeliveredAsAddress());
-    updateJobRequest.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
+
+    if (!actionInstruction.getActionUpdate().getAddressType().equals("CCS")) {
+      updateJobRequest.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
+    } else {
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "A case of type CCS cannot be paused for case ID: "
+              + actionUpdate.getCaseId());
+    }
+
     updateJobRequest.setCe1Complete(actionUpdate.isCe1Complete());
     updateJobRequest.setCeExpectedResponses(actionUpdate.getCeExpectedResponses().intValue());
     updateJobRequest.setCeActualResponses(actionUpdate.getCeActualResponses().intValue());

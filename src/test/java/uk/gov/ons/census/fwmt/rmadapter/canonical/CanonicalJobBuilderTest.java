@@ -97,7 +97,7 @@ public class CanonicalJobBuilderTest {
   }
 
   @Test
-  public void updateJob() throws DatatypeConfigurationException{
+  public void updateJob() throws DatatypeConfigurationException, GatewayException {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().updateActionInstructionBuilder();
 
@@ -108,6 +108,16 @@ public class CanonicalJobBuilderTest {
     assertEquals(actionInstruction.getActionUpdate().getCaseId(), String.valueOf(result.getCaseId()));
     assertEquals(actionInstruction.getActionUpdate().getAddressType(), result.getAddressType());
     assertEquals(actionInstruction.getActionUpdate().getActionableFrom().toString(), result.getHoldUntil().toString());
+
+  }
+
+  @Test (expected = GatewayException.class)
+  public void updateButNoPauseCCSJob() throws DatatypeConfigurationException, GatewayException {
+    //Given
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().updateCCSActionInstructionBuilder();
+
+    //When
+    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
 
   }
 

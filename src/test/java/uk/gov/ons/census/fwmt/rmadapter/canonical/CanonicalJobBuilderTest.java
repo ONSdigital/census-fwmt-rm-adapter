@@ -169,4 +169,13 @@ public class CanonicalJobBuilderTest {
     assertNull(result.getReason());
     assertNull(result.getUntil());
   }
+
+  @Test (expected = Exception.class)
+  public void createJobWithMissingCoordId() throws GatewayException {
+    // Given
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().createActionInstructionBuilderWithoutCoordId();
+
+    // When
+    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+  }
 }

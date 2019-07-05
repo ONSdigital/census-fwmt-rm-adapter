@@ -61,8 +61,6 @@ public class ActionInstructionBuilder {
     actionRequest.setUndeliveredAsAddress(false);
     actionRequest.setBlankQreReturned(false);
 
-    ActionContact contact = new ActionContact();
-
     actionAddress.setLatitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLongitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLine1("addressLine1");
@@ -73,7 +71,6 @@ public class ActionInstructionBuilder {
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
-    actionRequest.setContact(contact);
     actionRequest.setCoordinatorId("coordID");
     actionRequest.setAddressType("CE");
     actionRequest.setAddressLevel("E");
@@ -96,8 +93,6 @@ public class ActionInstructionBuilder {
     actionRequest.setUndeliveredAsAddress(false);
     actionRequest.setBlankQreReturned(false);
 
-    ActionContact contact = new ActionContact();
-
     actionAddress.setLatitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLongitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLine1("addressLine1");
@@ -108,7 +103,6 @@ public class ActionInstructionBuilder {
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
-    actionRequest.setContact(contact);
 
     actionRequest.setAddressType("CE");
     actionRequest.setAddressLevel("U");
@@ -163,8 +157,6 @@ public class ActionInstructionBuilder {
     actionRequest.setUndeliveredAsAddress(false);
     actionRequest.setBlankQreReturned(false);
 
-    ActionContact contact = new ActionContact();
-
     actionAddress.setLatitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLongitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLine1("addressLine1");
@@ -175,7 +167,6 @@ public class ActionInstructionBuilder {
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
-    actionRequest.setContact(contact);
     actionRequest.setFieldOfficerId("testFieldOfficer");
     actionRequest.setCoordinatorId("testCoord");
 
@@ -202,8 +193,6 @@ public class ActionInstructionBuilder {
     actionRequest.setUndeliveredAsAddress(false);
     actionRequest.setBlankQreReturned(false);
 
-    ActionContact contact = new ActionContact();
-
     actionAddress.setLatitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLongitude(BigDecimal.valueOf(1000.00));
     actionAddress.setLine1("addressLine1");
@@ -214,7 +203,6 @@ public class ActionInstructionBuilder {
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
-    actionRequest.setContact(contact);
     actionRequest.setFieldOfficerId("");
 
     actionRequest.setAddressType("HH");
@@ -255,6 +243,33 @@ public class ActionInstructionBuilder {
     actionCancel.setAddressType("CC");
 
     actionInstruction.setActionCancel(actionCancel);
+
+    return actionInstruction;
+  }
+
+  public ActionInstruction createActionInstructionBuilderWithoutCoordId() {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionRequest actionRequest = new ActionRequest();
+    ActionAddress actionAddress = new ActionAddress();
+
+    actionRequest.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+    actionRequest.setSurveyRef("testSurveyRef");
+    actionRequest.setReturnByDate("11/11/2000");
+    actionRequest.setUndeliveredAsAddress(false);
+    actionRequest.setBlankQreReturned(false);
+
+    actionAddress.setLatitude(BigDecimal.valueOf(1000.00));
+    actionAddress.setLongitude(BigDecimal.valueOf(1000.00));
+    actionAddress.setLine1("addressLine1");
+    actionAddress.setLine2("addressLine2");
+    actionAddress.setPostcode("testPostcode");
+    actionAddress.setTownName("testTownName");
+    actionAddress.setCountry("E");
+
+    actionRequest.setAddress(actionAddress);
+    actionInstruction.setActionRequest(actionRequest);
+
+    actionRequest.setAddressType("HH");
 
     return actionInstruction;
   }

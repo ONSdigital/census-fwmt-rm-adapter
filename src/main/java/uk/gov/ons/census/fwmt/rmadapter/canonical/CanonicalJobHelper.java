@@ -222,11 +222,13 @@ public final class CanonicalJobHelper {
     updateJobRequest.setAddressLevel(actionUpdate.getAddressLevel());
     updateJobRequest.setUaa(actionUpdate.isUndeliveredAsAddress());
 
-    if (!actionInstruction.getActionUpdate().getAddressType().equals("CCS")) {
-      updateJobRequest.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
-    } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "A case of type CCS cannot be paused for case ID: "
-              + actionUpdate.getCaseId());
+    if (!StringUtils.isEmpty(actionUpdate.getActionableFrom())) {
+      if (!actionInstruction.getActionUpdate().getAddressType().equals("CCS")) {
+        updateJobRequest.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
+      } else {
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "A case of type CCS cannot be paused for case ID: "
+                + actionUpdate.getCaseId());
+      }
     }
 
     updateJobRequest.setCe1Complete(actionUpdate.isCe1Complete());

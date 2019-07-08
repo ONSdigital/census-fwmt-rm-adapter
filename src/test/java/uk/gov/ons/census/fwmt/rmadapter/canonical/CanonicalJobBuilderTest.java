@@ -111,6 +111,16 @@ public class CanonicalJobBuilderTest {
 
   }
 
+  @Test (expected = GatewayException.class)
+  public void updateIncorrectJob() throws DatatypeConfigurationException, GatewayException {
+    //Given
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().updateIncorrectActionInstructionBuilder();
+
+    //When
+    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
+
+  }
+
   @Test
   public void createNisraJob() throws DatatypeConfigurationException, GatewayException {
     //Given

@@ -97,7 +97,7 @@ public class CanonicalJobBuilderTest {
   }
 
   @Test
-  public void updateJob() throws DatatypeConfigurationException{
+  public void updateJob() throws DatatypeConfigurationException, GatewayException {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().updateActionInstructionBuilder();
 

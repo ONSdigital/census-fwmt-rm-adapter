@@ -146,6 +146,22 @@ public class ActionInstructionBuilder {
     return actionInstruction;
   }
 
+  public ActionInstruction updateIncorrectActionInstructionBuilder() throws DatatypeConfigurationException {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionUpdate actionUpdate = new ActionUpdate();
+
+    actionUpdate.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+    actionUpdate.setAddressType("CCS");
+    actionUpdate.setBlankQreReturned(false);
+    actionUpdate.setActionableFrom(getXMLGregorianCalendarNow());
+    actionUpdate.setCeActualResponses(BigInteger.valueOf(0));
+    actionUpdate.setCeExpectedResponses(BigInteger.valueOf(0));
+
+    actionInstruction.setActionUpdate(actionUpdate);
+
+    return actionInstruction;
+  }
+
   public ActionInstruction createNisraActionInstructionBuilder() throws DatatypeConfigurationException {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionRequest actionRequest = new ActionRequest();

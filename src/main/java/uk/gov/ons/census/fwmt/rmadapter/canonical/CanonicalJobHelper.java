@@ -52,9 +52,9 @@ public final class CanonicalJobHelper {
 
     // Coordinator ID should always be present but if it's not then a null pointer exception would be thrown. Added a
     // Try/Catch to allow user to know what went wrong
-    try {
+    if (!StringUtils.isEmpty(actionRequest.getCoordinatorId())) {
       createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
-    } catch (Exception e) {
+    } else {
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,
           "A case request was sent that did not include a coordinator ID for case {}",
           actionRequest.getCaseId());

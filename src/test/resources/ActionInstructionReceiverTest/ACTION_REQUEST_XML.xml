@@ -5,13 +5,6 @@
         <actionPlan>string</actionPlan>
         <actionType>actionType</actionType>
         <questionSet>string</questionSet>
-        <contact>
-            <title>string</title>
-            <forename>string</forename>
-            <surname>string</surname>
-            <phoneNumber>string</phoneNumber>
-            <emailAddress>string</emailAddress>
-        </contact>
         <address>
             <sampleUnitRef>string</sampleUnitRef>
             <type>string</type>

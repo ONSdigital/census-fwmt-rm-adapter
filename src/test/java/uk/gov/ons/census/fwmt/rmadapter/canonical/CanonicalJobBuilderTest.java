@@ -112,9 +112,9 @@ public class CanonicalJobBuilderTest {
   }
 
   @Test (expected = GatewayException.class)
-  public void updateIncorrectJob() throws DatatypeConfigurationException, GatewayException {
+  public void updateButNoPauseCCSJob() throws DatatypeConfigurationException, GatewayException {
     //Given
-    ActionInstruction actionInstruction = new ActionInstructionBuilder().updateIncorrectActionInstructionBuilder();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder().updateCCSActionInstructionBuilder();
 
     //When
     UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);

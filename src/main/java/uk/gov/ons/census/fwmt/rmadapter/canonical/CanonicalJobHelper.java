@@ -5,13 +5,11 @@ import uk.gov.ons.census.fwmt.canonical.v1.Address;
 import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.Contact;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
-import uk.gov.ons.census.fwmt.canonical.v1.Pause;
 import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionPause;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
@@ -35,7 +33,6 @@ public final class CanonicalJobHelper {
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
     ActionContact actionContact = actionRequest.getContact();
-    ActionPause actionPause = actionRequest.getPause();
 
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
@@ -64,7 +61,7 @@ public final class CanonicalJobHelper {
     }
     createJobRequest.setActionType(actionRequest.getActionType());
 
-    if (actionContact != null) {
+    if (!StringUtils.isEmpty(actionContact)) {
       Contact contact = getContact(actionContact, actionAddress);
       createJobRequest.setContact(contact);
     }
@@ -76,11 +73,6 @@ public final class CanonicalJobHelper {
     createJobRequest.setBlankFormReturned(actionRequest.isBlankQreReturned());
 
     processShelteredAccommodationIndicator(createJobRequest, actionAddress);
-
-    if (actionPause != null) {
-      Pause pause = buildPause(actionPause);
-      createJobRequest.setPause(pause);
-    }
 
     if (actionRequest.getAddressType().equals("CSS")) {
       createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionnaireUrl());
@@ -100,16 +92,6 @@ public final class CanonicalJobHelper {
     }
 
     return createJobRequest;
-  }
-
-  private static Pause buildPause(ActionPause actionPause) {
-    Pause pause = new Pause();
-    pause.setEffectiveDate(convertXmlGregorianCalendarToDate(actionPause.getEffectiveDate()));
-    pause.setCode(actionPause.getCode());
-    pause.setReason(actionPause.getReason());
-    pause.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionPause.getHoldUntil()));
-
-    return pause;
   }
 
   private static Contact getContact(ActionContact actionContact, ActionAddress actionAddress) {
@@ -225,7 +207,7 @@ public final class CanonicalJobHelper {
     updateJobRequest.setUaa(actionUpdate.isUndeliveredAsAddress());
 
     if (!StringUtils.isEmpty(actionUpdate.getActionableFrom())) {
-      if (!actionInstruction.getActionUpdate().getAddressType().equals("CCS")) {
+      if (!actionInstruction.getActionUpdate().getAddressType().equals("CCSPL")) {
         updateJobRequest.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "A case of type CCS cannot be paused for case ID: "

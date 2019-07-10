@@ -83,7 +83,6 @@
                     <xs:element name="questionSet" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="contact" type="ActionContact" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="address" type="ActionAddress" minOccurs="0"/>
-                    <xs:element name="pause" type="ActionPause" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="legalBasis" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="region" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="respondentStatus" type="xs:string" minOccurs="0" maxOccurs="1"/>
@@ -100,35 +99,21 @@
                     <xs:element name="surveyRef" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="returnByDate" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="sampleUnitRef" type="xs:string" minOccurs="1" maxOccurs="1"/>
-
-
                     <xs:element name="addressType" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="addressLevel" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="treatmentId" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="fieldOfficerId" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="coordinatorId" type="xs:string" minOccurs="0" maxOccurs="1"/>
-
                     <xs:element name="undeliveredAsAddress" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="blankQreReturned" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-
                     <xs:element name="ccsQuestionnaireUrl" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="ceDeliveryReqd" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="ceCE1Complete" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="ceExpectedResponses" type="xs:integer" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="ceActualResponses" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>
-
-    <xs:complexType name="ActionPause">
-        <xs:sequence>
-            <xs:element name="effectiveDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="code" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="reason" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="holdUntil" type="xs:date" minOccurs="0" maxOccurs="1"/>
-        </xs:sequence>
     </xs:complexType>
 
     <!-- a complex and reused type constraining the priority element -->
@@ -182,7 +167,6 @@
                     <xs:element name="ce1Complete" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
                     <xs:element name="ceExpectedResponses" type="xs:integer" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="ceActualResponses" type="xs:integer" minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="pause" type="ActionPause" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

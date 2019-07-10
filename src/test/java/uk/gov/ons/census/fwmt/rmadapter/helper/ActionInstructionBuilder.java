@@ -5,7 +5,6 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionCancel;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionPause;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
@@ -146,12 +145,12 @@ public class ActionInstructionBuilder {
     return actionInstruction;
   }
 
-  public ActionInstruction updateIncorrectActionInstructionBuilder() throws DatatypeConfigurationException {
+  public ActionInstruction updateCCSActionInstructionBuilder() throws DatatypeConfigurationException {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionUpdate actionUpdate = new ActionUpdate();
 
     actionUpdate.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
-    actionUpdate.setAddressType("CCS");
+    actionUpdate.setAddressType("CCSPL");
     actionUpdate.setBlankQreReturned(false);
     actionUpdate.setActionableFrom(getXMLGregorianCalendarNow());
     actionUpdate.setCeActualResponses(BigInteger.valueOf(0));
@@ -187,13 +186,6 @@ public class ActionInstructionBuilder {
     actionRequest.setCoordinatorId("testCoord");
 
     actionRequest.setAddressType("HH");
-    ActionPause actionPause = new ActionPause();
-    actionPause.setCode("code");
-    actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
-    actionPause.setHoldUntil(getXMLGregorianCalendarNow());
-    actionPause.setReason("reason");
-
-    actionRequest.setPause(actionPause);
 
     return actionInstruction;
   }
@@ -222,13 +214,6 @@ public class ActionInstructionBuilder {
     actionRequest.setFieldOfficerId("");
 
     actionRequest.setAddressType("HH");
-    ActionPause actionPause = new ActionPause();
-    actionPause.setCode("code");
-    actionPause.setEffectiveDate(getXMLGregorianCalendarNow());
-    actionPause.setHoldUntil(getXMLGregorianCalendarNow());
-    actionPause.setReason("reason");
-
-    actionRequest.setPause(actionPause);
 
     return actionInstruction;
   }

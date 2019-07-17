@@ -37,7 +37,8 @@ public final class CanonicalJobHelper {
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
     createJobRequest.setCaseType(processCaseType(actionRequest));
-    createJobRequest.setSurveyType(actionRequest.getTreatmentId());
+    createJobRequest.setSurveyType(processSurveyType(actionRequest));
+    createJobRequest.setCategory(processCategory(actionRequest));
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
 
     if (actionAddress.getCountry().equals("N")) {
@@ -51,7 +52,6 @@ public final class CanonicalJobHelper {
     }
 
     // Coordinator ID should always be present but if it's not then a null pointer exception would be thrown. Added a
-    // Try/Catch to allow user to know what went wrong
     if (!StringUtils.isEmpty(actionRequest.getCoordinatorId())) {
       createJobRequest.setCoordinatorId(actionRequest.getCoordinatorId());
     } else {
@@ -74,9 +74,6 @@ public final class CanonicalJobHelper {
 
     processShelteredAccommodationIndicator(createJobRequest, actionAddress);
 
-    if (actionRequest.getAddressType().equals("CSS")) {
-      createJobRequest.setCcsQuestionnaireURL(actionRequest.getCcsQuestionnaireUrl());
-    }
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
     }
@@ -138,22 +135,71 @@ public final class CanonicalJobHelper {
 
   private static String processCaseType(ActionRequest actionRequest) throws GatewayException {
     String addressType = actionRequest.getAddressType();
-    String addressLevel = actionRequest.getAddressLevel();
+    String surveyName = actionRequest.getSurveyName();
 
-    if (addressType.equals("HH")) {
-      return "Household";
-    } else if (addressType.equals("CE") && addressLevel.equals("E")) {
-      return "CE";
-    } else if (addressType.equals("CE") && addressLevel.equals("U")) {
-      return "CE Unit Level";
-    } else if (addressType.equals("SPG")) {
-      return "CE SPG";
-    } else if (addressType.equals("CSS Int")) {
-      return "CSS Interview";
+    if (surveyName.equals("CENSUS")) {
+      switch (addressType) {
+      case "HH":
+        return "HH";
+      case "CE":
+        return "CE";
+      case "SPG":
+        return "CE";
+      default:
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
+            + addressType);
+      }
+    } else if (surveyName.equals("CCS")) {
+        return "CCS";
     } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set case type using "
-          + addressType + " and " + addressLevel);
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
+          + addressType);
     }
+  }
+
+  private static String processSurveyType(ActionRequest actionRequest) throws GatewayException {
+    String addressType = actionRequest.getAddressType();
+    String addressLevel = actionRequest.getAddressLevel();
+    String surveyName = actionRequest.getSurveyName();
+
+    if (surveyName.equals("CENSUS")) {
+      if (addressType.equals("HH")) {
+        return "Household";
+      } else if (addressType.equals("CE") && addressLevel.equals("E")) {
+        return "CE EST";
+      } else if (addressType.equals("CE") && addressLevel.equals("U")) {
+        return "CE UNIT";
+      } else if (addressType.equals("SPG")) {
+        return "CE SPG";
+
+      } else  {
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
+            + addressType + " and " + addressLevel);
+      }
+    } else if (surveyName.equals("CCS")) {
+      return "CCSIV";
+    } else  {
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
+          + addressType + " and " + addressLevel + "and" + surveyName);
+    }
+  }
+
+  private static String processCategory(ActionRequest actionRequest) {
+    String surveyName = actionRequest.getSurveyName();
+    String addressType = actionRequest.getAddressType();
+
+    if(surveyName.equals("CCS")) {
+      switch (addressType) {
+      case "HH":
+        return "HH";
+      case "CE":
+        return "CE";
+      case "SPG":
+        return "CCS";
+      }
+    }
+    // only required to be something in CCS?
+    return null;
   }
 
   private static void processShelteredAccommodationIndicator(CreateFieldWorkerJobRequest createJobRequest,

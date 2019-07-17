@@ -81,7 +81,7 @@ public class CanonicalJobBuilderTest {
         result.getAddress().getTownName());
     assertEquals(actionInstruction.getActionRequest().getAddress().getLine1(), result.getAddress().getLine1());
     assertEquals(actionInstruction.getActionRequest().getAddress().getLine2(), result.getAddress().getLine2());
-    assertEquals("CE Unit Level", result.getCaseType());
+    assertEquals("CE UNIT", result.getSurveyType());
   }
 
   @Test

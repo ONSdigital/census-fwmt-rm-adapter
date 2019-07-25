@@ -43,3 +43,6 @@ rabbitmq:
   initialinterval: 5000
   multiplier: 3.0
   maxInterval: 45000
+  rmQueue: "RM.Field"
+  rmDeadLetter: "RM.FieldDLQ"
+  rmExchange: "adapter-outbound-exchange"

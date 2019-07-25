@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
@@ -16,8 +17,16 @@ import uk.gov.ons.census.fwmt.rmadapter.message.ActionInstructionReceiver;
 
 @Configuration
 public class ActionFieldQueueConfig {
-  public static final String ACTION_FIELD_QUEUE = "Action.Field";
-  public static final String ACTION_FIELD_DLQ = "Action.FieldDLQ";
+
+  public static String ACTION_FIELD_QUEUE;
+  public static  String ACTION_FIELD_DLQ;
+
+  public ActionFieldQueueConfig(
+      @Value("${rabbitmq.rmQueue}") String ACTION_FIELD_QUEUE,
+      @Value("${rabbitmq.rmDeadLetter}") String ACTION_FIELD_DLQ) {
+    ActionFieldQueueConfig.ACTION_FIELD_QUEUE = ACTION_FIELD_QUEUE;
+    ActionFieldQueueConfig.ACTION_FIELD_DLQ = ACTION_FIELD_DLQ;
+  }
 
   @Autowired
   private AmqpAdmin amqpAdmin;

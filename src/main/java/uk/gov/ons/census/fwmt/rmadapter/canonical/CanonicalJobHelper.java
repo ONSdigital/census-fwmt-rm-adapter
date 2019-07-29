@@ -33,6 +33,8 @@ public final class CanonicalJobHelper {
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
     ActionContact actionContact = actionRequest.getContact();
+    String country = actionAddress.getOa().substring(0,1);
+
 
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
@@ -41,7 +43,7 @@ public final class CanonicalJobHelper {
     createJobRequest.setCategory(processCategory(actionRequest));
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
 
-    if (actionAddress.getCountry().equals("N")) {
+    if (country.equals("N")) {
       if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
       createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
       } else {

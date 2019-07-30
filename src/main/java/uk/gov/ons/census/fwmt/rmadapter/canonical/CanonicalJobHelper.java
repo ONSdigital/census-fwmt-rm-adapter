@@ -35,7 +35,6 @@ public final class CanonicalJobHelper {
     ActionContact actionContact = actionRequest.getContact();
     String country = actionAddress.getOa().substring(0,1);
 
-
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
     createJobRequest.setCaseType(processCaseType(actionRequest));
@@ -148,14 +147,14 @@ public final class CanonicalJobHelper {
       case "SPG":
         return "CE";
       default:
-        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Non-valid addressType: "
             + addressType);
       }
     } else if (surveyName.equals("CCS")) {
         return "CCS";
     } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
-          + addressType);
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Invalid survey name: "
+          + surveyName);
     }
   }
 

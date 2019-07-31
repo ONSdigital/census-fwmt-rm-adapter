@@ -75,6 +75,12 @@ public final class CanonicalJobHelper {
 
     processShelteredAccommodationIndicator(createJobRequest, actionAddress);
 
+    setCeDetail(createJobRequest, actionRequest);
+
+    return createJobRequest;
+  }
+
+  private static void setCeDetail(CreateFieldWorkerJobRequest createJobRequest, ActionRequest actionRequest) {
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
     }
@@ -88,8 +94,6 @@ public final class CanonicalJobHelper {
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeActualResponses(actionRequest.getCeActualResponses().intValue());
     }
-
-    return createJobRequest;
   }
 
   private static Contact getContact(ActionContact actionContact, ActionAddress actionAddress) {
@@ -114,6 +118,7 @@ public final class CanonicalJobHelper {
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
+    address.setOa(actionAddress.getOa());
 
     return address;
   }

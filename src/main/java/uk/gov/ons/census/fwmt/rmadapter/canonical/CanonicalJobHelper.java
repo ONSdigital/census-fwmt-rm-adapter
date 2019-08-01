@@ -113,6 +113,7 @@ public final class CanonicalJobHelper {
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
+    address.setOa(actionAddress.getOa());
 
     return address;
   }

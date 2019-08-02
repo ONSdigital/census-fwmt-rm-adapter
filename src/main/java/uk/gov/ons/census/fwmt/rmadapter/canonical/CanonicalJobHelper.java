@@ -33,6 +33,7 @@ public final class CanonicalJobHelper {
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
     ActionContact actionContact = actionRequest.getContact();
+    String country = actionAddress.getOa().substring(0,1);
 
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
@@ -41,7 +42,7 @@ public final class CanonicalJobHelper {
     createJobRequest.setCategory(processCategory(actionRequest));
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
 
-    if (actionAddress.getCountry().equals("N")) {
+    if (country.equals("N")) {
       if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
       createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
       } else {
@@ -74,6 +75,12 @@ public final class CanonicalJobHelper {
 
     processShelteredAccommodationIndicator(createJobRequest, actionAddress);
 
+    setCeDetail(createJobRequest, actionRequest);
+
+    return createJobRequest;
+  }
+
+  private static void setCeDetail(CreateFieldWorkerJobRequest createJobRequest, ActionRequest actionRequest) {
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
     }
@@ -87,8 +94,6 @@ public final class CanonicalJobHelper {
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeActualResponses(actionRequest.getCeActualResponses().intValue());
     }
-
-    return createJobRequest;
   }
 
   private static Contact getContact(ActionContact actionContact, ActionAddress actionAddress) {
@@ -147,14 +152,14 @@ public final class CanonicalJobHelper {
       case "SPG":
         return "CE";
       default:
-        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Non-valid addressType: "
             + addressType);
       }
     } else if (surveyName.equals("CCS")) {
         return "CCS";
     } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
-          + addressType);
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Invalid survey name: "
+          + surveyName);
     }
   }
 

@@ -63,17 +63,6 @@
             <oa>string</oa>
         </address>
         <!--Optional:-->
-        <pause>
-            <!--Optional:-->
-            <effectiveDate>2007-10-26</effectiveDate>
-            <!--Optional:-->
-            <code>string</code>
-            <!--Optional:-->
-            <reason>string</reason>
-            <!--Optional:-->
-            <holdUntil>2004-02-14</holdUntil>
-        </pause>
-        <!--Optional:-->
         <legalBasis>string</legalBasis>
         <!--Optional:-->
         <region>string</region>

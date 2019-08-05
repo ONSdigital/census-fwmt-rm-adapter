@@ -35,20 +35,20 @@ public class ActionFieldQueueConfig {
   @Bean
   public Queue actionFieldQueue() {
     Queue queue = QueueBuilder.durable(ACTION_FIELD_QUEUE)
-        .withArgument("x-dead-letter-exchange", "")
-        .withArgument("x-dead-letter-routing-key", ACTION_FIELD_DLQ)
+//        .withArgument("x-dead-letter-exchange", "")
+//        .withArgument("x-dead-letter-routing-key", ACTION_FIELD_DLQ)
         .build();
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
   }
 
-  //Dead Letter Queue
-  @Bean
-  public Queue actionFieldDeadLetterQueue() {
-    Queue queue = QueueBuilder.durable(ACTION_FIELD_DLQ).build();
-    queue.setAdminsThatShouldDeclare(amqpAdmin);
-    return queue;
-  }
+//  //Dead Letter Queue
+//  @Bean
+//  public Queue actionFieldDeadLetterQueue() {
+//    Queue queue = QueueBuilder.durable(ACTION_FIELD_DLQ).build();
+//    queue.setAdminsThatShouldDeclare(amqpAdmin);
+//    return queue;
+//  }
 
   //Listener Adapter
   @Bean

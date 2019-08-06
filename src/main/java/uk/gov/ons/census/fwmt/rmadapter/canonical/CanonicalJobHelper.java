@@ -35,6 +35,7 @@ public final class CanonicalJobHelper {
     ActionContact actionContact = actionRequest.getContact();
     String country = actionAddress.getOa().substring(0,1);
 
+    createJobRequest.setGatewayType("Create");
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
     createJobRequest.setCaseType(processCaseType(actionRequest));
@@ -233,6 +234,7 @@ public final class CanonicalJobHelper {
 
   public static CancelFieldWorkerJobRequest newCancelJob(ActionInstruction actionInstruction) {
     CancelFieldWorkerJobRequest cancelJobRequest = new CancelFieldWorkerJobRequest();
+    cancelJobRequest.setGatewayType("Cancel");
     if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
       createIndefinitePause(cancelJobRequest, actionInstruction);
     }
@@ -252,6 +254,7 @@ public final class CanonicalJobHelper {
     ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
 
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
+    updateJobRequest.setGatewayType("update");
     updateJobRequest.setActionType("update");
     updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getCaseId()));
     updateJobRequest.setAddressType(actionUpdate.getAddressType());

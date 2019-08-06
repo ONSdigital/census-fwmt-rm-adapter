@@ -27,6 +27,8 @@ public final class CanonicalJobHelper {
   private static final String CANCEL_ACTION_TYPE = "Cancel";
   private static final String CANCEL_REASON = "HQ Case Closure";
   private static final String CANCEL_PAUSE_END_DATE = "2030-01-01T00:00+00:00";
+  private static final String CREATE_ACTION_TYPE = "Create";
+  private static final String UPDATE_ACTION_TYPE = "update";
 
   public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
@@ -35,6 +37,7 @@ public final class CanonicalJobHelper {
     ActionContact actionContact = actionRequest.getContact();
     String country = actionAddress.getOa().substring(0,1);
 
+    createJobRequest.setGatewayType(CREATE_ACTION_TYPE);
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
     createJobRequest.setCaseType(processCaseType(actionRequest));
@@ -233,10 +236,10 @@ public final class CanonicalJobHelper {
 
   public static CancelFieldWorkerJobRequest newCancelJob(ActionInstruction actionInstruction) {
     CancelFieldWorkerJobRequest cancelJobRequest = new CancelFieldWorkerJobRequest();
+    cancelJobRequest.setGatewayType(CANCEL_ACTION_TYPE);
     if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
       createIndefinitePause(cancelJobRequest, actionInstruction);
     }
-    cancelJobRequest.setActionType(CANCEL_ACTION_TYPE);
     cancelJobRequest.setCaseId(UUID.fromString(actionInstruction.getActionCancel().getCaseId()));
 
     return cancelJobRequest;
@@ -252,7 +255,7 @@ public final class CanonicalJobHelper {
     ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
 
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
-    updateJobRequest.setActionType("update");
+    updateJobRequest.setGatewayType(UPDATE_ACTION_TYPE);
     updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getCaseId()));
     updateJobRequest.setAddressType(actionUpdate.getAddressType());
     updateJobRequest.setAddressLevel(actionUpdate.getAddressLevel());

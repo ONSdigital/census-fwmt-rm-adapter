@@ -20,6 +20,7 @@ public class FieldWorkerRequestMessageBuilder {
     address.setPostCode("testPostCode");
     address.setTownName("testTownName");
     fwmtCreateJobRequest.setActionType("create");
+    fwmtCreateJobRequest.setGatewayType("Create");
     fwmtCreateJobRequest.setAddress(address);
     fwmtCreateJobRequest.setSurveyType("testSurveyType");
 

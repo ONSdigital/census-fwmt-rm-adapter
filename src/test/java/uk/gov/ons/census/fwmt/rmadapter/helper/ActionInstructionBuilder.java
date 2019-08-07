@@ -38,7 +38,7 @@ public class ActionInstructionBuilder {
     actionAddress.setLine2("addressLine2");
     actionAddress.setPostcode("testPostcode");
     actionAddress.setTownName("testTownName");
-    actionAddress.setCountry("E");
+    actionAddress.setOa("E00074083");
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
@@ -68,7 +68,7 @@ public class ActionInstructionBuilder {
     actionAddress.setLine2("addressLine2");
     actionAddress.setPostcode("testPostcode");
     actionAddress.setTownName("testTownName");
-    actionAddress.setCountry("E");
+    actionAddress.setOa("E00074083");
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
@@ -101,7 +101,7 @@ public class ActionInstructionBuilder {
     actionAddress.setLine2("addressLine2");
     actionAddress.setPostcode("testPostcode");
     actionAddress.setTownName("testTownName");
-    actionAddress.setCountry("E");
+    actionAddress.setOa("E00074083");
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
@@ -182,7 +182,7 @@ public class ActionInstructionBuilder {
     actionAddress.setLine2("addressLine2");
     actionAddress.setPostcode("testPostcode");
     actionAddress.setTownName("testTownName");
-    actionAddress.setCountry("N");
+    actionAddress.setOa("N00074083");
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
@@ -212,7 +212,7 @@ public class ActionInstructionBuilder {
     actionAddress.setLine2("addressLine2");
     actionAddress.setPostcode("testPostcode");
     actionAddress.setTownName("testTownName");
-    actionAddress.setCountry("N");
+    actionAddress.setOa("N00074083");
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);
@@ -270,7 +270,7 @@ public class ActionInstructionBuilder {
     actionAddress.setLine2("addressLine2");
     actionAddress.setPostcode("testPostcode");
     actionAddress.setTownName("testTownName");
-    actionAddress.setCountry("E");
+    actionAddress.setOa("E00074083");
 
     actionRequest.setAddress(actionAddress);
     actionInstruction.setActionRequest(actionRequest);

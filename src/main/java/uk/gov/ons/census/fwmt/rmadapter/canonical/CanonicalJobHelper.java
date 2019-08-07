@@ -27,13 +27,17 @@ public final class CanonicalJobHelper {
   private static final String CANCEL_ACTION_TYPE = "Cancel";
   private static final String CANCEL_REASON = "HQ Case Closure";
   private static final String CANCEL_PAUSE_END_DATE = "2030-01-01T00:00+00:00";
+  private static final String CREATE_ACTION_TYPE = "Create";
+  private static final String UPDATE_ACTION_TYPE = "Update";
 
   public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
     ActionContact actionContact = actionRequest.getContact();
+    String country = actionAddress.getOa().substring(0,1);
 
+    createJobRequest.setGatewayType(CREATE_ACTION_TYPE);
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
     createJobRequest.setCaseType(processCaseType(actionRequest));
@@ -41,7 +45,7 @@ public final class CanonicalJobHelper {
     createJobRequest.setCategory(processCategory(actionRequest));
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
 
-    if (actionAddress.getCountry().equals("N")) {
+    if (country.equals("N")) {
       if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
       createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
       } else {
@@ -74,6 +78,12 @@ public final class CanonicalJobHelper {
 
     processShelteredAccommodationIndicator(createJobRequest, actionAddress);
 
+    setCeDetail(createJobRequest, actionRequest);
+
+    return createJobRequest;
+  }
+
+  private static void setCeDetail(CreateFieldWorkerJobRequest createJobRequest, ActionRequest actionRequest) {
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
     }
@@ -87,8 +97,6 @@ public final class CanonicalJobHelper {
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeActualResponses(actionRequest.getCeActualResponses().intValue());
     }
-
-    return createJobRequest;
   }
 
   private static Contact getContact(ActionContact actionContact, ActionAddress actionAddress) {
@@ -113,6 +121,7 @@ public final class CanonicalJobHelper {
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
+    address.setOa(actionAddress.getOa());
 
     return address;
   }
@@ -146,14 +155,14 @@ public final class CanonicalJobHelper {
       case "SPG":
         return "CE";
       default:
-        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Non-valid addressType: "
             + addressType);
       }
     } else if (surveyName.equals("CCS")) {
         return "CCS";
     } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
-          + addressType);
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Invalid survey name: "
+          + surveyName);
     }
   }
 
@@ -227,10 +236,10 @@ public final class CanonicalJobHelper {
 
   public static CancelFieldWorkerJobRequest newCancelJob(ActionInstruction actionInstruction) {
     CancelFieldWorkerJobRequest cancelJobRequest = new CancelFieldWorkerJobRequest();
+    cancelJobRequest.setGatewayType(CANCEL_ACTION_TYPE);
     if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
       createIndefinitePause(cancelJobRequest, actionInstruction);
     }
-    cancelJobRequest.setActionType(CANCEL_ACTION_TYPE);
     cancelJobRequest.setCaseId(UUID.fromString(actionInstruction.getActionCancel().getCaseId()));
 
     return cancelJobRequest;
@@ -246,7 +255,7 @@ public final class CanonicalJobHelper {
     ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
 
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();
-    updateJobRequest.setActionType("update");
+    updateJobRequest.setGatewayType(UPDATE_ACTION_TYPE);
     updateJobRequest.setCaseId(UUID.fromString(actionUpdate.getCaseId()));
     updateJobRequest.setAddressType(actionUpdate.getAddressType());
     updateJobRequest.setAddressLevel(actionUpdate.getAddressLevel());

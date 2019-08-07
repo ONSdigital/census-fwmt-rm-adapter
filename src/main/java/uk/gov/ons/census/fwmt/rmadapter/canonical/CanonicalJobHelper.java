@@ -28,7 +28,7 @@ public final class CanonicalJobHelper {
   private static final String CANCEL_REASON = "HQ Case Closure";
   private static final String CANCEL_PAUSE_END_DATE = "2030-01-01T00:00+00:00";
   private static final String CREATE_ACTION_TYPE = "Create";
-  private static final String UPDATE_ACTION_TYPE = "update";
+  private static final String UPDATE_ACTION_TYPE = "Update";
 
   public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();

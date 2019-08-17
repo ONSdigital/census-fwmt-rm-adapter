@@ -50,7 +50,7 @@ public class ActionInstructionReceiver {
     }
   }
 
-  private void triggerEvent(ActionInstruction actionInstruction) throws GatewayException {
+  private void triggerEvent(ActionInstruction actionInstruction) {
     if (actionInstruction.getActionRequest() != null) {
       gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), GatewayEventsConfig.RM_CREATE_REQUEST_RECEIVED);
     } else if (actionInstruction.getActionCancel() != null) {

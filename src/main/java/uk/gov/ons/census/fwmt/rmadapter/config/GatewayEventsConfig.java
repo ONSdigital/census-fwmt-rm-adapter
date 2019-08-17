@@ -8,9 +8,9 @@ import uk.gov.ons.census.fwmt.rmadapter.Application;
 @Configuration
 public class GatewayEventsConfig {
 
-  public static final String CANONICAL_CREATE_SENT = "Canonical - Action Create Sent";
-  public static final String CANONICAL_UPDATE_SENT = "Canonical - Action Update Sent";
-  public static final String CANONICAL_CANCEL_SENT = "Canonical - Action Cancel Sent";
+  public static final String CANONICAL_CREATE_SENT = "CANONICAL_CREATE_SENT";
+  public static final String CANONICAL_UPDATE_SENT = "CANONICAL_UPDATE_SENT";
+  public static final String CANONICAL_CANCEL_SENT = "CANONICAL_CANCEL_SENT";
   public static final String RM_CREATE_REQUEST_RECEIVED = "RM_CREATE_REQUEST_RECEIVED";
   public static final String RM_UPDATE_REQUEST_RECEIVED = "RM_UPDATE_REQUEST_RECEIVED";
   public static final String RM_CANCEL_REQUEST_RECEIVED = "RM_CANCEL_REQUEST_RECEIVED";

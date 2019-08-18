@@ -56,7 +56,7 @@ public class ActionInstructionReceiver {
     } else if (actionInstruction.getActionCancel() != null) {
       gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), GatewayEventsConfig.RM_CANCEL_REQUEST_RECEIVED);
     } else if (actionInstruction.getActionUpdate() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), GatewayEventsConfig.RM_UPDATE_REQUEST_RECEIVED);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), GatewayEventsConfig.RM_UPDATE_REQUEST_RECEIVED);
     }
   }
 }

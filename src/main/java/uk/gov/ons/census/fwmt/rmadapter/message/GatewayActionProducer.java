@@ -1,5 +1,7 @@
 package uk.gov.ons.census.fwmt.rmadapter.message;
 
+import java.util.UUID;
+
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,14 +58,16 @@ public class GatewayActionProducer {
   }
 
   private String getCaseId(Object dto) {
-    String caseId = "";
+    String caseId = "<NULL>";
+    UUID uuid = null;
     if (dto instanceof CreateFieldWorkerJobRequest) {
-      caseId = ((CreateFieldWorkerJobRequest) dto).getCaseId().toString();
+      uuid = ((CreateFieldWorkerJobRequest) dto).getCaseId();
     } else if (dto instanceof CancelFieldWorkerJobRequest) {
-      caseId = ((CreateFieldWorkerJobRequest) dto).getCaseId().toString();
+      uuid = ((CancelFieldWorkerJobRequest) dto).getCaseId();
     } else if (dto instanceof UpdateFieldWorkerJobRequest) {
-      caseId = ((CreateFieldWorkerJobRequest) dto).getCaseId().toString();
+      uuid = ((UpdateFieldWorkerJobRequest) dto).getCaseId();
     }
+    if (uuid!=null) caseId = uuid.toString();
     return caseId;
   }
 }

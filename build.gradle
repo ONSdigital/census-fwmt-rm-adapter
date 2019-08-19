@@ -27,7 +27,7 @@ plugins {
 
 description = 'census-fwmt-tm-mocks'
 
-version = '3.0.38-SNAPSHOT'
+version = '3.0.39-SNAPSHOT'
 
 mainClassName = 'uk.gov.ons.census.fwmt.rmadapter.Application'
 
@@ -100,7 +100,7 @@ task genJaxb {
 dependencies {
     
     compile('uk.gov.ons.census.fwmt:census-fwmt-canonical:1.0.16-RELEASE')
-    compile("uk.gov.ons.census.fwmt:census-fwmt-events:1.0.5-RELEASE")
+    compile("uk.gov.ons.census.fwmt:census-fwmt-events:1.0.13-RELEASE")
     compile('uk.gov.ons.census.fwmt:census-fwmt-common:1.0.19-RELEASE')
     
     compile("com.google.guava:guava:27.0.1-jre")

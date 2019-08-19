@@ -13,6 +13,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan({"uk.gov.ons.census.fwmt.rmadapter", "uk.gov.ons.census.fwmt.events"})
 @EnableSwagger2
 public class Application {
+  
+  public static final String APPLICATION_NAME = "FWMT Gateway - RM Adapter";
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);

@@ -13,6 +13,7 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
+import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
 import uk.gov.ons.census.fwmt.rmadapter.helper.FieldWorkerRequestMessageBuilder;
 
@@ -30,6 +31,9 @@ public class GatewayActionProducerTest {
 
   @InjectMocks
   private GatewayActionProducer gatewayActionProducer;
+
+  @Mock
+  private GatewayEventManager gatewayEventManager;
 
   @Mock
   private RabbitTemplate rabbitTemplate;

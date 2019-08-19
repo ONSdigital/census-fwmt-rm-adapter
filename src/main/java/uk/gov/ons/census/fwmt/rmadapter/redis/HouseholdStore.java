@@ -15,7 +15,6 @@ public class HouseholdStore {
     HouseholdRequestEntity householdRequestEntity = new HouseholdRequestEntity();
 
     householdRequestEntity.setCaseId(caseId);
-    householdRequestEntity.setHasBeenRecorded("true");
 
     return jobCacheManager.cacheCreateHouseholdRequest(householdRequestEntity);
   }

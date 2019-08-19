@@ -1,6 +1,12 @@
 package uk.gov.ons.census.fwmt.rmadapter.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.INVALID_ACTION_INSTRUCTION;
+
+import java.time.LocalTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,10 +38,6 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   public void sendJobRequest(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
       sendCreateMessage(actionInstruction);
-      householdStore.cacheJob(actionInstruction.getActionRequest().getCaseId());
-      jobServiceProducer.sendMessage(CanonicalJobHelper.newCreateJob(actionInstruction));
-      gatewayEventManager
-          .triggerEvent(actionInstruction.getActionRequest().getCaseId(), CANONICAL_CREATE_SENT, LocalTime.now());
     } else if (actionInstruction.getActionCancel() != null) {
       createCancelMessage(actionInstruction);
     } else if (actionInstruction.getActionUpdate() != null) {
@@ -48,49 +50,37 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   }
 
   private void createUpdateMessage(ActionInstruction actionInstruction) throws GatewayException {
-    jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
-    gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT);
+    if (!StringUtils.isEmpty(householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()))) {
+      if (actionInstruction.getActionUpdate().getAddressType().equals("HH")) {
+        jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
+        gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT);
+      } else {
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
+      }
+    } else {
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching case ID was found for " +
+              actionInstruction.getActionCancel().getCaseId() + " when a Action Update Request was tempted.");
+    }
   }
 
   private void createCancelMessage(ActionInstruction actionInstruction) throws GatewayException {
-    if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
-      jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));
-      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT);
+    if (!StringUtils.isEmpty(householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()))) {
+      if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
+
+        jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));
+        gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT);
+      } else {
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
+      }
     } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching case ID was found for " +
+              actionInstruction.getActionCancel().getCaseId() + " when a Action Cancel Request was tempted.");
     }
   }
 
   private void sendCreateMessage(ActionInstruction actionInstruction) throws GatewayException {
+    householdStore.cacheJob(actionInstruction.getActionRequest().getCaseId());
     jobServiceProducer.sendMessage(CanonicalJobHelper.newCreateJob(actionInstruction));
     gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), CANONICAL_CREATE_SENT);
-      if (!StringUtils.isEmpty(householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()))) {
-        if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
-          jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));
-          gatewayEventManager
-                  .triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, LocalTime.now());
-        } else {
-          throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
-        }
-      } else {
-        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching case ID was found for " +
-                actionInstruction.getActionCancel().getCaseId() + " when a Action Cancel Request was tempted.");
-      }
-    } else if (actionInstruction.getActionUpdate() != null) {
-      if (!StringUtils.isEmpty(householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()))) {
-        if (actionInstruction.getActionUpdate().getAddressType().equals("HH")) {
-          jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
-          gatewayEventManager
-                  .triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT, LocalTime.now());
-        } else {
-          throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
-        }
-      } else {
-        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching case ID was found for " +
-                actionInstruction.getActionCancel().getCaseId() + " when a Action Update Request was tempted.");
-      }
-    } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching request was found");
-    }
   }
 }

@@ -18,7 +18,6 @@ public class JobCacheManagerImpl implements JobCacheManager {
   @Override
   public HouseholdRequestEntity cacheCreateHouseholdRequest(HouseholdRequestEntity householdRequestEntity) {
     redisUtil.putValue(householdRequestEntity.getCaseId(), householdRequestEntity);
-    String check = redisUtil.getValue(householdRequestEntity.getCaseId()).toString();
     log.info("Placed the following in cache: " +  householdRequestEntity.toString());
     return householdRequestEntity;
   }

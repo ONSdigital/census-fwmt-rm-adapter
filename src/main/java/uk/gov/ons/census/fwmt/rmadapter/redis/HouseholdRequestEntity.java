@@ -15,6 +15,4 @@ public class HouseholdRequestEntity implements Serializable {
 
   private String caseId;
 
-  private String hasBeenRecorded;
-
 }

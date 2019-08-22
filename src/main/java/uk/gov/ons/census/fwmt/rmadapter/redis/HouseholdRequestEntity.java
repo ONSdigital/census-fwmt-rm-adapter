@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RedisHash("CCSOutcomeEntity")
+@RedisHash("HouseholdRequestEntity")
 public class HouseholdRequestEntity implements Serializable {
 
   private String caseId;

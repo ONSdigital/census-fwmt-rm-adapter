@@ -33,8 +33,6 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   @Autowired
   private HouseholdStore householdStore;
 
-  private boolean caseIdIsPresent = false;
-
   public void sendJobRequest(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
       sendCreateMessage(actionInstruction);
@@ -44,13 +42,14 @@ public class RMAdapterServiceImpl implements RMAdapterService {
       createUpdateMessage(actionInstruction);
     } else {
       String msg = "No matching request was found";
-      gatewayEventManager.triggerErrorEvent(this.getClass(), msg, actionInstruction.getActionRequest().getCaseId(), INVALID_ACTION_INSTRUCTION);
+      String unknown = "Unknown caseId";
+      gatewayEventManager.triggerErrorEvent(this.getClass(), msg, unknown, INVALID_ACTION_INSTRUCTION);
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, msg);
     }
   }
 
   private void createUpdateMessage(ActionInstruction actionInstruction) throws GatewayException {
-    if (!StringUtils.isEmpty(householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()))) {
+    if (householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()) != null) {
       if (actionInstruction.getActionUpdate().getAddressType().equals("HH")) {
         jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
         gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT);
@@ -59,12 +58,12 @@ public class RMAdapterServiceImpl implements RMAdapterService {
       }
     } else {
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching case ID was found for " +
-              actionInstruction.getActionCancel().getCaseId() + " when a Action Update Request was tempted.");
+              actionInstruction.getActionUpdate().getCaseId() + " when a Action Update Request was tempted.");
     }
   }
 
   private void createCancelMessage(ActionInstruction actionInstruction) throws GatewayException {
-    if (!StringUtils.isEmpty(householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()))) {
+    if (householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()) != null) {
       if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
 
         jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));

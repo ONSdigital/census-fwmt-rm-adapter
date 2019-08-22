@@ -148,6 +148,22 @@ public class ActionInstructionBuilder {
     return actionInstruction;
   }
 
+  public ActionInstruction updateActionInstructionBuilderForNonHousehold() throws DatatypeConfigurationException {
+    ActionInstruction actionInstruction = new ActionInstruction();
+    ActionUpdate actionUpdate = new ActionUpdate();
+
+    actionUpdate.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
+    actionUpdate.setAddressType("CC");
+    actionUpdate.setBlankQreReturned(false);
+    actionUpdate.setActionableFrom(getXMLGregorianCalendarNow());
+    actionUpdate.setCeActualResponses(BigInteger.valueOf(0));
+    actionUpdate.setCeExpectedResponses(BigInteger.valueOf(0));
+
+    actionInstruction.setActionUpdate(actionUpdate);
+
+    return actionInstruction;
+  }
+
   public ActionInstruction updateCCSActionInstructionBuilder() throws DatatypeConfigurationException {
     ActionInstruction actionInstruction = new ActionInstruction();
     ActionUpdate actionUpdate = new ActionUpdate();

@@ -5,13 +5,10 @@ import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONI
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.INVALID_ACTION_INSTRUCTION;
 
-import java.time.LocalTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.canonical.CanonicalJobHelper;

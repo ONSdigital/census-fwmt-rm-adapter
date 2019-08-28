@@ -46,20 +46,19 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   }
 
   private void createUpdateMessage(ActionInstruction actionInstruction) throws GatewayException {
-    if (householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()) != null) {
-      if (actionInstruction.getActionUpdate().getAddressType().equals("HH")) {
-        jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
-        gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT);
-      } else {
-        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
-      }
-    } else if (householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()) == null){
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching case ID was found for " +
-              actionInstruction.getActionUpdate().getCaseId() + " when a Action Update Request was tempted.");
+    if (householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()) == null) return;
+
+    if (actionInstruction.getActionUpdate().getAddressType().equals("HH")) {
+      jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
+      gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT);
+    } else {
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
     }
   }
 
   private void createCancelMessage(ActionInstruction actionInstruction) throws GatewayException {
+    if (householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()) == null) return;
+
     if (householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()) != null) {
       if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
 
@@ -68,9 +67,6 @@ public class RMAdapterServiceImpl implements RMAdapterService {
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
       }
-    } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching case ID was found for " +
-              actionInstruction.getActionCancel().getCaseId() + " when a Action Cancel Request was tempted.");
     }
   }
 

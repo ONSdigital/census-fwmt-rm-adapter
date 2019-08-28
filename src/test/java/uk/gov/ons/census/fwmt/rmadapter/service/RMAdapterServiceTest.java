@@ -19,6 +19,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.*;
 
@@ -62,13 +63,15 @@ public class RMAdapterServiceTest {
     Mockito.verify(gatewayEventManager).triggerEvent(anyString(), eq(CANONICAL_CANCEL_SENT));
   }
 
-  @Test(expected = GatewayException.class)
+  @Test
   public void sendCancelWithoutCreate() throws GatewayException {
     ActionInstruction actionInstruction = new ActionInstructionBuilder().cancelActionInstructionBuilder();
 
     when(householdStore.retrieveCache(caseId)).thenReturn(null);
 
     rmAdapterService.sendJobRequest(actionInstruction);
+
+    Mockito.verify(gatewayEventManager, never()).triggerEvent(anyString(), eq(CANONICAL_CANCEL_SENT));
 
   }
 
@@ -82,6 +85,8 @@ public class RMAdapterServiceTest {
     when(householdStore.retrieveCache(caseId)).thenReturn(householdRequestEntity);
 
     rmAdapterService.sendJobRequest(actionInstruction);
+
+    Mockito.verify(gatewayEventManager, never()).triggerEvent(anyString(), eq(CANONICAL_CANCEL_SENT));
   }
 
   @Test
@@ -98,13 +103,15 @@ public class RMAdapterServiceTest {
     Mockito.verify(gatewayEventManager).triggerEvent(anyString(), eq(CANONICAL_UPDATE_SENT));
   }
 
-  @Test(expected = GatewayException.class)
+  @Test
   public void sendUpdateWithoutCreate() throws GatewayException, DatatypeConfigurationException {
     ActionInstruction actionInstruction = new ActionInstructionBuilder().updateActionInstructionBuilder();
 
     when(householdStore.retrieveCache(caseId)).thenReturn(null);
 
     rmAdapterService.sendJobRequest(actionInstruction);
+
+    Mockito.verify(gatewayEventManager, never()).triggerEvent(anyString(), eq(CANONICAL_UPDATE_SENT));
 
   }
 

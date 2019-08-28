@@ -7,11 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.http.ResponseEntity;
-import uk.gov.ons.census.fwmt.common.error.GatewayException;
-import uk.gov.ons.census.fwmt.rmadapter.redis.HouseholdRequestEntity;
-import uk.gov.ons.census.fwmt.rmadapter.redis.HouseholdStore;
-import uk.gov.ons.census.fwmt.rmadapter.service.JobCacheManager;
-import uk.gov.ons.census.fwmt.rmadapter.service.impl.JobCacheManagerImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;

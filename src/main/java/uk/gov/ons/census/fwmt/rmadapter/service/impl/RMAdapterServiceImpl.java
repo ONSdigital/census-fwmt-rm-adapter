@@ -53,7 +53,7 @@ public class RMAdapterServiceImpl implements RMAdapterService {
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
       }
-    } else {
+    } else if (householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()) == null){
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "No matching case ID was found for " +
               actionInstruction.getActionUpdate().getCaseId() + " when a Action Update Request was tempted.");
     }

@@ -1,25 +1,31 @@
 package uk.gov.ons.census.fwmt.rmadapter.redis;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.gov.ons.census.fwmt.rmadapter.service.JobCacheManager;
+import uk.gov.ons.census.fwmt.rmadapter.config.RedisUtil;
 
-
+@Slf4j
 @Component
 public class HouseholdStore {
 
   @Autowired
-  private JobCacheManager jobCacheManager;
+  private RedisUtil<HouseholdRequestEntity> redisUtil;
 
   public HouseholdRequestEntity cacheJob(String caseId) {
     HouseholdRequestEntity householdRequestEntity = new HouseholdRequestEntity();
 
     householdRequestEntity.setCaseId(caseId);
 
-    return jobCacheManager.cacheCreateHouseholdRequest(householdRequestEntity);
+    redisUtil.putValue(householdRequestEntity.getCaseId(), householdRequestEntity);
+    return householdRequestEntity;
   }
 
   public HouseholdRequestEntity retrieveCache(String caseId) {
-    return jobCacheManager.getCachedHouseholdCaseId(caseId);
+    HouseholdRequestEntity householdRequestEntity = redisUtil.getValue(caseId);
+    if (householdRequestEntity != null) {
+      log.info("Received object from cache: " + householdRequestEntity.toString());
+    }
+    return householdRequestEntity;
   }
 }

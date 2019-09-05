@@ -18,14 +18,14 @@ import uk.gov.ons.census.fwmt.rmadapter.message.ActionInstructionReceiver;
 @Configuration
 public class ActionFieldQueueConfig {
 
-  public static String ACTION_FIELD_QUEUE;
-  public static  String ACTION_FIELD_DLQ;
+  public String ACTION_FIELD_QUEUE;
+  public String ACTION_FIELD_DLQ;
 
   public ActionFieldQueueConfig(
       @Value("${rabbitmq.rmQueue}") String ACTION_FIELD_QUEUE,
       @Value("${rabbitmq.rmDeadLetter}") String ACTION_FIELD_DLQ) {
-    ActionFieldQueueConfig.ACTION_FIELD_QUEUE = ACTION_FIELD_QUEUE;
-    ActionFieldQueueConfig.ACTION_FIELD_DLQ = ACTION_FIELD_DLQ;
+    this.ACTION_FIELD_QUEUE = ACTION_FIELD_QUEUE;
+    this.ACTION_FIELD_DLQ = ACTION_FIELD_DLQ;
   }
 
   @Autowired

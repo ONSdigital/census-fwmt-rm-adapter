@@ -25,8 +25,8 @@ public class RedisUtil<T> {
     this.valueOperations = redisTemplate.opsForValue();
     this.redisTemplate = redisTemplate;
   }
-  
-  public void removeFromList(String redisKey, long count, Object key){
+
+  public void removeFromList(String redisKey, long count, Object key) {
     listOperation.remove(redisKey, count, key);
   }
 

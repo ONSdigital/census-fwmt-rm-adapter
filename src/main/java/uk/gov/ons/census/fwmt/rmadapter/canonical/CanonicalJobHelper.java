@@ -1,17 +1,9 @@
 package uk.gov.ons.census.fwmt.rmadapter.canonical;
 
 import org.springframework.util.StringUtils;
-import uk.gov.ons.census.fwmt.canonical.v1.Address;
-import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
-import uk.gov.ons.census.fwmt.canonical.v1.Contact;
-import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
-import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.canonical.v1.*;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
-import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
+import uk.gov.ons.ctp.response.action.message.instruction.*;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.OffsetDateTime;
@@ -35,7 +27,7 @@ public final class CanonicalJobHelper {
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
     ActionContact actionContact = actionRequest.getContact();
-    String country = actionAddress.getOa().substring(0,1);
+    String country = actionAddress.getOa().substring(0, 1);
 
     createJobRequest.setGatewayType(CREATE_ACTION_TYPE);
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
@@ -47,7 +39,7 @@ public final class CanonicalJobHelper {
 
     if (country.equals("N")) {
       if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
-      createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
+        createJobRequest.setMandatoryResource(processMandatoryResource(actionRequest));
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,
             "A NISRA request was sent but did not include a field officer ID and/or coordinator ID for case {}",
@@ -159,7 +151,7 @@ public final class CanonicalJobHelper {
             + addressType);
       }
     } else if (surveyName.equals("CCS")) {
-        return "CCS";
+      return "CCS";
     } else {
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Invalid survey name: "
           + surveyName);
@@ -181,13 +173,13 @@ public final class CanonicalJobHelper {
       } else if (addressType.equals("SPG")) {
         return "CE SPG";
 
-      } else  {
+      } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
             + addressType + " and " + addressLevel);
       }
     } else if (surveyName.equals("CCS")) {
       return "CCSIV";
-    } else  {
+    } else {
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
           + addressType + " and " + addressLevel + "and" + surveyName);
     }
@@ -197,7 +189,7 @@ public final class CanonicalJobHelper {
     String surveyName = actionRequest.getSurveyName();
     String addressType = actionRequest.getAddressType();
 
-    if(surveyName.equals("CCS")) {
+    if (surveyName.equals("CCS")) {
       switch (addressType) {
       case "HH":
         return "HH";
@@ -265,7 +257,8 @@ public final class CanonicalJobHelper {
       if (!actionInstruction.getActionUpdate().getAddressType().equals("CCSPL")) {
         updateJobRequest.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
       } else {
-        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "A case of type CCS cannot be paused for case ID: "
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,
+            "A case of type CCS cannot be paused for case ID: "
                 + actionUpdate.getCaseId());
       }
     }

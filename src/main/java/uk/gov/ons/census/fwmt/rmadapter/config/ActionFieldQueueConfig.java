@@ -2,7 +2,6 @@ package uk.gov.ons.census.fwmt.rmadapter.config;
 
 import org.aopalliance.aop.Advice;
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -19,14 +18,14 @@ import uk.gov.ons.census.fwmt.rmadapter.message.ActionInstructionReceiver;
 @Configuration
 public class ActionFieldQueueConfig {
 
-  public static String ACTION_FIELD_QUEUE;
-  public static String ACTION_FIELD_DLQ;
+  public String actionFieldQueueName;
+  public String actionFieldDLQName;
 
   public ActionFieldQueueConfig(
-      @Value("${rabbitmq.rmQueue}") String ACTION_FIELD_QUEUE,
-      @Value("${rabbitmq.rmDeadLetter}") String ACTION_FIELD_DLQ) {
-    ActionFieldQueueConfig.ACTION_FIELD_QUEUE = ACTION_FIELD_QUEUE;
-    ActionFieldQueueConfig.ACTION_FIELD_DLQ = ACTION_FIELD_DLQ;
+      @Value("${rabbitmq.rmQueue}") String actionFieldQueueName,
+      @Value("${rabbitmq.rmDeadLetter}") String actionFieldDLQName) {
+    this.actionFieldQueueName = actionFieldQueueName;
+    this.actionFieldDLQName = actionFieldDLQName;
   }
 
   @Autowired
@@ -35,9 +34,9 @@ public class ActionFieldQueueConfig {
   //Queues
   @Bean
   public Queue actionFieldQueue() {
-    Queue queue = QueueBuilder.durable(ACTION_FIELD_QUEUE)
+    Queue queue = QueueBuilder.durable(actionFieldQueueName)
         .withArgument("x-dead-letter-exchange", "")
-        .withArgument("x-dead-letter-routing-key", ACTION_FIELD_DLQ)
+        .withArgument("x-dead-letter-routing-key", actionFieldDLQName)
         .build();
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
@@ -46,7 +45,7 @@ public class ActionFieldQueueConfig {
   //Dead Letter Queue
   @Bean
   public Queue actionFieldDeadLetterQueue() {
-    Queue queue = QueueBuilder.durable(ACTION_FIELD_DLQ).build();
+    Queue queue = QueueBuilder.durable(actionFieldDLQName).build();
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
   }
@@ -67,7 +66,7 @@ public class ActionFieldQueueConfig {
     Advice[] adviceChain = {retryOperationsInterceptor};
     container.setAdviceChain(adviceChain);
     container.setConnectionFactory(connectionFactory);
-    container.setQueueNames(ACTION_FIELD_QUEUE);
+    container.setQueueNames(actionFieldQueueName);
     container.setMessageListener(messageListenerAdapter);
     return container;
   }

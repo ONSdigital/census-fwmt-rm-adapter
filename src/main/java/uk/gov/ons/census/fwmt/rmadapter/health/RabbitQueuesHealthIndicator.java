@@ -4,10 +4,10 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
-import uk.gov.ons.census.fwmt.rmadapter.config.ActionFieldQueueConfig;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
 
 import java.util.Arrays;
@@ -19,15 +19,23 @@ import java.util.stream.Collectors;
 @Component
 public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
 
-  private static List<String> QUEUES = Arrays.asList(
-      ActionFieldQueueConfig.ACTION_FIELD_QUEUE,
-      ActionFieldQueueConfig.ACTION_FIELD_DLQ,
-      GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE
-  );
+  private List<String> queues;
+
   @Autowired
   @Qualifier("connectionFactory")
   private ConnectionFactory connectionFactory;
+
   private RabbitAdmin rabbitAdmin;
+
+  public RabbitQueuesHealthIndicator(
+      @Value("${rabbitmq.rmQueue}") String actionFieldQueueName,
+      @Value("${rabbitmq.rmDeadLetter}") String actionFieldDLQName) {
+    queues = Arrays.asList(
+        actionFieldQueueName,
+        actionFieldDLQName,
+        GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE
+    );
+  }
 
   private boolean checkQueue(String queueName) {
     Properties properties = rabbitAdmin.getQueueProperties(queueName);
@@ -37,11 +45,12 @@ public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
   private Map<String, Boolean> getAccessibleQueues() {
     rabbitAdmin = new RabbitAdmin(connectionFactory);
 
-    return QUEUES.stream()
+    return queues.stream()
         .collect(Collectors.toMap(queueName -> queueName, this::checkQueue));
   }
 
-  @Override protected void doHealthCheck(Health.Builder builder) {
+  @Override
+  protected void doHealthCheck(Health.Builder builder) {
     Map<String, Boolean> accessibleQueues = getAccessibleQueues();
 
     builder.withDetail("accessible-queues", accessibleQueues);

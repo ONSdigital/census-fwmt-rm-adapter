@@ -23,9 +23,12 @@ public class GatewayEventsConfig {
   public GatewayEventManager gatewayEventManager() {
     GatewayEventManager gatewayEventManager = new GatewayEventManager();
     gatewayEventManager.setSource(Application.APPLICATION_NAME);
-    gatewayEventManager.addEventTypes(new String[] {CANONICAL_CREATE_SENT, CANONICAL_UPDATE_SENT, CANONICAL_CANCEL_SENT, RM_CREATE_REQUEST_RECEIVED,
-        RM_UPDATE_REQUEST_RECEIVED, RM_CANCEL_REQUEST_RECEIVED});
-    gatewayEventManager.addErrorEventTypes(new String[] {INVALID_ACTION_INSTRUCTION, FAILED_TO_UNMARSHALL_ACTION_INSTRUCTION, FAILED_TO_MARSHALL_CANONICAL});
+    gatewayEventManager.addEventTypes(
+        new String[] {CANONICAL_CREATE_SENT, CANONICAL_UPDATE_SENT, CANONICAL_CANCEL_SENT, RM_CREATE_REQUEST_RECEIVED,
+            RM_UPDATE_REQUEST_RECEIVED, RM_CANCEL_REQUEST_RECEIVED});
+    gatewayEventManager.addErrorEventTypes(
+        new String[] {INVALID_ACTION_INSTRUCTION, FAILED_TO_UNMARSHALL_ACTION_INSTRUCTION,
+            FAILED_TO_MARSHALL_CANONICAL});
     return gatewayEventManager;
   }
 }

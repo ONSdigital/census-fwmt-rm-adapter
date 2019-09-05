@@ -31,10 +31,10 @@ public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
   
   public RabbitQueuesHealthIndicator(
       @Value("${rabbitmq.rmQueue}") String actionFieldQueueName,
-      @Value("${rabbitmq.rmDeadLetter}") String ActionFieldDLQName) {
+      @Value("${rabbitmq.rmDeadLetter}") String actionFieldDLQName) {
     queues = Arrays.asList(
-        ActionFieldQueueName,
-        ActionFieldDLQName,
+        actionFieldQueueName,
+        actionFieldDLQName,
         GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE
     );  }
 

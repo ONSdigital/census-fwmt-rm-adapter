@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Component
 public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
 
-  private  List<String> QUEUES;
+  private  List<String> queues;
   
   @Autowired
   @Qualifier("connectionFactory")
@@ -32,7 +32,7 @@ public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
   public RabbitQueuesHealthIndicator(
       @Value("${rabbitmq.rmQueue}") String ACTION_FIELD_QUEUE,
       @Value("${rabbitmq.rmDeadLetter}") String ACTION_FIELD_DLQ) {
-    QUEUES = Arrays.asList(
+    queues = Arrays.asList(
         ACTION_FIELD_QUEUE,
         ACTION_FIELD_DLQ,
         GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE
@@ -47,7 +47,7 @@ public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
   private Map<String, Boolean> getAccessibleQueues() {
     rabbitAdmin = new RabbitAdmin(connectionFactory);
 
-    return QUEUES.stream()
+    return queues.stream()
         .collect(Collectors.toMap(queueName -> queueName, this::checkQueue));
   }
 

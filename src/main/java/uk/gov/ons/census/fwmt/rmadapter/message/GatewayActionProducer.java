@@ -1,18 +1,14 @@
 package uk.gov.ons.census.fwmt.rmadapter.message;
 
-import java.util.UUID;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
@@ -20,6 +16,8 @@ import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig;
+
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -51,7 +49,8 @@ public class GatewayActionProducer {
       JSONJobRequest = objectMapper.writeValueAsString(dto);
     } catch (JsonProcessingException e) {
       String msg = "Failed to convert to JSON.";
-      gatewayEventManager.triggerErrorEvent(this.getClass(), e, msg, getCaseId(dto), GatewayEventsConfig.FAILED_TO_MARSHALL_CANONICAL);
+      gatewayEventManager
+          .triggerErrorEvent(this.getClass(), e, msg, getCaseId(dto), GatewayEventsConfig.FAILED_TO_MARSHALL_CANONICAL);
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, ".", e);
     }
     return JSONJobRequest;
@@ -67,7 +66,8 @@ public class GatewayActionProducer {
     } else if (dto instanceof UpdateFieldWorkerJobRequest) {
       uuid = ((UpdateFieldWorkerJobRequest) dto).getCaseId();
     }
-    if (uuid!=null) caseId = uuid.toString();
+    if (uuid != null)
+      caseId = uuid.toString();
     return caseId;
   }
 }

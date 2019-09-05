@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
 
   private List<String> queues;
-  
+
   @Autowired
   @Qualifier("connectionFactory")
   private ConnectionFactory connectionFactory;
-  
+
   private RabbitAdmin rabbitAdmin;
 
   public RabbitQueuesHealthIndicator(
@@ -34,9 +34,9 @@ public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
         actionFieldQueueName,
         actionFieldDLQName,
         GatewayActionsQueueConfig.GATEWAY_ACTIONS_QUEUE
-    );  }
+    );
+  }
 
-  
   private boolean checkQueue(String queueName) {
     Properties properties = rabbitAdmin.getQueueProperties(queueName);
     return (properties != null);
@@ -49,7 +49,8 @@ public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
         .collect(Collectors.toMap(queueName -> queueName, this::checkQueue));
   }
 
-  @Override protected void doHealthCheck(Health.Builder builder) {
+  @Override
+  protected void doHealthCheck(Health.Builder builder) {
     Map<String, Boolean> accessibleQueues = getAccessibleQueues();
 
     builder.withDetail("accessible-queues", accessibleQueues);

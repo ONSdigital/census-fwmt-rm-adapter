@@ -27,7 +27,8 @@ public class ProcessRMFieldDLQ {
     Message message;
 
     try {
-      messageCount = (int) amqpAdmin.getQueueProperties(actionFieldQueueConfig.actionFieldDLQName).get("QUEUE_MESSAGE_COUNT");
+      messageCount = (int) amqpAdmin.getQueueProperties(actionFieldQueueConfig.actionFieldDLQName)
+          .get("QUEUE_MESSAGE_COUNT");
 
       for (int i = 0; i < messageCount; i++) {
         message = rabbitTemplate.receive(actionFieldQueueConfig.actionFieldDLQName);

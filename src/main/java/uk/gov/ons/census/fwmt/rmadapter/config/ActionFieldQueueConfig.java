@@ -19,14 +19,14 @@ import uk.gov.ons.census.fwmt.rmadapter.message.ActionInstructionReceiver;
 @Configuration
 public class ActionFieldQueueConfig {
 
-  public String ACTION_FIELD_QUEUE;
-  public String ACTION_FIELD_DLQ;
+  public String actionFieldQueueName;
+  public String actionFieldDLQName;
 
   public ActionFieldQueueConfig(
-      @Value("${rabbitmq.rmQueue}") String ACTION_FIELD_QUEUE,
-      @Value("${rabbitmq.rmDeadLetter}") String ACTION_FIELD_DLQ) {
-    this.ACTION_FIELD_QUEUE = ACTION_FIELD_QUEUE;
-    this.ACTION_FIELD_DLQ = ACTION_FIELD_DLQ;
+      @Value("${rabbitmq.rmQueue}") String actionFieldQueueName,
+      @Value("${rabbitmq.rmDeadLetter}") String actionFieldDLQName) {
+    this.actionFieldQueueName = actionFieldQueueName;
+    this.actionFieldDLQName = actionFieldDLQName;
   }
 
   @Autowired
@@ -35,9 +35,9 @@ public class ActionFieldQueueConfig {
   //Queues
   @Bean
   public Queue actionFieldQueue() {
-    Queue queue = QueueBuilder.durable(ACTION_FIELD_QUEUE)
+    Queue queue = QueueBuilder.durable(actionFieldQueueName)
         .withArgument("x-dead-letter-exchange", "")
-        .withArgument("x-dead-letter-routing-key", ACTION_FIELD_DLQ)
+        .withArgument("x-dead-letter-routing-key", actionFieldDLQName)
         .build();
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
@@ -46,7 +46,7 @@ public class ActionFieldQueueConfig {
   //Dead Letter Queue
   @Bean
   public Queue actionFieldDeadLetterQueue() {
-    Queue queue = QueueBuilder.durable(ACTION_FIELD_DLQ).build();
+    Queue queue = QueueBuilder.durable(actionFieldDLQName).build();
     queue.setAdminsThatShouldDeclare(amqpAdmin);
     return queue;
   }
@@ -67,7 +67,7 @@ public class ActionFieldQueueConfig {
     Advice[] adviceChain = {retryOperationsInterceptor};
     container.setAdviceChain(adviceChain);
     container.setConnectionFactory(connectionFactory);
-    container.setQueueNames(ACTION_FIELD_QUEUE);
+    container.setQueueNames(actionFieldQueueName);
     container.setMessageListener(messageListenerAdapter);
     return container;
   }

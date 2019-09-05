@@ -7,10 +7,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
-
-import static uk.gov.ons.census.fwmt.rmadapter.config.ActionFieldQueueConfig.ACTION_FIELD_DLQ;
-import static uk.gov.ons.census.fwmt.rmadapter.config.ActionFieldQueueConfig.ACTION_FIELD_QUEUE;
-
+import uk.gov.ons.census.fwmt.rmadapter.config.ActionFieldQueueConfig;
 
 @Slf4j
 @Component
@@ -22,17 +19,20 @@ public class ProcessRMFieldDLQ {
   @Autowired
   private AmqpAdmin amqpAdmin;
 
+  @Autowired
+  private ActionFieldQueueConfig actionFieldQueueConfig;
+
   public void processDLQ() throws GatewayException {
     int messageCount;
     Message message;
 
     try {
-      messageCount = (int) amqpAdmin.getQueueProperties(ACTION_FIELD_DLQ).get("QUEUE_MESSAGE_COUNT");
+      messageCount = (int) amqpAdmin.getQueueProperties(actionFieldQueueConfig.actionFieldDLQName).get("QUEUE_MESSAGE_COUNT");
 
       for (int i = 0; i < messageCount; i++) {
-        message = rabbitTemplate.receive(ACTION_FIELD_DLQ);
+        message = rabbitTemplate.receive(actionFieldQueueConfig.actionFieldDLQName);
 
-        rabbitTemplate.send(ACTION_FIELD_QUEUE, message);
+        rabbitTemplate.send(actionFieldQueueConfig.actionFieldQueueName, message);
       }
     } catch (NullPointerException e) {
       throw new GatewayException(GatewayException.Fault.BAD_REQUEST, "No messages in queue");

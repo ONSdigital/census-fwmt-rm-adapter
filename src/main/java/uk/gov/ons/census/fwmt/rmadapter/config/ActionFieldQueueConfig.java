@@ -2,6 +2,7 @@ package uk.gov.ons.census.fwmt.rmadapter.config;
 
 import org.aopalliance.aop.Advice;
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -19,7 +20,7 @@ import uk.gov.ons.census.fwmt.rmadapter.message.ActionInstructionReceiver;
 public class ActionFieldQueueConfig {
 
   public static String ACTION_FIELD_QUEUE;
-  public static  String ACTION_FIELD_DLQ;
+  public static String ACTION_FIELD_DLQ;
 
   public ActionFieldQueueConfig(
       @Value("${rabbitmq.rmQueue}") String ACTION_FIELD_QUEUE,

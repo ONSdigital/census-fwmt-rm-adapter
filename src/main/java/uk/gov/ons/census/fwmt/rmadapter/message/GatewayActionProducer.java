@@ -4,7 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.retry.annotation.Retryable;
@@ -38,9 +42,13 @@ public class GatewayActionProducer {
 
   @Retryable
   public void sendMessage(Object dto) throws GatewayException {
+    Message gatewayMessage;
     String JSONJobRequest = convertToJSON(dto);
+
+    gatewayMessage = convertJSONToMessage(JSONJobRequest);
+
     rabbitTemplate.convertAndSend(gatewayActionsExchange.getName(),
-        GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY, JSONJobRequest);
+        GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY, gatewayMessage);
   }
 
   protected String convertToJSON(Object dto) throws GatewayException {
@@ -69,5 +77,14 @@ public class GatewayActionProducer {
     if (uuid != null)
       caseId = uuid.toString();
     return caseId;
+  }
+
+  private Message convertJSONToMessage(String messageJSON) {
+    Message gatewayMessage;
+    MessageProperties messageProperties = new MessageProperties();
+    messageProperties.setContentType("application/json");
+    MessageConverter messageConverter = new Jackson2JsonMessageConverter();
+
+    return gatewayMessage = messageConverter.toMessage(messageJSON, messageProperties);
   }
 }

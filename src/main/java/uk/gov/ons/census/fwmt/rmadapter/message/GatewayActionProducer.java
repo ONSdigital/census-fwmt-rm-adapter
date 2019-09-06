@@ -79,7 +79,7 @@ public class GatewayActionProducer {
     return caseId;
   }
 
-  private Message convertJSONToMessage(String messageJSON) {
+  public Message convertJSONToMessage(String messageJSON) {
     Message gatewayMessage;
     MessageProperties messageProperties = new MessageProperties();
     messageProperties.setContentType("application/json");

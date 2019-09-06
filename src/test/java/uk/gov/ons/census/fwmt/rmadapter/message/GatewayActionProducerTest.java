@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
@@ -50,6 +51,7 @@ public class GatewayActionProducerTest {
   @Test
   public void sendMessage() throws JsonProcessingException, GatewayException {
     //Given
+    Message expectedJSONAsMessage;
     FieldWorkerRequestMessageBuilder messageBuilder = new FieldWorkerRequestMessageBuilder();
     CreateFieldWorkerJobRequest createJobRequest = messageBuilder.buildCreateFieldWorkerJobRequest();
     when(directExchange.getName()).thenReturn("fwmtExchange");
@@ -62,9 +64,12 @@ public class GatewayActionProducerTest {
     verify(rabbitTemplate)
         .convertAndSend(eq("fwmtExchange"), eq(GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY),
             argumentCaptor.capture());
+
     String result = String.valueOf(argumentCaptor.getValue());
 
-    assertEquals(expectedJSON, result);
+    expectedJSONAsMessage = gatewayActionProducer.convertJSONToMessage(expectedJSON);
+
+    assertEquals(expectedJSONAsMessage.toString(), result);
   }
 
   @Test

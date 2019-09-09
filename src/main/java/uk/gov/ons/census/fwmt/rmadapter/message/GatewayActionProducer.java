@@ -42,10 +42,9 @@ public class GatewayActionProducer {
 
   @Retryable
   public void sendMessage(Object dto) throws GatewayException {
-    Message gatewayMessage;
     String JSONJobRequest = convertToJSON(dto);
 
-    gatewayMessage = convertJSONToMessage(JSONJobRequest);
+    Message gatewayMessage = convertJSONToMessage(JSONJobRequest);
 
     rabbitTemplate.convertAndSend(gatewayActionsExchange.getName(),
         GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY, gatewayMessage);
@@ -80,11 +79,10 @@ public class GatewayActionProducer {
   }
 
   public Message convertJSONToMessage(String messageJSON) {
-    Message gatewayMessage;
     MessageProperties messageProperties = new MessageProperties();
     messageProperties.setContentType("application/json");
     MessageConverter messageConverter = new Jackson2JsonMessageConverter();
 
-    return gatewayMessage = messageConverter.toMessage(messageJSON, messageProperties);
+    return messageConverter.toMessage(messageJSON, messageProperties);
   }
 }

@@ -15,6 +15,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -52,14 +53,11 @@ public class ActionInstructionReceiver {
 
   private void triggerEvent(ActionInstruction actionInstruction) {
     if (actionInstruction.getActionRequest() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(),
-          GatewayEventsConfig.RM_CREATE_REQUEST_RECEIVED);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), GatewayEventsConfig.RM_CREATE_REQUEST_RECEIVED, "Case Ref", actionInstruction.getActionRequest().getCaseRef());
     } else if (actionInstruction.getActionCancel() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(),
-          GatewayEventsConfig.RM_CANCEL_REQUEST_RECEIVED);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), GatewayEventsConfig.RM_CANCEL_REQUEST_RECEIVED, "Case Ref", actionInstruction.getActionCancel().getCaseRef());
     } else if (actionInstruction.getActionUpdate() != null) {
-      gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(),
-          GatewayEventsConfig.RM_UPDATE_REQUEST_RECEIVED);
+      gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), GatewayEventsConfig.RM_UPDATE_REQUEST_RECEIVED);
     }
   }
 }

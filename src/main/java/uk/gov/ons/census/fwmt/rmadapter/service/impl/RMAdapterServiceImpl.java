@@ -13,6 +13,8 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
 import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.*;
 
+import java.util.Map;
+
 @Slf4j
 @Component
 public class RMAdapterServiceImpl implements RMAdapterService {
@@ -61,7 +63,7 @@ public class RMAdapterServiceImpl implements RMAdapterService {
       if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
 
         jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));
-        gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT);
+        gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, "Case Ref", actionInstruction.getActionCancel().getCaseRef());
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
       }

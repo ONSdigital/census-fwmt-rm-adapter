@@ -1,6 +1,7 @@
 package uk.gov.ons.census.fwmt.rmadapter.message;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,11 +13,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
-import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
 import uk.gov.ons.census.fwmt.rmadapter.helper.FieldWorkerRequestMessageBuilder;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -34,42 +38,44 @@ public class GatewayActionProducerTest {
   private GatewayActionProducer gatewayActionProducer;
 
   @Mock
-  private GatewayEventManager gatewayEventManager;
-
-  @Mock
   private RabbitTemplate rabbitTemplate;
 
   @Mock
   private DirectExchange directExchange;
 
   @Captor
-  private ArgumentCaptor argumentCaptor;
+  private ArgumentCaptor<Message> argumentCaptor;
 
   @Mock
   private ObjectMapper objectMapper;
 
   @Test
-  public void sendMessage() throws JsonProcessingException, GatewayException {
+  public void sendMessage() throws IOException, GatewayException {
     //Given
-    Message expectedJSONAsMessage;
+    Message message;
+    MessageConverter messageConverter = new Jackson2JsonMessageConverter();
+    ObjectMapper jsonMapper = new ObjectMapper();
+    JsonNode jsonNode = null;
+    ObjectMapper objectMapper1 = new ObjectMapper();
     FieldWorkerRequestMessageBuilder messageBuilder = new FieldWorkerRequestMessageBuilder();
     CreateFieldWorkerJobRequest createJobRequest = messageBuilder.buildCreateFieldWorkerJobRequest();
-    when(directExchange.getName()).thenReturn("fwmtExchange");
-    when(objectMapper.writeValueAsString(eq(createJobRequest))).thenReturn(expectedJSON);
 
     //When
+    when(directExchange.getName()).thenReturn("fwmtExchange");
+    when(objectMapper.writeValueAsString(eq(createJobRequest))).thenReturn(expectedJSON);
+    jsonNode = objectMapper1.readTree(expectedJSON);
+    when(objectMapper.readTree(expectedJSON)).thenReturn(jsonNode);
     gatewayActionProducer.sendMessage(createJobRequest);
 
     //Then
     verify(rabbitTemplate)
-        .convertAndSend(eq("fwmtExchange"), eq(GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY),
-            argumentCaptor.capture());
+            .convertAndSend(eq("fwmtExchange"), eq(GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY),
+                    argumentCaptor.capture());
 
-    String result = String.valueOf(argumentCaptor.getValue());
+    message = argumentCaptor.getValue();
+    String result = messageConverter.fromMessage(message).toString();
 
-    expectedJSONAsMessage = gatewayActionProducer.convertJSONToMessage(expectedJSON);
-
-    assertEquals(expectedJSONAsMessage.toString(), result);
+    assertEquals(expectedJSON, result);
   }
 
   @Test
@@ -82,20 +88,18 @@ public class GatewayActionProducerTest {
     System.out.println(createJobRequest.toString());
 
     //When
-    String JSONResponce;
-    JSONResponce = gatewayActionProducer.convertToJSON(createJobRequest);
+    String JSONResponse;
+    JSONResponse = gatewayActionProducer.convertToJSON(createJobRequest);
 
     //Then
-    assertNotNull(JSONResponce);
+    assertNotNull(JSONResponse);
   }
 
-  @Test(expected = GatewayException.class)
-  public void sendBadMessage() throws JsonProcessingException, GatewayException {
+  @Test(expected = NullPointerException.class)
+  public void sendBadMessage() throws GatewayException {
     //Given
     FieldWorkerRequestMessageBuilder messageBuilder = new FieldWorkerRequestMessageBuilder();
     CreateFieldWorkerJobRequest createJobRequest = messageBuilder.buildCreateFieldWorkerJobRequest();
-    when(objectMapper.writeValueAsString(eq(createJobRequest))).thenThrow(new JsonProcessingException("Error") {
-    });
 
     //When
     gatewayActionProducer.sendMessage(createJobRequest);

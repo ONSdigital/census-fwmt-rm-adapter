@@ -1,6 +1,7 @@
 package uk.gov.ons.census.fwmt.rmadapter.message;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.DirectExchange;
@@ -21,6 +22,7 @@ import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
@@ -78,11 +80,16 @@ public class GatewayActionProducer {
     return caseId;
   }
 
-  public Message convertJSONToMessage(String messageJSON) {
+  public Message convertJSONToMessage(String messageJSON) throws GatewayException {
     MessageProperties messageProperties = new MessageProperties();
     messageProperties.setContentType("application/json");
     MessageConverter messageConverter = new Jackson2JsonMessageConverter();
 
-    return messageConverter.toMessage(messageJSON, messageProperties);
+    try {
+      JsonNode object = objectMapper.readTree(messageJSON);
+      return messageConverter.toMessage(object, messageProperties);
+    } catch (IOException e) {
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to convert JSON to message");
+    }
   }
 }

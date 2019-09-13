@@ -4,11 +4,14 @@ import uk.gov.ons.census.fwmt.canonical.v1.Address;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class FieldWorkerRequestMessageBuilder {
 
   public CreateFieldWorkerJobRequest buildCreateFieldWorkerJobRequest() {
     CreateFieldWorkerJobRequest fwmtCreateJobRequest = new CreateFieldWorkerJobRequest();
+
+    fwmtCreateJobRequest.setCaseId(UUID.fromString("edf0e64f-04a7-4c1c-bd03-6fbd69feed2e"));
 
     Address address = new Address();
     address.setLatitude(BigDecimal.valueOf(1000.00));

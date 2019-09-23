@@ -28,6 +28,9 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   @Autowired
   private HouseholdStore householdStore;
 
+  @Autowired
+  private CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
   public void sendJobRequest(ActionInstruction actionInstruction) throws GatewayException {
     if (actionInstruction.getActionRequest() != null) {
       sendCreateMessage(actionInstruction);
@@ -48,7 +51,7 @@ public class RMAdapterServiceImpl implements RMAdapterService {
       return;
 
     if (actionInstruction.getActionUpdate().getAddressType().equals("HH")) {
-      jobServiceProducer.sendMessage(CanonicalJobHelper.newUpdateJob(actionInstruction));
+      jobServiceProducer.sendMessage(canonicalJobHelper.newUpdateJob(actionInstruction));
       gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT);
     } else {
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
@@ -62,7 +65,7 @@ public class RMAdapterServiceImpl implements RMAdapterService {
     if (householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()) != null) {
       if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
 
-        jobServiceProducer.sendMessage(CanonicalJobHelper.newCancelJob(actionInstruction));
+        jobServiceProducer.sendMessage(canonicalJobHelper.newCancelJob(actionInstruction));
         gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, "Case Ref", actionInstruction.getActionCancel().getCaseRef());
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
@@ -72,7 +75,7 @@ public class RMAdapterServiceImpl implements RMAdapterService {
 
   private void sendCreateMessage(ActionInstruction actionInstruction) throws GatewayException {
     householdStore.cacheJob(actionInstruction.getActionRequest().getCaseId());
-    jobServiceProducer.sendMessage(CanonicalJobHelper.newCreateJob(actionInstruction));
+    jobServiceProducer.sendMessage(canonicalJobHelper.newCreateJob(actionInstruction));
     gatewayEventManager.triggerEvent(actionInstruction.getActionRequest().getCaseId(), CANONICAL_CREATE_SENT);
   }
 }

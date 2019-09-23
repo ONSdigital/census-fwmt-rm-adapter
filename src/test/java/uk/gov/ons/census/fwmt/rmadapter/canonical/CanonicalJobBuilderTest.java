@@ -1,6 +1,7 @@
 package uk.gov.ons.census.fwmt.rmadapter.canonical;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
@@ -21,8 +22,10 @@ public class CanonicalJobBuilderTest {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().createActionInstructionBuilder();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     //When
-    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+    CreateFieldWorkerJobRequest result = canonicalJobHelper.newCreateJob(actionInstruction);
 
     //Then
     assertEquals(actionInstruction.getActionRequest().getCaseId(), String.valueOf(result.getCaseId()));
@@ -43,8 +46,10 @@ public class CanonicalJobBuilderTest {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().createActionInstructionBuilderCEE();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     //When
-    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+    CreateFieldWorkerJobRequest result = canonicalJobHelper.newCreateJob(actionInstruction);
 
     //Then
     assertEquals(actionInstruction.getActionRequest().getCaseId(), String.valueOf(result.getCaseId()));
@@ -66,8 +71,10 @@ public class CanonicalJobBuilderTest {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().createActionInstructionBuilderCEU();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     //When
-    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+    CreateFieldWorkerJobRequest result = canonicalJobHelper.newCreateJob(actionInstruction);
 
     //Then
     assertEquals(actionInstruction.getActionRequest().getCaseId(), String.valueOf(result.getCaseId()));
@@ -89,8 +96,10 @@ public class CanonicalJobBuilderTest {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().cancelActionInstructionBuilder();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     //When
-    CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
+    CancelFieldWorkerJobRequest result = canonicalJobHelper.newCancelJob(actionInstruction);
 
     //Then
     assertEquals("HQ Case Closure", result.getReason());
@@ -101,8 +110,11 @@ public class CanonicalJobBuilderTest {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().updateActionInstructionBuilder();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
+
     //When
-    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
+    UpdateFieldWorkerJobRequest result = canonicalJobHelper.newUpdateJob(actionInstruction);
 
     //Then
     assertEquals(actionInstruction.getActionUpdate().getCaseId(), String.valueOf(result.getCaseId()));
@@ -116,8 +128,10 @@ public class CanonicalJobBuilderTest {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().updateCCSActionInstructionBuilder();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     //When
-    UpdateFieldWorkerJobRequest result = CanonicalJobHelper.newUpdateJob(actionInstruction);
+    UpdateFieldWorkerJobRequest result = canonicalJobHelper.newUpdateJob(actionInstruction);
 
   }
 
@@ -126,8 +140,10 @@ public class CanonicalJobBuilderTest {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().createNisraActionInstructionBuilder();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     //When
-    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+    CreateFieldWorkerJobRequest result = canonicalJobHelper.newCreateJob(actionInstruction);
 
     //Then
     assertEquals(actionInstruction.getActionRequest().getCaseId(), String.valueOf(result.getCaseId()));
@@ -149,8 +165,10 @@ public class CanonicalJobBuilderTest {
     // Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().createIncorrectNisraActionInstructionBuilder();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     // When
-    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+    CreateFieldWorkerJobRequest result = canonicalJobHelper.newCreateJob(actionInstruction);
   }
 
   @Test
@@ -158,8 +176,10 @@ public class CanonicalJobBuilderTest {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().cancelActionInstructionBuilderForPause();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     //When
-    CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
+    CancelFieldWorkerJobRequest result = canonicalJobHelper.newCancelJob(actionInstruction);
 
     //Then
     assertEquals("HQ Case Closure", result.getReason());
@@ -172,8 +192,10 @@ public class CanonicalJobBuilderTest {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().cancelActionInstructionBuilderForNonHouseHold();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     //When
-    CancelFieldWorkerJobRequest result = CanonicalJobHelper.newCancelJob(actionInstruction);
+    CancelFieldWorkerJobRequest result = canonicalJobHelper.newCancelJob(actionInstruction);
 
     //Then
     assertNull(result.getReason());
@@ -185,7 +207,9 @@ public class CanonicalJobBuilderTest {
     // Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().createActionInstructionBuilderWithoutCoordId();
 
+    CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
+
     // When
-    CreateFieldWorkerJobRequest result = CanonicalJobHelper.newCreateJob(actionInstruction);
+    CreateFieldWorkerJobRequest result = canonicalJobHelper.newCreateJob(actionInstruction);
   }
 }

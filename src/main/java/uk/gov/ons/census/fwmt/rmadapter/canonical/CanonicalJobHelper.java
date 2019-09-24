@@ -1,5 +1,7 @@
 package uk.gov.ons.census.fwmt.rmadapter.canonical;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import uk.gov.ons.census.fwmt.canonical.v1.*;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
@@ -14,7 +16,8 @@ import java.util.UUID;
 
 import static uk.gov.ons.census.fwmt.common.data.modelcase.CaseRequest.TypeEnum.HH;
 
-public final class CanonicalJobHelper {
+@Component
+public  class CanonicalJobHelper {
 
   private static final String CANCEL_ACTION_TYPE = "Cancel";
   private static final String CANCEL_REASON = "HQ Case Closure";
@@ -22,7 +25,14 @@ public final class CanonicalJobHelper {
   private static final String CREATE_ACTION_TYPE = "Create";
   private static final String UPDATE_ACTION_TYPE = "Update";
 
-  public static CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
+  private String ccsIntUrl;
+
+  @Value("${equrl}")
+  private String setCcsIntUrl(String ccsIntUrl) {
+    return this.ccsIntUrl = ccsIntUrl;
+  }
+
+  public  CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
@@ -34,6 +44,11 @@ public final class CanonicalJobHelper {
     createJobRequest.setCaseReference(actionRequest.getCaseRef());
     createJobRequest.setCaseType(processCaseType(actionRequest));
     createJobRequest.setSurveyType(processSurveyType(actionRequest));
+
+    if (createJobRequest.getSurveyType().equals("CCSIV")) {
+      createJobRequest.setCcsQuestionnaireURL(ccsIntUrl + actionRequest.getCaseId());
+    }
+
     createJobRequest.setCategory(processCategory(actionRequest));
     createJobRequest.setEstablishmentType(actionAddress.getEstabType());
 
@@ -75,7 +90,7 @@ public final class CanonicalJobHelper {
     return createJobRequest;
   }
 
-  private static void setCeDetail(CreateFieldWorkerJobRequest createJobRequest, ActionRequest actionRequest) {
+  private void setCeDetail(CreateFieldWorkerJobRequest createJobRequest, ActionRequest actionRequest) {
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
     }
@@ -91,7 +106,7 @@ public final class CanonicalJobHelper {
     }
   }
 
-  private static Contact getContact(ActionContact actionContact, ActionAddress actionAddress) {
+  private Contact getContact(ActionContact actionContact, ActionAddress actionAddress) {
     Contact contact = new Contact();
     contact.setForename(actionContact.getForename());
     contact.setSurname(actionContact.getSurname());
@@ -102,7 +117,7 @@ public final class CanonicalJobHelper {
     return contact;
   }
 
-  private static Address buildAddress(ActionAddress actionAddress) {
+  private Address buildAddress(ActionAddress actionAddress) {
     Address address = new Address();
     address.setArid(actionAddress.getArid());
     address.setUprn(actionAddress.getUprn());
@@ -118,7 +133,7 @@ public final class CanonicalJobHelper {
     return address;
   }
 
-  private static String processMandatoryResource(ActionRequest actionRequest) {
+  private String processMandatoryResource(ActionRequest actionRequest) {
     switch (actionRequest.getAddressType()) {
     case "HH":
       if (!StringUtils.isEmpty(actionRequest.getFieldOfficerId())) {
@@ -134,7 +149,7 @@ public final class CanonicalJobHelper {
     return null;
   }
 
-  private static String processCaseType(ActionRequest actionRequest) throws GatewayException {
+  private String processCaseType(ActionRequest actionRequest) throws GatewayException {
     String addressType = actionRequest.getAddressType();
     String surveyName = actionRequest.getSurveyName();
 
@@ -158,7 +173,7 @@ public final class CanonicalJobHelper {
     }
   }
 
-  private static String processSurveyType(ActionRequest actionRequest) throws GatewayException {
+  private String processSurveyType(ActionRequest actionRequest) throws GatewayException {
     String addressType = actionRequest.getAddressType();
     String addressLevel = actionRequest.getAddressLevel();
     String surveyName = actionRequest.getSurveyName();
@@ -185,7 +200,7 @@ public final class CanonicalJobHelper {
     }
   }
 
-  private static String processCategory(ActionRequest actionRequest) {
+  private String processCategory(ActionRequest actionRequest) {
     String surveyName = actionRequest.getSurveyName();
     String addressType = actionRequest.getAddressType();
 
@@ -203,7 +218,7 @@ public final class CanonicalJobHelper {
     return null;
   }
 
-  private static void processShelteredAccommodationIndicator(CreateFieldWorkerJobRequest createJobRequest,
+  private void processShelteredAccommodationIndicator(CreateFieldWorkerJobRequest createJobRequest,
       ActionAddress actionAddress) {
     if (String.valueOf(actionAddress.getType()).equals(String.valueOf(HH)) && actionAddress.getEstabType()
         .equals("Sheltered Accommodation")) {
@@ -213,20 +228,20 @@ public final class CanonicalJobHelper {
     }
   }
 
-  private static Date convertXmlGregorianCalendarToDate(XMLGregorianCalendar xmlGregorianCalendar) {
+  private Date convertXmlGregorianCalendarToDate(XMLGregorianCalendar xmlGregorianCalendar) {
     GregorianCalendar cal = xmlGregorianCalendar.toGregorianCalendar();
 
     return cal.getTime();
   }
 
-  private static OffsetDateTime convertXmlGregorianToOffsetDateTime(XMLGregorianCalendar xmlGregorianCalendar) {
+  private OffsetDateTime convertXmlGregorianToOffsetDateTime(XMLGregorianCalendar xmlGregorianCalendar) {
     GregorianCalendar cal = xmlGregorianCalendar.toGregorianCalendar();
     Date date = cal.getTime();
 
     return OffsetDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
   }
 
-  public static CancelFieldWorkerJobRequest newCancelJob(ActionInstruction actionInstruction) {
+  public CancelFieldWorkerJobRequest newCancelJob(ActionInstruction actionInstruction) {
     CancelFieldWorkerJobRequest cancelJobRequest = new CancelFieldWorkerJobRequest();
     cancelJobRequest.setGatewayType(CANCEL_ACTION_TYPE);
     if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
@@ -237,13 +252,13 @@ public final class CanonicalJobHelper {
     return cancelJobRequest;
   }
 
-  private static void createIndefinitePause(CancelFieldWorkerJobRequest cancelJobRequest,
+  private void createIndefinitePause(CancelFieldWorkerJobRequest cancelJobRequest,
       ActionInstruction actionInstruction) {
     cancelJobRequest.setReason(CANCEL_REASON);
     cancelJobRequest.setUntil(OffsetDateTime.parse(CANCEL_PAUSE_END_DATE));
   }
 
-  public static UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) throws GatewayException {
+  public UpdateFieldWorkerJobRequest newUpdateJob(ActionInstruction actionInstruction) throws GatewayException {
     ActionUpdate actionUpdate = actionInstruction.getActionUpdate();
 
     UpdateFieldWorkerJobRequest updateJobRequest = new UpdateFieldWorkerJobRequest();

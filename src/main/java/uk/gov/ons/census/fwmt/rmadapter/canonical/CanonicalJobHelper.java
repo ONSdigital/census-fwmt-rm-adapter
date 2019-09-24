@@ -33,11 +33,14 @@ public  class CanonicalJobHelper {
   }
 
   public  CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
+    String country = "";
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();
     ActionAddress actionAddress = actionRequest.getAddress();
     ActionContact actionContact = actionRequest.getContact();
-    String country = actionAddress.getOa().substring(0, 1);
+    if (!actionInstruction.getActionRequest().getSurveyName().equals("CCS")) {
+      country = actionAddress.getOa().substring(0, 1);
+    }
 
     createJobRequest.setGatewayType(CREATE_ACTION_TYPE);
     createJobRequest.setCaseId(UUID.fromString(actionRequest.getCaseId()));
@@ -77,7 +80,7 @@ public  class CanonicalJobHelper {
       createJobRequest.setContact(contact);
     }
 
-    Address address = buildAddress(actionAddress);
+    Address address = buildAddress(actionAddress, createJobRequest.getSurveyType());
     createJobRequest.setAddress(address);
 
     createJobRequest.setUua(actionRequest.isUndeliveredAsAddress());
@@ -117,7 +120,7 @@ public  class CanonicalJobHelper {
     return contact;
   }
 
-  private Address buildAddress(ActionAddress actionAddress) {
+  private Address buildAddress(ActionAddress actionAddress, String surveyType) {
     Address address = new Address();
     address.setArid(actionAddress.getArid());
     address.setUprn(actionAddress.getUprn());
@@ -128,7 +131,9 @@ public  class CanonicalJobHelper {
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
-    address.setOa(actionAddress.getOa());
+    if (!surveyType.equals("CCSIV")) {
+      address.setOa(actionAddress.getOa());
+    }
 
     return address;
   }

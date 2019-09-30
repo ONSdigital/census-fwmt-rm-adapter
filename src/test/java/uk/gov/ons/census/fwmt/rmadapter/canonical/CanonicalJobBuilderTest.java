@@ -123,7 +123,7 @@ public class CanonicalJobBuilderTest {
 
   }
 
-  @Test (expected = GatewayException.class)
+  @Test ()
   public void updateButNoPauseCCSJob() throws DatatypeConfigurationException, GatewayException {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().updateCCSActionInstructionBuilder();

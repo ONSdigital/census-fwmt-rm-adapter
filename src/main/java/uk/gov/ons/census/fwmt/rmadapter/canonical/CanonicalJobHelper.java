@@ -48,7 +48,7 @@ public  class CanonicalJobHelper {
     createJobRequest.setCaseType(processCaseType(actionRequest));
     createJobRequest.setSurveyType(processSurveyType(actionRequest));
 
-    if (createJobRequest.getSurveyType().equals("CCSINT")) {
+    if (createJobRequest.getSurveyType().equals("CCS INT")) {
       createJobRequest.setCcsQuestionnaireURL(ccsIntUrl + actionRequest.getCaseId());
     }
 
@@ -131,7 +131,7 @@ public  class CanonicalJobHelper {
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
-    if (!surveyType.equals("CCSINT")) {
+    if (!surveyType.equals("CCS INT")) {
       address.setOa(actionAddress.getOa());
     }
 
@@ -274,7 +274,7 @@ public  class CanonicalJobHelper {
     updateJobRequest.setUaa(actionUpdate.isUndeliveredAsAddress());
 
     if (!StringUtils.isEmpty(actionUpdate.getActionableFrom())) {
-      if (!actionInstruction.getActionUpdate().getAddressType().equals("CCSPL")) {
+      if (!actionInstruction.getActionUpdate().getAddressType().equals("CCS PL")) {
         updateJobRequest.setHoldUntil(convertXmlGregorianToOffsetDateTime(actionUpdate.getActionableFrom()));
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR,

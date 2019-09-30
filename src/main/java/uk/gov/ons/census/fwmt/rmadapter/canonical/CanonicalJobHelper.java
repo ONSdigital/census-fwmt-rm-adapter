@@ -48,7 +48,7 @@ public  class CanonicalJobHelper {
     createJobRequest.setCaseType(processCaseType(actionRequest));
     createJobRequest.setSurveyType(processSurveyType(actionRequest));
 
-    if (createJobRequest.getSurveyType().equals("CCSIV")) {
+    if (createJobRequest.getSurveyType().equals("CCSINT")) {
       createJobRequest.setCcsQuestionnaireURL(ccsIntUrl + actionRequest.getCaseId());
     }
 
@@ -131,7 +131,7 @@ public  class CanonicalJobHelper {
     address.setPostCode(actionAddress.getPostcode());
     address.setLatitude(actionAddress.getLatitude());
     address.setLongitude(actionAddress.getLongitude());
-    if (!surveyType.equals("CCSIV")) {
+    if (!surveyType.equals("CCSINT")) {
       address.setOa(actionAddress.getOa());
     }
 
@@ -198,7 +198,7 @@ public  class CanonicalJobHelper {
             + addressType + " and " + addressLevel);
       }
     } else if (surveyName.equals("CCS")) {
-      return "CCSIV";
+      return "CCSINT";
     } else {
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
           + addressType + " and " + addressLevel + "and" + surveyName);

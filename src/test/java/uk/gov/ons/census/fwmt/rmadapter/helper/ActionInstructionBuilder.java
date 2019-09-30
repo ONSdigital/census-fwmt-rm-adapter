@@ -169,7 +169,7 @@ public class ActionInstructionBuilder {
     ActionUpdate actionUpdate = new ActionUpdate();
 
     actionUpdate.setCaseId("8ed3fc08-e95f-44db-a6d7-cde4e76a6182");
-    actionUpdate.setAddressType("CCSPL");
+    actionUpdate.setAddressType("CCS");
     actionUpdate.setBlankQreReturned(false);
     actionUpdate.setActionableFrom(getXMLGregorianCalendarNow());
     actionUpdate.setCeActualResponses(BigInteger.valueOf(0));

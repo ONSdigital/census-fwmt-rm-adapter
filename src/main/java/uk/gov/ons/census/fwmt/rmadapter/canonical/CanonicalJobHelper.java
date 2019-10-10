@@ -198,7 +198,7 @@ public  class CanonicalJobHelper {
             + addressType + " and " + addressLevel);
       }
     } else if (surveyName.equals("CCS")) {
-      return "CCSINT";
+      return "CCS INT";
     } else {
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
           + addressType + " and " + addressLevel + "and" + surveyName);

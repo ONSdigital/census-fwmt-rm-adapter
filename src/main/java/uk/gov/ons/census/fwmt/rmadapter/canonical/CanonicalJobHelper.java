@@ -50,7 +50,6 @@ public  class CanonicalJobHelper {
 
     if (createJobRequest.getSurveyType().equals("CCS INT")) {
       createJobRequest.setCcsQuestionnaireURL(ccsIntUrl + actionRequest.getCaseId());
-      createJobRequest.setMandatoryResource(actionRequest.getFieldOfficerId());
     }
 
     createJobRequest.setCategory(processCategory(actionRequest));

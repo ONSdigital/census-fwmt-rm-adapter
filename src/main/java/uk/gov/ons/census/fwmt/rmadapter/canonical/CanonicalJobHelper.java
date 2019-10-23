@@ -88,7 +88,9 @@ public  class CanonicalJobHelper {
 
     processShelteredAccommodationIndicator(createJobRequest, actionAddress);
 
-    setCeDetail(createJobRequest, actionRequest);
+    if (actionRequest.getSurveyName().equals("CENSUS")) {
+      setCeDetail(createJobRequest, actionRequest);
+    }
 
     return createJobRequest;
   }

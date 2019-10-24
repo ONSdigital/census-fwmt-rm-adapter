@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
+import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
 
 import java.util.Arrays;
@@ -15,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
+
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.RABBIT_QUEUE_DOWN;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.RABBIT_QUEUE_UP;
 
 @Component
 public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
@@ -24,6 +28,9 @@ public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
   @Autowired
   @Qualifier("connectionFactory")
   private ConnectionFactory connectionFactory;
+
+  @Autowired
+  private GatewayEventManager gatewayEventManager;
 
   private RabbitAdmin rabbitAdmin;
 
@@ -57,8 +64,10 @@ public class RabbitQueuesHealthIndicator extends AbstractHealthIndicator {
 
     if (accessibleQueues.containsValue(false)) {
       builder.down();
+      gatewayEventManager.triggerErrorEvent(this.getClass(), "Cannot reach RabbitMQ", "<NA>", RABBIT_QUEUE_DOWN);
     } else {
       builder.up();
+      gatewayEventManager.triggerEvent("<N/A>", RABBIT_QUEUE_UP);
     }
 
   }

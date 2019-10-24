@@ -25,7 +25,6 @@ public class RedisHealthLogging extends AbstractHealthIndicator {
 
   private RedisConnection connection;
 
-
   public RedisHealthLogging(@Qualifier("redisConnectionFactory") RedisConnectionFactory connectionFactory) {
     super("Redis health check failed");
     Assert.notNull(connectionFactory, "ConnectionFactory must not be null");

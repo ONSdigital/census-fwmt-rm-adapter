@@ -214,7 +214,7 @@ public  class CanonicalJobHelper {
     if (surveyName.equals("CCS")) {
       switch (addressType) {
       case "HH":
-        return "HH";
+        return "Household";
       case "CE":
         return "CE";
       case "SPG":

@@ -50,8 +50,7 @@ public class RedisConfig {
 
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {
-    RedisConnectionFactory redisConnectionFactory = jedisConnectionFactory();
-    return redisConnectionFactory;
+    return jedisConnectionFactory();
   }
 
 }

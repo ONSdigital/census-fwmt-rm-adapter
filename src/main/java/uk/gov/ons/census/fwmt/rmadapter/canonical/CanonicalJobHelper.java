@@ -106,15 +106,8 @@ public class CanonicalJobHelper {
   private void setCeDetail(CreateFieldWorkerJobRequest createJobRequest, ActionRequest actionRequest) {
     if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeDeliveryRequired(actionRequest.isCeDeliveryReqd());
-    }
-    if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeCE1Complete(actionRequest.isCeCE1Complete());
-    }
-
-    if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeExpectedResponses(actionRequest.getCeExpectedResponses().intValue());
-    }
-    if (actionRequest.getAddressType().equals("CE")) {
       createJobRequest.setCeActualResponses(actionRequest.getCeActualResponses().intValue());
     }
   }
@@ -168,23 +161,21 @@ public class CanonicalJobHelper {
     String addressType = actionRequest.getAddressType();
     String surveyName = actionRequest.getSurveyName();
 
-    if (surveyName.equals("CENSUS")) {
+    switch (surveyName) {
+    case "CENSUS":
       switch (addressType) {
       case "HH":
         return "HH";
       case "CE":
-        return "CE";
       case "SPG":
         return "CE";
       default:
-        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Non-valid addressType: "
-            + addressType);
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Non-valid addressType: " + addressType);
       }
-    } else if (surveyName.equals("CCS")) {
+    case "CCS":
       return "CCS";
-    } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Invalid survey name: "
-          + surveyName);
+    default:
+      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Invalid survey name: " + surveyName);
     }
   }
 
@@ -193,7 +184,8 @@ public class CanonicalJobHelper {
     String addressLevel = actionRequest.getAddressLevel();
     String surveyName = actionRequest.getSurveyName();
 
-    if (surveyName.equals("CENSUS")) {
+    switch (surveyName) {
+    case "CENSUS":
       if (addressType.equals("HH")) {
         return "Household";
       } else if (addressType.equals("CE") && addressLevel.equals("E")) {
@@ -207,9 +199,9 @@ public class CanonicalJobHelper {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
             + addressType + " and " + addressLevel);
       }
-    } else if (surveyName.equals("CCS")) {
+    case "CCS":
       return "CCS INT";
-    } else {
+    default:
       throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Unable to set survey type using "
           + addressType + " and " + addressLevel + "and" + surveyName);
     }
@@ -235,12 +227,9 @@ public class CanonicalJobHelper {
 
   private void processShelteredAccommodationIndicator(CreateFieldWorkerJobRequest createJobRequest,
       ActionAddress actionAddress) {
-    if (String.valueOf(actionAddress.getType()).equals(String.valueOf(HH)) && actionAddress.getEstabType()
-        .equals("Sheltered Accommodation")) {
-      createJobRequest.setSai(true);
-    } else {
-      createJobRequest.setSai(false);
-    }
+    boolean sai = String.valueOf(actionAddress.getType()).equals(String.valueOf(HH)) && actionAddress.getEstabType()
+        .equals("Sheltered Accommodation");
+    createJobRequest.setSai(sai);
   }
 
   private Date convertXmlGregorianCalendarToDate(XMLGregorianCalendar xmlGregorianCalendar) {

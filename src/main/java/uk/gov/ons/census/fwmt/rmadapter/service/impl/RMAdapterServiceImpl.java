@@ -11,9 +11,10 @@ import uk.gov.ons.census.fwmt.rmadapter.redis.HouseholdStore;
 import uk.gov.ons.census.fwmt.rmadapter.service.RMAdapterService;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
 
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.*;
-
-import java.util.Map;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.INVALID_ACTION_INSTRUCTION;
 
 @Slf4j
 @Component
@@ -66,7 +67,9 @@ public class RMAdapterServiceImpl implements RMAdapterService {
       if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
 
         jobServiceProducer.sendMessage(canonicalJobHelper.newCancelJob(actionInstruction));
-        gatewayEventManager.triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, "Case Ref", actionInstruction.getActionCancel().getCaseRef());
+        gatewayEventManager
+            .triggerEvent(actionInstruction.getActionCancel().getCaseId(), CANONICAL_CANCEL_SENT, "Case Ref",
+                actionInstruction.getActionCancel().getCaseRef());
       } else {
         throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
       }

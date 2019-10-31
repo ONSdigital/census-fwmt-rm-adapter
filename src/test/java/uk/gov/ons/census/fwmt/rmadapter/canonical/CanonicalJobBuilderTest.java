@@ -1,7 +1,6 @@
 package uk.gov.ons.census.fwmt.rmadapter.canonical;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
@@ -112,7 +111,6 @@ public class CanonicalJobBuilderTest {
 
     CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
 
-
     //When
     UpdateFieldWorkerJobRequest result = canonicalJobHelper.newUpdateJob(actionInstruction);
 
@@ -123,7 +121,7 @@ public class CanonicalJobBuilderTest {
 
   }
 
-  @Test ()
+  @Test()
   public void updateButNoPauseCCSJob() throws DatatypeConfigurationException, GatewayException {
     //Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().updateCCSActionInstructionBuilder();
@@ -160,7 +158,7 @@ public class CanonicalJobBuilderTest {
     assertEquals(actionInstruction.getActionRequest().getFieldOfficerId(), result.getMandatoryResource());
   }
 
-  @Test (expected = GatewayException.class)
+  @Test(expected = GatewayException.class)
   public void createIncorrectNISRAJob() throws DatatypeConfigurationException, GatewayException {
     // Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().createIncorrectNisraActionInstructionBuilder();
@@ -190,7 +188,8 @@ public class CanonicalJobBuilderTest {
   @Test
   public void cancelJobWithPauseNonHH() {
     //Given
-    ActionInstruction actionInstruction = new ActionInstructionBuilder().cancelActionInstructionBuilderForNonHouseHold();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder()
+        .cancelActionInstructionBuilderForNonHouseHold();
 
     CanonicalJobHelper canonicalJobHelper = new CanonicalJobHelper();
 
@@ -202,7 +201,7 @@ public class CanonicalJobBuilderTest {
     assertNull(result.getUntil());
   }
 
-  @Test (expected = Exception.class)
+  @Test(expected = Exception.class)
   public void createJobWithMissingCoordId() throws GatewayException {
     // Given
     ActionInstruction actionInstruction = new ActionInstructionBuilder().createActionInstructionBuilderWithoutCoordId();

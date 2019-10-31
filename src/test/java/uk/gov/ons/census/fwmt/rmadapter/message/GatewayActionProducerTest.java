@@ -69,8 +69,8 @@ public class GatewayActionProducerTest {
 
     //Then
     verify(rabbitTemplate)
-            .convertAndSend(eq("fwmtExchange"), eq(GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY),
-                    argumentCaptor.capture());
+        .convertAndSend(eq("fwmtExchange"), eq(GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY),
+            argumentCaptor.capture());
 
     message = argumentCaptor.getValue();
     String result = messageConverter.fromMessage(message).toString();

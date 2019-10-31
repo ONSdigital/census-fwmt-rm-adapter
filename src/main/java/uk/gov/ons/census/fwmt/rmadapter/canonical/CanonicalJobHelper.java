@@ -3,9 +3,17 @@ package uk.gov.ons.census.fwmt.rmadapter.canonical;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import uk.gov.ons.census.fwmt.canonical.v1.*;
+import uk.gov.ons.census.fwmt.canonical.v1.Address;
+import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.canonical.v1.Contact;
+import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
+import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
-import uk.gov.ons.ctp.response.action.message.instruction.*;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionAddress;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionContact;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionRequest;
+import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.OffsetDateTime;
@@ -17,7 +25,7 @@ import java.util.UUID;
 import static uk.gov.ons.census.fwmt.common.data.modelcase.CaseRequest.TypeEnum.HH;
 
 @Component
-public  class CanonicalJobHelper {
+public class CanonicalJobHelper {
 
   private static final String CANCEL_ACTION_TYPE = "Cancel";
   private static final String CANCEL_REASON = "HQ Case Closure";
@@ -32,7 +40,7 @@ public  class CanonicalJobHelper {
     return this.ccsIntUrl = ccsIntUrl;
   }
 
-  public  CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
+  public CreateFieldWorkerJobRequest newCreateJob(ActionInstruction actionInstruction) throws GatewayException {
     String country = "";
     CreateFieldWorkerJobRequest createJobRequest = new CreateFieldWorkerJobRequest();
     ActionRequest actionRequest = actionInstruction.getActionRequest();

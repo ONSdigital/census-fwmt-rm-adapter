@@ -21,7 +21,9 @@ import uk.gov.ons.ctp.response.action.message.instruction.ActionUpdate;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -116,7 +118,8 @@ public class ActionInstructionReceiverTest {
   public void receiveMessageUpdate() throws GatewayException {
     actionInstructionReceiver.receiveMessage(ACTION_UPDATE_XML);
 
-    ArgumentCaptor <ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor.forClass(ActionInstruction.class);
+    ArgumentCaptor<ActionInstruction> actionInstructionArgumentCaptor = ArgumentCaptor
+        .forClass(ActionInstruction.class);
 
     verify(rmAdapterService).sendJobRequest(actionInstructionArgumentCaptor.capture());
 

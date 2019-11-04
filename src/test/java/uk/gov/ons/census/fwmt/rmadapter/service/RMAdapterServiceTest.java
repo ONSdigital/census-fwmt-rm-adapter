@@ -1,23 +1,11 @@
 package uk.gov.ons.census.fwmt.rmadapter.service;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.when;
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
-import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.helper.ActionInstructionBuilder;
@@ -26,6 +14,16 @@ import uk.gov.ons.census.fwmt.rmadapter.redis.HouseholdRequestEntity;
 import uk.gov.ons.census.fwmt.rmadapter.redis.HouseholdStore;
 import uk.gov.ons.census.fwmt.rmadapter.service.impl.RMAdapterServiceImpl;
 import uk.gov.ons.ctp.response.action.message.instruction.ActionInstruction;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.when;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CANCEL_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_CREATE_SENT;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig.CANONICAL_UPDATE_SENT;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RMAdapterServiceTest {
@@ -81,7 +79,8 @@ public class RMAdapterServiceTest {
 
   @Test(expected = GatewayException.class)
   public void sendCancelMessageWithOutHH() throws GatewayException {
-    ActionInstruction actionInstruction = new ActionInstructionBuilder().cancelActionInstructionBuilderForNonHouseHold();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder()
+        .cancelActionInstructionBuilderForNonHouseHold();
 
     HouseholdRequestEntity householdRequestEntity = new HouseholdRequestEntity();
     householdRequestEntity.setCaseId(caseId);
@@ -121,7 +120,8 @@ public class RMAdapterServiceTest {
 
   @Test(expected = GatewayException.class)
   public void sendUpdateMessageWithoutHH() throws GatewayException, DatatypeConfigurationException {
-    ActionInstruction actionInstruction = new ActionInstructionBuilder().updateActionInstructionBuilderForNonHousehold();
+    ActionInstruction actionInstruction = new ActionInstructionBuilder()
+        .updateActionInstructionBuilderForNonHousehold();
 
     HouseholdRequestEntity householdRequestEntity = new HouseholdRequestEntity();
     householdRequestEntity.setCaseId(caseId);
@@ -132,7 +132,7 @@ public class RMAdapterServiceTest {
   }
 
   @Test(expected = GatewayException.class)
-  public void sendIncorrectMessageActionInstruction() throws GatewayException{
+  public void sendIncorrectMessageActionInstruction() throws GatewayException {
     ActionInstruction actionInstruction = new ActionInstruction();
 
     rmAdapterService.sendJobRequest(actionInstruction);

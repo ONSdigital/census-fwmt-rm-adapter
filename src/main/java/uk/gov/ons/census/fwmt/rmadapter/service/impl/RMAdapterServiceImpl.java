@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
 import uk.gov.ons.census.fwmt.rmadapter.canonical.CanonicalJobHelper;
+import uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig;
 import uk.gov.ons.census.fwmt.rmadapter.message.GatewayActionProducer;
 import uk.gov.ons.census.fwmt.rmadapter.redis.HouseholdStore;
 import uk.gov.ons.census.fwmt.rmadapter.service.RMAdapterService;
@@ -48,22 +49,28 @@ public class RMAdapterServiceImpl implements RMAdapterService {
   }
 
   private void createUpdateMessage(ActionInstruction actionInstruction) throws GatewayException {
-    if (householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()) == null)
-      return;
-
-    if (actionInstruction.getActionUpdate().getAddressType().equals("HH")) {
-      jobServiceProducer.sendMessage(canonicalJobHelper.newUpdateJob(actionInstruction));
-      gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT);
+    if (householdStore.retrieveCache(actionInstruction.getActionUpdate().getCaseId()) == null) {
+      String msg = "Unable to find cached data for update case";
+      String caseId = actionInstruction.getActionUpdate().getCaseId();
+      gatewayEventManager.triggerErrorEvent(this.getClass(), msg, caseId,
+          GatewayEventsConfig.REDIS_NO_RECORD_FOUND);
     } else {
-      throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
+      if (actionInstruction.getActionUpdate().getAddressType().equals("HH")) {
+        jobServiceProducer.sendMessage(canonicalJobHelper.newUpdateJob(actionInstruction));
+        gatewayEventManager.triggerEvent(actionInstruction.getActionUpdate().getCaseId(), CANONICAL_UPDATE_SENT);
+      } else {
+        throw new GatewayException(GatewayException.Fault.SYSTEM_ERROR, "Valid address type not found");
+      }
     }
   }
 
   private void createCancelMessage(ActionInstruction actionInstruction) throws GatewayException {
-    if (householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()) == null)
-      return;
-
-    if (householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()) != null) {
+    if (householdStore.retrieveCache(actionInstruction.getActionCancel().getCaseId()) == null) {
+      String msg = "Unable to find cached data for cancel case";
+      String caseId = actionInstruction.getActionCancel().getCaseId();
+      gatewayEventManager.triggerErrorEvent(this.getClass(), msg, caseId,
+          GatewayEventsConfig.REDIS_NO_RECORD_FOUND);
+    } else {
       if (actionInstruction.getActionCancel().getAddressType().equals("HH")) {
 
         jobServiceProducer.sendMessage(canonicalJobHelper.newCancelJob(actionInstruction));

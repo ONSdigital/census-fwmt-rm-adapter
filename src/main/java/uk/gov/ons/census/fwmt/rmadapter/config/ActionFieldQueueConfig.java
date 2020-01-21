@@ -29,7 +29,7 @@ public class ActionFieldQueueConfig {
   }
 
   @Autowired
-  private AmqpAdmin amqpAdmin;
+  private AmqpAdmin rmAmqpAdmin;
 
   //Queues
   @Bean
@@ -38,7 +38,7 @@ public class ActionFieldQueueConfig {
         .withArgument("x-dead-letter-exchange", "")
         .withArgument("x-dead-letter-routing-key", actionFieldDLQName)
         .build();
-    queue.setAdminsThatShouldDeclare(amqpAdmin);
+    queue.setAdminsThatShouldDeclare(rmAmqpAdmin);
     return queue;
   }
 
@@ -46,7 +46,7 @@ public class ActionFieldQueueConfig {
   @Bean
   public Queue actionFieldDeadLetterQueue() {
     Queue queue = QueueBuilder.durable(actionFieldDLQName).build();
-    queue.setAdminsThatShouldDeclare(amqpAdmin);
+    queue.setAdminsThatShouldDeclare(rmAmqpAdmin);
     return queue;
   }
 
@@ -59,7 +59,7 @@ public class ActionFieldQueueConfig {
   //Message Listener
   @Bean
   public SimpleMessageListenerContainer actionFieldMessagerListener(
-      @Qualifier("connectionFactory") ConnectionFactory connectionFactory,
+      @Qualifier("rmConnectionFactory") ConnectionFactory connectionFactory,
       @Qualifier("actionFieldListenerAdapter") MessageListenerAdapter messageListenerAdapter,
       @Qualifier("interceptor") RetryOperationsInterceptor retryOperationsInterceptor) {
     SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
@@ -68,7 +68,7 @@ public class ActionFieldQueueConfig {
     container.setConnectionFactory(connectionFactory);
     container.setQueueNames(actionFieldQueueName);
     container.setMessageListener(messageListenerAdapter);
+    container.setAmqpAdmin(rmAmqpAdmin);
     return container;
   }
-
 }

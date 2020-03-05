@@ -4,14 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.census.fwmt.canonical.v1.CancelFieldWorkerJobRequest;
@@ -19,11 +17,13 @@ import uk.gov.ons.census.fwmt.canonical.v1.CreateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.canonical.v1.UpdateFieldWorkerJobRequest;
 import uk.gov.ons.census.fwmt.common.error.GatewayException;
 import uk.gov.ons.census.fwmt.events.component.GatewayEventManager;
-import uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig;
 import uk.gov.ons.census.fwmt.rmadapter.config.GatewayEventsConfig;
 
 import java.io.IOException;
 import java.util.UUID;
+
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig.GATEWAY_ACTIONS_EXCHANGE;
+import static uk.gov.ons.census.fwmt.rmadapter.config.GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY;
 
 @Slf4j
 @Component
@@ -36,10 +36,6 @@ public class GatewayActionProducer {
   private RabbitTemplate rabbitTemplate;
 
   @Autowired
-  @Qualifier("gatewayActionsExchange")
-  private DirectExchange gatewayActionsExchange;
-
-  @Autowired
   private ObjectMapper objectMapper;
 
   @Retryable
@@ -48,8 +44,7 @@ public class GatewayActionProducer {
 
     Message gatewayMessage = convertJSONToMessage(JSONJobRequest);
 
-    rabbitTemplate.convertAndSend(gatewayActionsExchange.getName(),
-        GatewayActionsQueueConfig.GATEWAY_ACTIONS_ROUTING_KEY, gatewayMessage);
+    rabbitTemplate.convertAndSend(GATEWAY_ACTIONS_EXCHANGE, GATEWAY_ACTIONS_ROUTING_KEY, gatewayMessage);
   }
 
   protected String convertToJSON(Object dto) throws GatewayException {

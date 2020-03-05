@@ -2,8 +2,6 @@ package uk.gov.ons.census.fwmt.rmadapter.config;
 
 import org.aopalliance.aop.Advice;
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
@@ -31,25 +29,6 @@ public class ActionFieldQueueConfig {
   @Autowired
   private AmqpAdmin rmAmqpAdmin;
 
-  //Queues
-  @Bean
-  public Queue actionFieldQueue() {
-    Queue queue = QueueBuilder.durable(actionFieldQueueName)
-        .withArgument("x-dead-letter-exchange", "")
-        .withArgument("x-dead-letter-routing-key", actionFieldDLQName)
-        .build();
-    queue.setAdminsThatShouldDeclare(rmAmqpAdmin);
-    return queue;
-  }
-
-  //Dead Letter Queue
-  @Bean
-  public Queue actionFieldDeadLetterQueue() {
-    Queue queue = QueueBuilder.durable(actionFieldDLQName).build();
-    queue.setAdminsThatShouldDeclare(rmAmqpAdmin);
-    return queue;
-  }
-
   //Listener Adapter
   @Bean
   public MessageListenerAdapter actionFieldListenerAdapter(ActionInstructionReceiver receiver) {
@@ -58,7 +37,7 @@ public class ActionFieldQueueConfig {
 
   //Message Listener
   @Bean
-  public SimpleMessageListenerContainer actionFieldMessagerListener(
+  public SimpleMessageListenerContainer actionFieldMessengerListener(
       @Qualifier("rmConnectionFactory") ConnectionFactory connectionFactory,
       @Qualifier("actionFieldListenerAdapter") MessageListenerAdapter messageListenerAdapter,
       @Qualifier("interceptor") RetryOperationsInterceptor retryOperationsInterceptor) {

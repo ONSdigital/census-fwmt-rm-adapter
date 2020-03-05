@@ -1,7 +1,6 @@
 package uk.gov.ons.census.fwmt.rmadapter.config;
 
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +12,8 @@ import org.springframework.retry.RetryOperations;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 import uk.gov.ons.census.fwmt.common.retry.GatewayMessageRecover;
 
+import static uk.gov.ons.census.fwmt.rmadapter.config.ConnectionFactoryBuilder.createConnectionFactory;
+
 @Configuration
 public class QueueConfig {
   private String username;
@@ -22,11 +23,11 @@ public class QueueConfig {
   private String virtualHost;
 
   public QueueConfig(
-      @Value("${rabbitmq.username}") String username,
-      @Value("${rabbitmq.password}") String password,
-      @Value("${rabbitmq.hostname}") String hostname,
-      @Value("${rabbitmq.port}") Integer port,
-      @Value("${rabbitmq.virtualHost}") String virtualHost) {
+      @Value("${rabbitmq.fwmt.username}") String username,
+      @Value("${rabbitmq.fwmt.password}") String password,
+      @Value("${rabbitmq.fwmt.hostname}") String hostname,
+      @Value("${rabbitmq.fwmt.port}") Integer port,
+      @Value("${rabbitmq.fwmt.virtualHost}") String virtualHost) {
     this.username = username;
     this.password = password;
     this.hostname = hostname;
@@ -34,15 +35,17 @@ public class QueueConfig {
     this.virtualHost = virtualHost;
   }
 
-  public static CachingConnectionFactory createConnectionFactory(int port, String hostname, String virtualHost,
-      String password, String username) {
-    CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(hostname, port);
+  // Connection Factory
+  @Bean
+  @Primary
+  public ConnectionFactory connectionFactory() {
+    return createConnectionFactory(port, hostname, virtualHost, password, username);
+  }
 
-    cachingConnectionFactory.setVirtualHost(virtualHost);
-    cachingConnectionFactory.setPassword(password);
-    cachingConnectionFactory.setUsername(username);
-
-    return cachingConnectionFactory;
+  // Amqp Admin
+  @Bean
+  public AmqpAdmin amqpAdmin() {
+    return new RabbitAdmin(connectionFactory());
   }
 
   // Interceptor
@@ -53,17 +56,5 @@ public class QueueConfig {
     interceptor.setRecoverer(new GatewayMessageRecover());
     interceptor.setRetryOperations(retryOperations);
     return interceptor;
-  }
-
-  @Bean
-  public AmqpAdmin amqpAdmin() {
-    return new RabbitAdmin(connectionFactory());
-  }
-
-  // Connection Factory
-  @Bean
-  @Primary
-  public ConnectionFactory connectionFactory() {
-    return createConnectionFactory(port, hostname, virtualHost, password, username);
   }
 }

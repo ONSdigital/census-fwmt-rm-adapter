@@ -12,25 +12,25 @@ import uk.gov.ons.census.fwmt.rmadapter.message.ProcessRMFieldDLQ;
 public class QueueListenerController {
 
   @Autowired
-  ProcessRMFieldDLQ processRMFieldDLQ;
+  private ProcessRMFieldDLQ processRMFieldDLQ;
 
   @Autowired
-  SimpleMessageListenerContainer simpleMessageListenerContainer;
+  private SimpleMessageListenerContainer simpleMessageListenerContainer;
 
   @GetMapping("/processDLQ")
-  public ResponseEntity startDLQProcessor() throws GatewayException {
+  public ResponseEntity<String> startDLQProcessor() throws GatewayException {
     processRMFieldDLQ.processDLQ();
     return ResponseEntity.ok("DLQ listener started.");
   }
 
   @GetMapping("/startListener")
-  public ResponseEntity startListener() {
+  public ResponseEntity<String> startListener() {
     simpleMessageListenerContainer.start();
     return ResponseEntity.ok("Queue listener started.");
   }
 
   @GetMapping("/stopListener")
-  public ResponseEntity stopListener() {
+  public ResponseEntity<String> stopListener() {
     simpleMessageListenerContainer.stop();
     return ResponseEntity.ok("Queue listener stopped.");
   }
